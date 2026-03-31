@@ -14,7 +14,7 @@
 
   // ─── CONFIG ──────────────────────────────────────────────────────────────────
   const WORKER_URL =
-    "https://homeedge-chat.REPLACE_WITH_YOUR_SUBDOMAIN.workers.dev";
+    "https://homeedge-chat.moltmind.workers.dev";
 
   const OPENING_MESSAGE =
     "Hey! I'm the HomeEdge Assistant. I help real estate agents understand what HomeEdge can do for their business. What's your biggest challenge right now — getting more listings, standing out from other agents, or something else?";

@@ -1417,12 +1417,12 @@
                 company: form.company.value
             };
 
-            // MailerLite subscriber API
-            // Replace GROUP_ID with your MailerLite group ID after setup
-            const MAILERLITE_GROUP_ID = 'REPLACE_WITH_GROUP_ID';
-
-            // For now, show success and log the lead
-            console.log('New HomeEdge lead:', data);
+            // Subscribe via secure Cloudflare Worker (no API keys exposed)
+            fetch('https://homeedge-chat.moltmind.workers.dev/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).catch(function() {});
 
             // Show success state
             form.style.display = 'none';
@@ -1466,6 +1466,7 @@
             observer.observe(el);
         });
     </script>
+    <script src="chatbot.js"></script>
 
 </body>
 </html>
