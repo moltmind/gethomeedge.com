@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closing Cost Explainer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0A1929;
+            --bg-card: #132F4C;
+            --bg-light: #1B3A57;
+            --accent-cyan: #00E5FF;
+            --accent-blue: #1565C0;
+            --accent-gold: #FFD54F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0BEC5;
+            --border: #37474F;
+            --success: #66BB6A;
+            --warning: #FFA726;
+            --danger: #EF5350;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-title {
+            font-family: Georgia, serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .agent-info {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 0.8s ease-out 0.1s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .agent-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--bg-dark);
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .agent-text h3 {
+            font-family: Georgia, serif;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+
+        .agent-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .inputs-section,
+        .breakdown-section {
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .section-title {
+            font-family: Georgia, serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--accent-cyan);
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: var(--bg-light);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+        }
+
+        .input-display {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-cyan));
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+        }
+
+        .slider-value {
+            min-width: 60px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background-color: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-cyan);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background-color: var(--text-primary);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 22px;
+        }
+
+        .breakdown-chart {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            position: relative;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: auto;
+            max-width: 300px;
+        }
+
+        .line-items {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .line-item {
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.2s ease;
+        }
+
+        .line-item:last-child {
+            border-bottom: none;
+        }
+
+        .line-item-header {
+            padding: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .line-item-header:hover {
+            background-color: var(--bg-light);
+        }
+
+        .line-item-left {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+            gap: 12px;
+        }
+
+        .line-item-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .line-item-amount {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .line-item-amount.credit {
+            color: var(--success);
+        }
+
+        .expand-icon {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .line-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .line-item-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background-color: var(--bg-light);
+        }
+
+        .line-item.expanded .line-item-details {
+            max-height: 300px;
+        }
+
+        .line-item-detail-content {
+            padding: 16px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .detail-label {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .net-proceeds-card {
+            background: linear-gradient(135deg, var(--accent-blue), #0D47A1);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideUp 0.6s ease-out 0.3s both;
+            box-shadow: 0 8px 32px rgba(0, 229, 255, 0.2);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .net-proceeds-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+        }
+
+        .net-proceeds-amount {
+            font-family: Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+        }
+
+        .net-proceeds-note {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 12px;
+        }
+
+        .cta-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .cta-text {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        .cta-text strong {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .cta-phone {
+            font-family: monospace;
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: #00D4E8;
+            box-shadow: 0 4px 16px rgba(0, 229, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-blue);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #1976D2;
+            box-shadow: 0 4px 16px rgba(21, 101, 192, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .summary-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out 0.35s both;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+        }
+
+        .summary-value {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .summary-value.total {
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: #000;
+            }
+            .agent-info,
+            .action-buttons,
+            button {
+                display: none;
+            }
+            .section-title {
+                color: var(--accent-blue);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="header-title">Closing Cost Explainer</h1>
+            <p class="header-subtitle">See exactly where your money goes</p>
+        </header>
+
+        <div class="agent-info">
+            <div class="agent-photo" id="agentPhotoPlaceholder">{{AGENT_NAME}}</div>
+            <div class="agent-text">
+                <h3>Your Real Estate Agent</h3>
+                <p><strong id="agentName">{{AGENT_NAME}}</strong> at {{BROKERAGE_NAME}}</p>
+                <p>Phone: <strong id="agentPhone">{{AGENT_PHONE}}</strong></p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="inputs-section">
+                <h2 class="section-title">Your Numbers</h2>
+
+                <div class="form-group">
+                    <label for="salePrice">Home Sale Price</label>
+                    <input type="number" id="salePrice" placeholder="0" min="0" value="500000">
+                    <div class="input-display" id="salePriceDisplay">$500,000</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mortgageBalance">Outstanding Mortgage Balance</label>
+                    <input type="number" id="mortgageBalance" placeholder="0" min="0" value="300000">
+                    <div class="input-display" id="mortgageBalanceDisplay">$300,000</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select id="state">
+                        <option value="0.001">Alabama (0.1%)</option>
+                        <option value="0.002">Arizona (0.2%)</option>
+                        <option value="0.003">California (0.3%)</option>
+                        <option value="0.001">Florida (0.1%)</option>
+                        <option value="0.015">Georgia (1.5%)</option>
+                        <option value="0.001">Illinois (0.1%)</option>
+                        <option value="0.001">Indiana (0.1%)</option>
+                        <option value="0.001">Michigan (0.1%)</option>
+                        <option value="0.004">Missouri (0.4%)</option>
+                        <option value="0.001">Nevada (0.1%)</option>
+                        <option value="0.005">New Jersey (0.5%)</option>
+                        <option value="0.006">New York (0.6%)</option>
+                        <option value="0.001" selected>North Carolina (0.1%)</option>
+                        <option value="0.001">Ohio (0.1%)</option>
+                        <option value="0.002">Pennsylvania (0.2%)</option>
+                        <option value="0.002">Tennessee (0.2%)</option>
+                        <option value="0.004">Texas (0.4%)</option>
+                        <option value="0.001">Virginia (0.1%)</option>
+                        <option value="0.001">Washington (0.1%)</option>
+                        <option value="0.001">Wisconsin (0.1%)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="repairCredits">Repair Credits to Buyer ($0 default)</label>
+                    <input type="number" id="repairCredits" placeholder="0" min="0" value="0">
+                    <div class="input-display" id="repairCreditsDisplay">$0</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="liens">Outstanding Liens ($0 default)</label>
+                    <input type="number" id="liens" placeholder="0" min="0" value="0">
+                    <div class="input-display" id="liensDisplay">$0</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Agent Commission Rate</label>
+                    <div class="slider-group">
+                        <input type="range" id="commissionRate" min="4" max="6" step="0.1" value="5">
+                        <span class="slider-value" id="commissionRateValue">5.0%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>HOA Transfer Fees</label>
+                    <div class="toggle-group">
+                        <div class="toggle-switch" id="hoaToggle" data-toggle="false"></div>
+                        <span>Add $200--500 HOA transfer fee</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Home Warranty for Buyer</label>
+                    <div class="toggle-group">
+                        <div class="toggle-switch" id="warrantyToggle" data-toggle="false"></div>
+                        <span>Add $400--600 home warranty</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="breakdown-section">
+                <h2 class="section-title">Cost Breakdown</h2>
+                <div class="breakdown-chart" id="chartContainer">
+                    <svg class="chart-svg" id="donutChart" viewBox="0 0 200 200"></svg>
+                </div>
+                <div class="summary-section" id="summarySection"></div>
+            </div>
+        </div>
+
+        <div class="net-proceeds-card">
+            <div class="net-proceeds-label">Your Estimated Net Proceeds</div>
+            <div class="net-proceeds-amount" id="netProceeds">$200,000</div>
+            <div class="net-proceeds-note">Sale price minus all closing costs and payoffs</div>
+        </div>
+
+        <div class="line-items" id="lineItems"></div>
+
+        <div class="cta-section">
+            <div class="cta-text">Questions about closing costs? Contact <strong id="ctaAgentName">{{AGENT_NAME}}</strong></div>
+            <div class="cta-phone" id="ctaPhone">{{AGENT_PHONE}}</div>
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="window.print()">Print This Report</button>
+                <button class="btn-secondary" onclick="resetForm()">Reset Numbers</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputs = {
+            salePrice: document.getElementById('salePrice'),
+            mortgageBalance: document.getElementById('mortgageBalance'),
+            state: document.getElementById('state'),
+            repairCredits: document.getElementById('repairCredits'),
+            liens: document.getElementById('liens'),
+            commissionRate: document.getElementById('commissionRate'),
+            hoaToggle: document.getElementById('hoaToggle'),
+            warrantyToggle: document.getElementById('warrantyToggle'),
+        };
+
+        const displays = {
+            salePrice: document.getElementById('salePriceDisplay'),
+            mortgageBalance: document.getElementById('mortgageBalanceDisplay'),
+            repairCredits: document.getElementById('repairCreditsDisplay'),
+            liens: document.getElementById('liensDisplay'),
+            commissionRate: document.getElementById('commissionRateValue'),
+        };
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(value);
+        }
+
+        function updateDisplays() {
+            const salePrice = parseFloat(inputs.salePrice.value) || 0;
+            displays.salePrice.textContent = formatCurrency(salePrice);
+
+            const mortgageBalance = parseFloat(inputs.mortgageBalance.value) || 0;
+            displays.mortgageBalance.textContent = formatCurrency(mortgageBalance);
+
+            const repairCredits = parseFloat(inputs.repairCredits.value) || 0;
+            displays.repairCredits.textContent = formatCurrency(repairCredits);
+
+            const liens = parseFloat(inputs.liens.value) || 0;
+            displays.liens.textContent = formatCurrency(liens);
+
+            const commissionRate = parseFloat(inputs.commissionRate.value) || 5;
+            displays.commissionRate.textContent = commissionRate.toFixed(1) + '%';
+        }
+
+        function calculateClosingCosts() {
+            const salePrice = parseFloat(inputs.salePrice.value) || 0;
+            const mortgageBalance = parseFloat(inputs.mortgageBalance.value) || 0;
+            const transferTaxRate = parseFloat(inputs.state.value) || 0.001;
+            const repairCredits = parseFloat(inputs.repairCredits.value) || 0;
+            const liens = parseFloat(inputs.liens.value) || 0;
+            const commissionRate = parseFloat(inputs.commissionRate.value) / 100 || 0.05;
+            const hoaEnabled = inputs.hoaToggle.getAttribute('data-toggle') === 'true';
+            const warrantyEnabled = inputs.warrantyToggle.getAttribute('data-toggle') === 'true';
+
+            const costs = {
+                commission: salePrice * commissionRate,
+                titleInsurance: salePrice * 0.007,
+                escrowFees: salePrice * 0.002,
+                transferTax: salePrice * transferTaxRate,
+                recordingFees: 150,
+                hoaTransfer: hoaEnabled ? 350 : 0,
+                proratedPropertyTax: (salePrice * 0.011) / 12,
+                homeWarranty: warrantyEnabled ? 500 : 0,
+                repairCredits: -repairCredits,
+            };
+
+            const totalClosingCosts = Object.values(costs).reduce((a, b) => a + b, 0);
+            const netProceeds = salePrice - mortgageBalance - totalClosingCosts - liens;
+
+            return {
+                costs,
+                totalClosingCosts,
+                netProceeds,
+                salePrice,
+                mortgageBalance,
+                liens,
+            };
+        }
+
+        function renderLineItems() {
+            const { costs } = calculateClosingCosts();
+            const repairCredits = parseFloat(inputs.repairCredits.value) || 0;
+            const liens = parseFloat(inputs.liens.value) || 0;
+            const lineItemsContainer = document.getElementById('lineItems');
+
+            const items = [
+                {
+                    name: 'Agent Commission',
+                    amount: costs.commission,
+                    explanation: 'Real estate agent commission for selling your home. Typically paid by the seller and split between listing and buyer agents.',
+                    breakdown: `Based on ${(parseFloat(inputs.commissionRate.value) || 5).toFixed(1)}% of sale price`,
+                },
+                {
+                    name: 'Title Insurance',
+                    amount: costs.titleInsurance,
+                    explanation: 'Protects the buyer against any title issues that may arise after the sale. This is typically a one-time fee.',
+                    breakdown: 'Approximately 0.7% of sale price',
+                },
+                {
+                    name: 'Escrow Fees',
+                    amount: costs.escrowFees,
+                    explanation: 'Fee charged by the escrow company to handle funds and documents during closing. They ensure all conditions are met before money changes hands.',
+                    breakdown: 'Approximately 0.2% of sale price',
+                },
+                {
+                    name: 'Transfer Tax',
+                    amount: costs.transferTax,
+                    explanation: 'State and/or local tax on the transfer of property ownership. Rates vary significantly by location.',
+                    breakdown: `${(parseFloat(inputs.state.value) * 100).toFixed(2)}% based on your state`,
+                },
+                {
+                    name: 'Recording Fees',
+                    amount: costs.recordingFees,
+                    explanation: 'Fee charged by the county to record the new deed and ownership transfer in public records.',
+                    breakdown: 'Flat fee typically $50--250',
+                },
+                ...(inputs.hoaToggle.getAttribute('data-toggle') === 'true' ? [{
+                    name: 'HOA Transfer Fee',
+                    amount: costs.hoaTransfer,
+                    explanation: 'One-time fee charged by your HOA to process the transfer of the property to new ownership.',
+                    breakdown: 'Typically $200--500 depending on HOA',
+                }] : []),
+                {
+                    name: 'Prorated Property Tax',
+                    amount: costs.proratedPropertyTax,
+                    explanation: 'Seller reimburses buyer for property taxes already paid for the portion of the year after closing.',
+                    breakdown: 'Estimated as 1 month of annual taxes at 1.1% of home value',
+                },
+                ...(inputs.warrantyToggle.getAttribute('data-toggle') === 'true' ? [{
+                    name: 'Home Warranty',
+                    amount: costs.homeWarranty,
+                    explanation: 'Optional protection plan offered by seller to buyer covering major home systems and appliances.',
+                    breakdown: 'Typically $400--600 for 1-year coverage',
+                }] : []),
+                {
+                    name: 'Mortgage Payoff',
+                    amount: parseFloat(inputs.mortgageBalance.value) || 0,
+                    explanation: 'The amount owed on your existing mortgage that must be paid off from sale proceeds.',
+                    breakdown: 'Your outstanding loan balance',
+                },
+                ...(repairCredits > 0 ? [{
+                    name: 'Repair Credits',
+                    amount: -repairCredits,
+                    explanation: 'Credits offered to buyer for repairs or improvements. Deducted from your proceeds.',
+                    breakdown: 'Negotiated amount with buyer',
+                }] : []),
+                ...(liens > 0 ? [{
+                    name: 'Outstanding Liens',
+                    amount: liens,
+                    explanation: 'Any legal claims against the property that must be satisfied from sale proceeds.',
+                    breakdown: 'Must be paid before you receive funds',
+                }] : []),
+            ];
+
+            lineItemsContainer.innerHTML = items.map((item, index) => `
+                <div class="line-item" id="item-${index}">
+                    <div class="line-item-header" onclick="toggleLineItem(${index})">
+                        <div class="line-item-left">
+                            <span class="line-item-name">${item.name}</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <span class="line-item-amount ${item.amount < 0 ? 'credit' : ''}">${formatCurrency(Math.abs(item.amount))}</span>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="line-item-details">
+                        <div class="line-item-detail-content">
+                            <p>${item.explanation}</p>
+                            <div style="margin-top: 12px;">
+                                <div class="detail-label">How it's calculated:</div>
+                                <div class="detail-value">${item.breakdown}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleLineItem(index) {
+            const item = document.getElementById(`item-${index}`);
+            item.classList.toggle('expanded');
+        }
+
+        function renderSummary() {
+            const { totalClosingCosts, salePrice, mortgageBalance, liens } = calculateClosingCosts();
+            const summarySection = document.getElementById('summarySection');
+
+            summarySection.innerHTML = `
+                <div class="summary-row">
+                    <span class="summary-label">Sale Price</span>
+                    <span class="summary-value">${formatCurrency(salePrice)}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Closing Costs</span>
+                    <span class="summary-value">${formatCurrency(totalClosingCosts)}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Mortgage Payoff</span>
+                    <span class="summary-value">${formatCurrency(mortgageBalance)}</span>
+                </div>
+                ${liens > 0 ? `
+                <div class="summary-row">
+                    <span class="summary-label">Outstanding Liens</span>
+                    <span class="summary-value">${formatCurrency(liens)}</span>
+                </div>
+                ` : ''}
+                <div class="summary-row" style="border-top: 2px solid var(--accent-blue); margin-top: 12px; padding-top: 12px;">
+                    <span class="summary-label" style="font-weight: 700;">Net Proceeds</span>
+                    <span class="summary-value total">${formatCurrency(salePrice - totalClosingCosts - mortgageBalance - liens)}</span>
+                </div>
+            `;
+        }
+
+        function renderDonutChart() {
+            const { costs } = calculateClosingCosts();
+            const costItems = [
+                { name: 'Commission', value: costs.commission, color: '#00E5FF' },
+                { name: 'Title Insurance', value: costs.titleInsurance, color: '#1565C0' },
+                { name: 'Escrow Fees', value: costs.escrowFees, color: '#FFD54F' },
+                { name: 'Transfer Tax', value: costs.transferTax, color: '#FFA726' },
+                { name: 'Other Fees', value: costs.recordingFees + costs.hoaTransfer + costs.proratedPropertyTax + costs.homeWarranty + Math.abs(costs.repairCredits), color: '#66BB6A' },
+            ];
+
+            const total = costItems.reduce((sum, item) => sum + item.value, 0);
+            let currentAngle = -90;
+
+            const svgNS = 'http://www.w3.org/2000/svg';
+            const svg = document.getElementById('donutChart');
+            svg.innerHTML = '';
+
+            costItems.forEach((item) => {
+                if (item.value <= 0) return;
+
+                const sliceAngle = (item.value / total) * 360;
+                const endAngle = currentAngle + sliceAngle;
+
+                const startRad = (currentAngle * Math.PI) / 180;
+                const endRad = (endAngle * Math.PI) / 180;
+
+                const x1 = 100 + 80 * Math.cos(startRad);
+                const y1 = 100 + 80 * Math.sin(startRad);
+                const x2 = 100 + 80 * Math.cos(endRad);
+                const y2 = 100 + 80 * Math.sin(endRad);
+
+                const largeArc = sliceAngle > 180 ? 1 : 0;
+
+                const path = document.createElementNS(svgNS, 'path');
+                const d = `M 100 100 L ${x1} ${y1} A 80 80 0 ${largeArc} 1 ${x2} ${y2} Z`;
+                path.setAttribute('d', d);
+                path.setAttribute('fill', item.color);
+                path.setAttribute('opacity', '0.8');
+                svg.appendChild(path);
+
+                currentAngle = endAngle;
+            });
+
+            const circle = document.createElementNS(svgNS, 'circle');
+            circle.setAttribute('cx', '100');
+            circle.setAttribute('cy', '100');
+            circle.setAttribute('r', '50');
+            circle.setAttribute('fill', 'var(--bg-dark)');
+            svg.appendChild(circle);
+        }
+
+        function updateCalculations() {
+            updateDisplays();
+            renderLineItems();
+            renderSummary();
+            renderDonutChart();
+            updateNetProceeds();
+        }
+
+        function updateNetProceeds() {
+            const { netProceeds } = calculateClosingCosts();
+            document.getElementById('netProceeds').textContent = formatCurrency(netProceeds);
+        }
+
+        function toggleSwitch(toggle) {
+            const currentState = toggle.getAttribute('data-toggle') === 'true';
+            toggle.setAttribute('data-toggle', !currentState);
+            toggle.classList.toggle('active');
+            updateCalculations();
+        }
+
+        function resetForm() {
+            inputs.salePrice.value = 500000;
+            inputs.mortgageBalance.value = 300000;
+            inputs.state.value = '0.001';
+            inputs.repairCredits.value = 0;
+            inputs.liens.value = 0;
+            inputs.commissionRate.value = 5;
+            inputs.hoaToggle.setAttribute('data-toggle', 'false');
+            inputs.hoaToggle.classList.remove('active');
+            inputs.warrantyToggle.setAttribute('data-toggle', 'false');
+            inputs.warrantyToggle.classList.remove('active');
+            updateCalculations();
+        }
+
+        inputs.salePrice.addEventListener('input', updateCalculations);
+        inputs.mortgageBalance.addEventListener('input', updateCalculations);
+        inputs.state.addEventListener('change', updateCalculations);
+        inputs.repairCredits.addEventListener('input', updateCalculations);
+        inputs.liens.addEventListener('input', updateCalculations);
+        inputs.commissionRate.addEventListener('input', updateCalculations);
+        inputs.hoaToggle.addEventListener('click', () => toggleSwitch(inputs.hoaToggle));
+        inputs.warrantyToggle.addEventListener('click', () => toggleSwitch(inputs.warrantyToggle));
+
+        updateCalculations();
+    </script>
+</body>
+</html>

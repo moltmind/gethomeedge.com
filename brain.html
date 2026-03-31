@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cole's Second Brain</title>
+<style>
+  :root {
+    --bg: #0B1426;
+    --bg2: #0f1d35;
+    --bg3: #152240;
+    --cyan: #00D4FF;
+    --gold: #F5A623;
+    --white: #FFFFFF;
+    --muted: #8899BB;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(0,212,255,0.15);
+    --homeedge: #00D4FF;
+    --divine: #A855F7;
+    --family: #22C55E;
+    --bigidea: #F5A623;
+    --other: #64748B;
+    --glow-cyan: 0 0 20px rgba(0,212,255,0.4), 0 0 40px rgba(0,212,255,0.15);
+    --glow-gold: 0 0 20px rgba(245,166,35,0.4), 0 0 40px rgba(245,166,35,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    background: linear-gradient(180deg, #0d1930 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+    letter-spacing: 0.05em;
+  }
+
+  .logo span {
+    color: var(--gold);
+    text-shadow: var(--glow-gold);
+  }
+
+  /* ---- NAV TABS ---- */
+  nav {
+    display: flex;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+
+  .tab-btn.active {
+    color: var(--cyan);
+    background: rgba(0,212,255,0.1);
+    text-shadow: 0 0 12px rgba(0,212,255,0.6);
+  }
+
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: var(--cyan);
+    border-radius: 2px 2px 0 0;
+    box-shadow: var(--glow-cyan);
+  }
+
+  /* ---- MAIN ---- */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 32px 80px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ---- SECTION HEADING ---- */
+  .section-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--white) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: rgba(0,212,255,0.3);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  /* ---- BUTTONS ---- */
+  .btn {
+    background: linear-gradient(135deg, var(--cyan) 0%, #0099BB 100%);
+    color: #0B1426;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--glow-cyan);
+  }
+
+  .btn:active { transform: translateY(0); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, #C07D0A 100%);
+    color: #0B1426;
+  }
+
+  .btn-gold:hover { box-shadow: var(--glow-gold); }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .btn-ghost:hover {
+    color: var(--white);
+    background: rgba(255,255,255,0.1);
+    box-shadow: none;
+  }
+
+  .btn-sm {
+    padding: 5px 12px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  /* ---- INPUTS ---- */
+  textarea, input[type="text"], select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--white);
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  textarea:focus, input[type="text"]:focus, select:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+  }
+
+  textarea::placeholder, input::placeholder { color: var(--muted); }
+
+  select option { background: #0f1d35; }
+
+  /* ========== BRAIN DUMP ========== */
+  #brain-dump .dump-area {
+    width: 100%;
+    min-height: 140px;
+    padding: 16px;
+    resize: vertical;
+    font-size: 15px;
+    line-height: 1.6;
+    display: block;
+  }
+
+  .category-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .cat-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    text-transform: uppercase;
+  }
+
+  .cat-btn[data-cat="HomeEdge"] { border-color: var(--homeedge); color: var(--homeedge); }
+  .cat-btn[data-cat="DiViNe"] { border-color: var(--divine); color: var(--divine); }
+  .cat-btn[data-cat="Family Tech"] { border-color: var(--family); color: var(--family); }
+  .cat-btn[data-cat="Big Idea"] { border-color: var(--bigidea); color: var(--bigidea); }
+  .cat-btn[data-cat="Other"] { border-color: var(--other); color: var(--other); }
+
+  .cat-btn.selected[data-cat="HomeEdge"] { background: rgba(0,212,255,0.15); box-shadow: 0 0 12px rgba(0,212,255,0.3); }
+  .cat-btn.selected[data-cat="DiViNe"] { background: rgba(168,85,247,0.15); box-shadow: 0 0 12px rgba(168,85,247,0.3); }
+  .cat-btn.selected[data-cat="Family Tech"] { background: rgba(34,197,94,0.15); box-shadow: 0 0 12px rgba(34,197,94,0.3); }
+  .cat-btn.selected[data-cat="Big Idea"] { background: rgba(245,166,35,0.15); box-shadow: 0 0 12px rgba(245,166,35,0.3); }
+  .cat-btn.selected[data-cat="Other"] { background: rgba(100,116,139,0.15); }
+
+  .dump-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .dump-actions .export-link {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+  }
+
+  .dump-actions .export-link:hover { color: var(--white); }
+
+  .entries-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 32px 0 16px;
+  }
+
+  .entries-header h3 {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .entry-count {
+    background: rgba(0,212,255,0.1);
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  .entries-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .entry-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 16px 20px;
+    border-left: 3px solid;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: fadeIn 0.3s ease;
+    transition: transform 0.15s ease;
+  }
+
+  .entry-card:hover { transform: translateX(3px); }
+
+  .entry-card[data-cat="HomeEdge"] { border-left-color: var(--homeedge); }
+  .entry-card[data-cat="DiViNe"] { border-left-color: var(--divine); }
+  .entry-card[data-cat="Family Tech"] { border-left-color: var(--family); }
+  .entry-card[data-cat="Big Idea"] { border-left-color: var(--bigidea); }
+  .entry-card[data-cat="Other"] { border-left-color: var(--other); }
+
+  .entry-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .entry-cat-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .entry-card[data-cat="HomeEdge"] .entry-cat-badge { background: rgba(0,212,255,0.15); color: var(--homeedge); }
+  .entry-card[data-cat="DiViNe"] .entry-cat-badge { background: rgba(168,85,247,0.15); color: var(--divine); }
+  .entry-card[data-cat="Family Tech"] .entry-cat-badge { background: rgba(34,197,94,0.15); color: var(--family); }
+  .entry-card[data-cat="Big Idea"] .entry-cat-badge { background: rgba(245,166,35,0.15); color: var(--bigidea); }
+  .entry-card[data-cat="Other"] .entry-cat-badge { background: rgba(100,116,139,0.15); color: var(--other); }
+
+  .entry-time { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+  .entry-text { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.85); }
+
+  .entry-footer { display: flex; gap: 8px; align-items: center; }
+
+  .move-btn {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(245,166,35,0.1);
+    border: 1px solid rgba(245,166,35,0.25);
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .move-btn:hover { background: rgba(245,166,35,0.2); }
+
+  .del-btn {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: rgba(239,68,68,0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+
+  .del-btn:hover { background: rgba(239,68,68,0.15); color: #EF4444; }
+
+  /* ========== GOALS ========== */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .goal-area {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .goal-area:hover { border-color: rgba(0,212,255,0.3); }
+
+  .goal-area-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+
+  .goal-area-title {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .area-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .progress-wrap {
+    margin-bottom: 16px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .progress-bar-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+
+  .goals-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .goal-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .goal-item:last-child { border-bottom: none; }
+
+  .goal-check {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 4px;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    appearance: none;
+    margin-top: 1px;
+  }
+
+  .goal-check:checked {
+    border-color: var(--cyan);
+    background: rgba(0,212,255,0.2);
+  }
+
+  .goal-check:checked::after {
+    content: '✓';
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .goal-label {
+    font-size: 13px;
+    line-height: 1.4;
+    flex: 1;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .goal-item.done .goal-label {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  .add-goal-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .add-goal-row input {
+    flex: 1;
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  /* ========== WINS BOARD ========== */
+  .wins-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .wins-counter {
+    background: linear-gradient(135deg, rgba(245,166,35,0.15) 0%, rgba(245,166,35,0.05) 100%);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    text-align: center;
+    min-width: 120px;
+  }
+
+  .wins-counter .big-num {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: var(--glow-gold);
+    line-height: 1;
+  }
+
+  .wins-counter .small-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .wins-add-form {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .wins-add-form input, .wins-add-form select {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+
+  .wins-add-form .win-title-input { flex: 2; min-width: 200px; }
+  .wins-add-form select { min-width: 130px; }
+
+  .star-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .star {
+    font-size: 20px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.15);
+    transition: color 0.15s, transform 0.15s;
+    line-height: 1;
+  }
+
+  .star.active { color: var(--gold); }
+  .star:hover { transform: scale(1.2); }
+
+  .wins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .win-card {
+    background: linear-gradient(135deg, rgba(245,166,35,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.4s ease;
+    transition: all 0.25s ease;
+  }
+
+  .win-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0.6;
+  }
+
+  .win-card:hover {
+    border-color: rgba(245,166,35,0.45);
+    box-shadow: 0 4px 24px rgba(245,166,35,0.12), 0 0 40px rgba(245,166,35,0.04);
+    transform: translateY(-2px);
+  }
+
+  .win-card-title {
+    font-family: Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .win-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .win-card-date { font-size: 11px; color: var(--muted); }
+
+  .win-stars { color: var(--gold); font-size: 13px; }
+
+  .win-card-cat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+  }
+
+  .win-del-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.15);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    transition: color 0.2s;
+    padding: 2px 4px;
+  }
+
+  .win-del-btn:hover { color: rgba(239,68,68,0.7); }
+
+  /* ========== THE MAP ========== */
+  #the-map .map-container {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #mapCanvas {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .map-tooltip {
+    position: absolute;
+    background: rgba(11,20,38,0.95);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    max-width: 280px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  .map-tooltip.visible { opacity: 1; }
+
+  .map-tooltip h4 {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+
+  .map-tooltip p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ========== TODAY'S FOCUS ========== */
+  .focus-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(245,166,35,0.03) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .focus-date {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .focus-headline {
+    font-family: Georgia, serif;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--white) 0%, var(--cyan) 60%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .focus-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .focus-slot {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .focus-slot:hover { border-color: rgba(0,212,255,0.3); }
+
+  .focus-slot:first-child {
+    border-color: rgba(0,212,255,0.3);
+    background: rgba(0,212,255,0.04);
+  }
+
+  .slot-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .focus-slot:first-child .slot-label { color: var(--cyan); }
+  .focus-slot:nth-child(2) .slot-label { color: var(--gold); }
+  .focus-slot:last-child .slot-label { color: var(--muted); }
+
+  .slot-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .focus-slot:first-child .slot-num { background: rgba(0,212,255,0.2); color: var(--cyan); }
+  .focus-slot:nth-child(2) .slot-num { background: rgba(245,166,35,0.2); color: var(--gold); }
+  .focus-slot:last-child .slot-num { background: rgba(136,153,187,0.15); color: var(--muted); }
+
+  .focus-slot textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+  }
+
+  .focus-slot:first-child textarea {
+    font-size: 16px;
+    min-height: 110px;
+    font-weight: 500;
+  }
+
+  .focus-save-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 12px rgba(0,212,255,0.2); }
+    50% { box-shadow: 0 0 24px rgba(0,212,255,0.5); }
+  }
+
+  /* ========== TOAST ========== */
+  #toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: linear-gradient(135deg, #0f2040, #152240);
+    border: 1px solid var(--cyan);
+    color: var(--white);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 999;
+    box-shadow: var(--glow-cyan);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ========== MODAL ========== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: #111c33;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    width: 90%;
+    max-width: 460px;
+    transform: scale(0.95);
+    transition: transform 0.2s;
+  }
+
+  .modal-overlay.open .modal { transform: scale(1); }
+
+  .modal h3 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--cyan);
+  }
+
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 10px 14px; font-size: 13px; }
+  .modal-field textarea { min-height: 80px; resize: vertical; }
+
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    header { padding: 0 16px; }
+    .header-inner { height: auto; flex-wrap: wrap; gap: 0; padding: 12px 0; }
+    main { padding: 20px 16px 60px; }
+    nav { flex-wrap: wrap; gap: 2px; }
+    .tab-btn { font-size: 10px; padding: 6px 10px; }
+    .goals-grid { grid-template-columns: 1fr; }
+    .wins-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">COLE'S <span>SECOND BRAIN</span></div>
+    <nav id="main-nav">
+      <button class="tab-btn active" data-tab="brain-dump">Brain Dump</button>
+      <button class="tab-btn" data-tab="goals">Goals &amp; Milestones</button>
+      <button class="tab-btn" data-tab="wins">Wins Board</button>
+      <button class="tab-btn" data-tab="the-map">The Map</button>
+      <button class="tab-btn" data-tab="focus">Today's Focus</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== BRAIN DUMP ===== -->
+  <section id="brain-dump" class="section active">
+    <h1 class="section-title">Brain Dump</h1>
+    <p class="section-sub">No structure needed. Just let it out.</p>
+
+    <div class="card">
+      <textarea class="dump-area" id="dump-text" placeholder="What's on your mind, Cole?"></textarea>
+      <div class="category-row" id="cat-row">
+        <button class="cat-btn selected" data-cat="HomeEdge">HomeEdge</button>
+        <button class="cat-btn" data-cat="DiViNe">DiViNe</button>
+        <button class="cat-btn" data-cat="Family Tech">Family Tech</button>
+        <button class="cat-btn" data-cat="Big Idea">Big Idea</button>
+        <button class="cat-btn" data-cat="Other">Other</button>
+      </div>
+      <div class="dump-actions">
+        <button class="btn" onclick="captureEntry()">Capture</button>
+        <button class="btn-ghost btn" style="font-size:11px; padding:8px 14px;" onclick="clearDump()">Clear</button>
+        <button class="export-link" onclick="exportEntries()">Export as JSON</button>
+      </div>
+    </div>
+
+    <div class="entries-header">
+      <h3>Captured Thoughts</h3>
+      <span class="entry-count" id="entry-count">0 entries</span>
+    </div>
+    <div class="entries-list" id="entries-list"></div>
+  </section>
+
+  <!-- ===== GOALS ===== -->
+  <section id="goals" class="section">
+    <h1 class="section-title">Goals &amp; Milestones</h1>
+    <p class="section-sub">Track what you're building — milestone by milestone.</p>
+    <div class="goals-grid" id="goals-grid"></div>
+  </section>
+
+  <!-- ===== WINS BOARD ===== -->
+  <section id="wins" class="section">
+    <h1 class="section-title">Wins Board</h1>
+    <p class="section-sub">Every win counts. No matter how small.</p>
+
+    <div class="wins-header">
+      <div class="wins-counter">
+        <div class="big-num" id="wins-count">0</div>
+        <div class="small-label">Total Wins</div>
+      </div>
+      <div class="wins-add-form">
+        <input type="text" class="win-title-input" id="win-title-input" placeholder="What did you win today?">
+        <select id="win-cat">
+          <option value="HomeEdge">HomeEdge</option>
+          <option value="DiViNe">DiViNe</option>
+          <option value="Family Tech">Family Tech</option>
+          <option value="Personal">Personal</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="star-row" id="win-stars">
+          <span class="star active" data-v="1">★</span>
+          <span class="star active" data-v="2">★</span>
+          <span class="star active" data-v="3">★</span>
+          <span class="star" data-v="4">★</span>
+          <span class="star" data-v="5">★</span>
+        </div>
+        <button class="btn btn-gold" onclick="addWin()">Log Win</button>
+      </div>
+    </div>
+
+    <div class="wins-grid" id="wins-grid"></div>
+  </section>
+
+  <!-- ===== THE MAP ===== -->
+  <section id="the-map" class="section">
+    <h1 class="section-title">The Map</h1>
+    <p class="section-sub">Your empire — visualized. Click any node to explore.</p>
+    <div class="map-container" id="map-container">
+      <canvas id="mapCanvas"></canvas>
+      <div class="map-tooltip" id="map-tooltip"></div>
+      <div class="map-legend" id="map-legend"></div>
+    </div>
+  </section>
+
+  <!-- ===== TODAY'S FOCUS ===== -->
+  <section id="focus" class="section">
+    <div class="focus-header">
+      <div class="focus-date" id="focus-date"></div>
+      <div class="focus-headline">What are we building today?</div>
+    </div>
+
+    <div class="focus-slots">
+      <div class="focus-slot">
+        <div class="slot-label">
+          <span class="slot-num">1</span>
+          The ONE Thing
+        </div>
+        <textarea id="focus-one" placeholder="The single most important thing today..."></textarea>
+      </div>
+      <div class="focus-slot">
+        <div class="slot-label">
+          <span class="slot-num">2</span>
+          Also Important
+        </div>
+        <textarea id="focus-two" placeholder="Worth doing if #1 gets done..."></textarea>
+      </div>
+      <div class="focus-slot">
+        <div class="slot-label">
+          <span class="slot-num">3</span>
+          Don't Forget
+        </div>
+        <textarea id="focus-three" placeholder="Can't let this slip through..."></textarea>
+      </div>
+    </div>
+
+    <div class="focus-save-row">
+      <button class="btn" onclick="saveFocus()">Save Focus</button>
+      <button class="btn-ghost btn" onclick="clearFocus()">Reset Day</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Move to Goals Modal -->
+<div class="modal-overlay" id="move-modal">
+  <div class="modal">
+    <h3>Move to Goals</h3>
+    <div class="modal-field">
+      <label>Goal Area</label>
+      <select id="move-area">
+        <option value="HomeEdge">HomeEdge</option>
+        <option value="DiViNe">DiViNe</option>
+        <option value="Family">Family</option>
+        <option value="Personal">Personal</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Goal Text</label>
+      <textarea id="move-text"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeMoveModal()">Cancel</button>
+      <button class="btn btn-gold" onclick="confirmMove()">Add to Goals</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA LAYER =====================
+const STORE = {
+  get(k, def) {
+    try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; }
+  },
+  set(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+};
+
+// ===================== TABS =====================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'the-map') initMap();
+  });
+});
+
+// ===================== TOAST =====================
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ===================== BRAIN DUMP =====================
+let selectedCat = 'HomeEdge';
+
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedCat = btn.dataset.cat;
+  });
+});
+
+function captureEntry() {
+  const text = document.getElementById('dump-text').value.trim();
+  if (!text) { toast('Write something first!'); return; }
+  const entries = STORE.get('entries', []);
+  entries.unshift({ id: Date.now(), text, cat: selectedCat, ts: new Date().toISOString() });
+  STORE.set('entries', entries);
+  document.getElementById('dump-text').value = '';
+  renderEntries();
+  toast('Thought captured.');
+}
+
+function clearDump() {
+  document.getElementById('dump-text').value = '';
+}
+
+function renderEntries() {
+  const entries = STORE.get('entries', []);
+  const list = document.getElementById('entries-list');
+  document.getElementById('entry-count').textContent = entries.length + ' ' + (entries.length === 1 ? 'entry' : 'entries');
+  if (!entries.length) {
+    list.innerHTML = '<p style="color:var(--muted);font-size:14px;padding:16px 0;">No thoughts captured yet. Start dumping.</p>';
+    return;
+  }
+  list.innerHTML = entries.map(e => `
+    <div class="entry-card" data-cat="${e.cat}" data-id="${e.id}">
+      <div class="entry-meta">
+        <span class="entry-cat-badge">${e.cat}</span>
+        <span class="entry-time">${fmtDate(e.ts)}</span>
+      </div>
+      <div class="entry-text">${escHtml(e.text)}</div>
+      <div class="entry-footer">
+        <button class="move-btn" onclick="openMoveModal(${e.id})">→ Move to Goals</button>
+        <button class="del-btn" onclick="deleteEntry(${e.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteEntry(id) {
+  const entries = STORE.get('entries', []).filter(e => e.id !== id);
+  STORE.set('entries', entries);
+  renderEntries();
+  toast('Entry deleted.');
+}
+
+function exportEntries() {
+  const entries = STORE.get('entries', []);
+  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `cole-brain-dump-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported!');
+}
+
+let moveEntryId = null;
+
+function openMoveModal(id) {
+  moveEntryId = id;
+  const entry = STORE.get('entries', []).find(e => e.id === id);
+  if (!entry) return;
+  document.getElementById('move-text').value = entry.text;
+  document.getElementById('move-modal').classList.add('open');
+}
+
+function closeMoveModal() {
+  document.getElementById('move-modal').classList.remove('open');
+  moveEntryId = null;
+}
+
+function confirmMove() {
+  const area = document.getElementById('move-area').value;
+  const text = document.getElementById('move-text').value.trim();
+  if (!text) return;
+  addGoalToArea(area, text);
+  closeMoveModal();
+  toast('Added to ' + area + ' goals!');
+}
+
+// ===================== GOALS =====================
+const DEFAULT_GOALS = {
+  HomeEdge: [
+    { text: 'First sale', done: false },
+    { text: '5 paying clients', done: false },
+    { text: '$10K MRR', done: false },
+    { text: '50 clients', done: false },
+    { text: 'Hire first employee', done: false }
+  ],
+  DiViNe: [
+    { text: 'Fully operational', done: false },
+    { text: 'First profitable month', done: false },
+    { text: '100 subscribers', done: false }
+  ],
+  Family: [
+    { text: "Cayden's Creator HQ live", done: false },
+    { text: "Amelia's Garden live", done: false },
+    { text: "Roger & Judy's systems running", done: false }
+  ],
+  Personal: [
+    { text: 'Build the system', done: false },
+    { text: 'Document the journey', done: false },
+    { text: 'Financial freedom', done: false }
+  ]
+};
+
+const AREA_COLORS = {
+  HomeEdge: { color: '#00D4FF', shadow: 'rgba(0,212,255,0.5)' },
+  DiViNe: { color: '#A855F7', shadow: 'rgba(168,85,247,0.5)' },
+  Family: { color: '#22C55E', shadow: 'rgba(34,197,94,0.5)' },
+  Personal: { color: '#F5A623', shadow: 'rgba(245,166,35,0.5)' }
+};
+
+function loadGoals() {
+  let goals = STORE.get('goals', null);
+  if (!goals) {
+    goals = DEFAULT_GOALS;
+    STORE.set('goals', goals);
+  }
+  return goals;
+}
+
+function saveGoals(goals) { STORE.set('goals', goals); }
+
+function addGoalToArea(area, text) {
+  const goals = loadGoals();
+  if (!goals[area]) goals[area] = [];
+  goals[area].push({ text, done: false });
+  saveGoals(goals);
+  renderGoals();
+}
+
+function renderGoals() {
+  const goals = loadGoals();
+  const grid = document.getElementById('goals-grid');
+  grid.innerHTML = '';
+
+  Object.entries(goals).forEach(([area, items]) => {
+    const ac = AREA_COLORS[area] || { color: '#8899BB', shadow: 'rgba(136,153,187,0.4)' };
+    const total = items.length;
+    const done = items.filter(g => g.done).length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+
+    const div = document.createElement('div');
+    div.className = 'goal-area';
+    div.innerHTML = `
+      <div class="goal-area-header">
+        <div class="goal-area-title">
+          <span class="area-dot" style="background:${ac.color}; box-shadow:0 0 8px ${ac.shadow};"></span>
+          ${area}
+        </div>
+        <span style="font-size:12px;color:var(--muted);">${done}/${total}</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Progress</span>
+          <span>${pct}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:${pct}%; background:${ac.color}; box-shadow:0 0 6px ${ac.shadow};"></div>
+        </div>
+      </div>
+      <div class="goals-list" id="goals-${area}">
+        ${items.map((g, i) => `
+          <div class="goal-item ${g.done ? 'done' : ''}" data-area="${area}" data-i="${i}">
+            <input type="checkbox" class="goal-check" ${g.done ? 'checked' : ''} onchange="toggleGoal('${area}',${i},this.checked)">
+            <label class="goal-label" onclick="toggleGoal('${area}',${i},!${g.done})">${escHtml(g.text)}</label>
+            <button class="del-btn btn-sm" style="padding:2px 8px;font-size:10px;" onclick="deleteGoal('${area}',${i})">✕</button>
+          </div>
+        `).join('')}
+      </div>
+      <div class="add-goal-row">
+        <input type="text" placeholder="Add milestone..." id="new-goal-${area}" onkeydown="if(event.key==='Enter')addGoal('${area}')">
+        <button class="btn btn-sm" style="background:${ac.color};color:#0B1426;" onclick="addGoal('${area}')">Add</button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function toggleGoal(area, i, val) {
+  const goals = loadGoals();
+  goals[area][i].done = val;
+  saveGoals(goals);
+  renderGoals();
+}
+
+function deleteGoal(area, i) {
+  const goals = loadGoals();
+  goals[area].splice(i, 1);
+  saveGoals(goals);
+  renderGoals();
+  toast('Milestone removed.');
+}
+
+function addGoal(area) {
+  const input = document.getElementById('new-goal-' + area);
+  const text = input.value.trim();
+  if (!text) return;
+  addGoalToArea(area, text);
+  toast('Milestone added!');
+}
+
+// ===================== WINS =====================
+let winStars = 3;
+
+document.querySelectorAll('#win-stars .star').forEach(s => {
+  s.addEventListener('click', () => {
+    winStars = parseInt(s.dataset.v);
+    document.querySelectorAll('#win-stars .star').forEach(x => {
+      x.classList.toggle('active', parseInt(x.dataset.v) <= winStars);
+    });
+  });
+});
+
+const DEFAULT_WINS = [
+  { id: 1, title: 'HomeEdge domain purchased', cat: 'HomeEdge', stars: 3, ts: '2026-01-15' },
+  { id: 2, title: 'Stripe live', cat: 'HomeEdge', stars: 4, ts: '2026-01-20' },
+  { id: 3, title: '5-email welcome sequence built', cat: 'HomeEdge', stars: 3, ts: '2026-02-01' },
+  { id: 4, title: 'Facebook profile updated for HPS brand', cat: 'HomeEdge', stars: 2, ts: '2026-02-10' },
+  { id: 5, title: 'Jim Geracie — first $12K client result', cat: 'HomeEdge', stars: 5, ts: '2026-03-01' }
+];
+
+function loadWins() {
+  let wins = STORE.get('wins', null);
+  if (!wins) { wins = DEFAULT_WINS; STORE.set('wins', wins); }
+  return wins;
+}
+
+function addWin() {
+  const title = document.getElementById('win-title-input').value.trim();
+  if (!title) { toast('Name your win!'); return; }
+  const cat = document.getElementById('win-cat').value;
+  const wins = loadWins();
+  wins.unshift({ id: Date.now(), title, cat, stars: winStars, ts: new Date().toISOString().slice(0,10) });
+  STORE.set('wins', wins);
+  document.getElementById('win-title-input').value = '';
+  renderWins();
+  toast('Win logged! You earned it.');
+}
+
+function deleteWin(id) {
+  STORE.set('wins', loadWins().filter(w => w.id !== id));
+  renderWins();
+}
+
+function renderWins() {
+  const wins = loadWins();
+  document.getElementById('wins-count').textContent = wins.length;
+  const grid = document.getElementById('wins-grid');
+  if (!wins.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:14px;">No wins yet. Log your first one.</p>';
+    return;
+  }
+  grid.innerHTML = wins.map(w => `
+    <div class="win-card">
+      <button class="win-del-btn" onclick="deleteWin(${w.id})">✕</button>
+      <div class="win-card-title">${escHtml(w.title)}</div>
+      <div class="win-card-meta">
+        <span class="win-card-cat">${w.cat}</span>
+        <span class="win-stars">${'★'.repeat(w.stars)}${'☆'.repeat(5-w.stars)}</span>
+        <span class="win-card-date">${w.ts}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===================== THE MAP =====================
+const MAP_NODES = [
+  {
+    id: 'homeEdge', label: 'HomeEdge', color: '#00D4FF', glow: 'rgba(0,212,255,0.6)',
+    desc: 'RE agent SaaS — automated listing intelligence, market reports, and lead conversion tools.',
+    links: ['dvnToken', 'aiBuilder'],
+    rx: 0.5, ry: 0.28
+  },
+  {
+    id: 'divine', label: 'DiViNe', color: '#A855F7', glow: 'rgba(168,85,247,0.6)',
+    desc: 'AI trading bot for Solana memecoins. Runs 24/7 with score-based entry logic and trailing stops.',
+    links: ['dvnToken', 'aiBuilder'],
+    rx: 0.82, ry: 0.42
+  },
+  {
+    id: 'dvnToken', label: 'DVN Token', color: '#F5A623', glow: 'rgba(245,166,35,0.6)',
+    desc: 'Utility token powering the DiViNe ecosystem. Subscription tiers: Scout, Operator, Strategist, Architect.',
+    links: ['divine', 'homeEdge'],
+    rx: 0.65, ry: 0.68
+  },
+  {
+    id: 'aiBuilder', label: 'AI Builder', color: '#22C55E', glow: 'rgba(34,197,94,0.6)',
+    desc: 'Cole at night. Building AI products, automations, and digital systems that run while he sleeps.',
+    links: ['homeEdge', 'divine', 'familyTech'],
+    rx: 0.35, ry: 0.58
+  },
+  {
+    id: 'steelBuildings', label: 'Steel Buildings', color: '#94A3B8', glow: 'rgba(148,163,184,0.4)',
+    desc: 'The day job. Steel building erector by trade — the foundation that funds everything else.',
+    links: ['aiBuilder'],
+    rx: 0.15, ry: 0.40
+  },
+  {
+    id: 'familyTech', label: 'Family Tech', color: '#FB7185', glow: 'rgba(251,113,133,0.6)',
+    desc: "Cayden's Creator HQ, Amelia's Garden, Roger & Judy's portal — tech that serves the whole family.",
+    links: ['aiBuilder', 'homeEdge'],
+    rx: 0.50, ry: 0.82
+  }
+];
+
+let mapInited = false;
+let hoveredNode = null;
+
+function initMap() {
+  if (mapInited) return;
+  mapInited = true;
+  const canvas = document.getElementById('mapCanvas');
+  const container = document.getElementById('map-container');
+  const tooltip = document.getElementById('map-tooltip');
+
+  function resize() {
+    const w = container.clientWidth;
+    const h = Math.max(420, Math.min(580, window.innerHeight * 0.55));
+    canvas.width = w * window.devicePixelRatio;
+    canvas.height = h * window.devicePixelRatio;
+    canvas.style.height = h + 'px';
+    drawMap(canvas, w, h);
+  }
+
+  function getNodePos(node, w, h) {
+    return { x: node.rx * w, y: node.ry * h };
+  }
+
+  function drawMap(canvas, w, h) {
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    // background grid
+    ctx.strokeStyle = 'rgba(0,212,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < w; x += 48) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+    for (let y = 0; y < h; y += 48) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+
+    // draw edges
+    MAP_NODES.forEach(node => {
+      const from = getNodePos(node, w, h);
+      node.links.forEach(lid => {
+        const target = MAP_NODES.find(n => n.id === lid);
+        if (!target) return;
+        const to = getNodePos(target, w, h);
+        const isHovered = hoveredNode && (hoveredNode.id === node.id || hoveredNode.id === lid);
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        const cpx = (from.x + to.x) / 2 + (to.y - from.y) * 0.2;
+        const cpy = (from.y + to.y) / 2 - (to.x - from.x) * 0.2;
+        ctx.quadraticCurveTo(cpx, cpy, to.x, to.y);
+        if (isHovered) {
+          ctx.strokeStyle = 'rgba(0,212,255,0.5)';
+          ctx.lineWidth = 2;
+        } else {
+          ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+          ctx.lineWidth = 1.5;
+        }
+        ctx.stroke();
+      });
+    });
+
+    // draw nodes
+    MAP_NODES.forEach(node => {
+      const pos = getNodePos(node, w, h);
+      const r = 36;
+      const isHov = hoveredNode && hoveredNode.id === node.id;
+
+      // glow
+      const grd = ctx.createRadialGradient(pos.x, pos.y, r * 0.5, pos.x, pos.y, r * (isHov ? 2.2 : 1.6));
+      grd.addColorStop(0, node.glow.replace('0.6', isHov ? '0.35' : '0.18'));
+      grd.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, r * (isHov ? 2.2 : 1.8), 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+      // circle
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
+      const fill = ctx.createRadialGradient(pos.x - r*0.3, pos.y - r*0.3, 0, pos.x, pos.y, r);
+      fill.addColorStop(0, node.color + '33');
+      fill.addColorStop(1, node.color + '11');
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = node.color;
+      ctx.lineWidth = isHov ? 2.5 : 1.5;
+      ctx.stroke();
+
+      // label
+      ctx.fillStyle = isHov ? '#FFFFFF' : 'rgba(255,255,255,0.85)';
+      ctx.font = `${isHov ? 700 : 600} ${isHov ? 13 : 12}px -apple-system, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(node.label, pos.x, pos.y);
+    });
+  }
+
+  // Legend
+  const legend = document.getElementById('map-legend');
+  legend.innerHTML = MAP_NODES.map(n => `
+    <div class="legend-item">
+      <span class="legend-dot" style="background:${n.color};box-shadow:0 0 6px ${n.glow};"></span>
+      ${n.label}
+    </div>
+  `).join('');
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const w = rect.width;
+    const h = rect.height;
+    let found = null;
+    MAP_NODES.forEach(node => {
+      const pos = { x: node.rx * w, y: node.ry * h };
+      const dist = Math.hypot(mx - pos.x, my - pos.y);
+      if (dist < 40) found = node;
+    });
+    hoveredNode = found;
+    canvas.style.cursor = found ? 'pointer' : 'default';
+    if (found) {
+      tooltip.innerHTML = `<h4>${found.label}</h4><p>${found.desc}</p>`;
+      const tx = Math.min(mx + 12, w - 300);
+      const ty = Math.max(my - 60, 8);
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top = ty + 'px';
+      tooltip.classList.add('visible');
+    } else {
+      tooltip.classList.remove('visible');
+    }
+    drawMap(canvas, w, h);
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    hoveredNode = null;
+    tooltip.classList.remove('visible');
+    const w = container.clientWidth;
+    const h = parseFloat(canvas.style.height);
+    drawMap(canvas, w, h);
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
+}
+
+// ===================== TODAY'S FOCUS =====================
+function todayKey() { return 'focus-' + new Date().toISOString().slice(0,10); }
+
+function loadFocus() {
+  const k = todayKey();
+  return STORE.get(k, { one: '', two: '', three: '' });
+}
+
+function saveFocus() {
+  const k = todayKey();
+  STORE.set(k, {
+    one: document.getElementById('focus-one').value,
+    two: document.getElementById('focus-two').value,
+    three: document.getElementById('focus-three').value
+  });
+  toast('Focus saved. Go build.');
+}
+
+function clearFocus() {
+  document.getElementById('focus-one').value = '';
+  document.getElementById('focus-two').value = '';
+  document.getElementById('focus-three').value = '';
+  STORE.set(todayKey(), { one: '', two: '', three: '' });
+  toast('Day reset.');
+}
+
+function initFocus() {
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const now = new Date();
+  document.getElementById('focus-date').textContent =
+    days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+
+  const f = loadFocus();
+  document.getElementById('focus-one').value = f.one || '';
+  document.getElementById('focus-two').value = f.two || '';
+  document.getElementById('focus-three').value = f.three || '';
+}
+
+// ===================== UTILS =====================
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/\n/g,'<br>');
+}
+
+function fmtDate(iso) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  } catch { return iso; }
+}
+
+// Close modal on overlay click
+document.getElementById('move-modal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeMoveModal();
+});
+
+// Keyboard shortcut: Ctrl+Enter to capture
+document.getElementById('dump-text').addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'Enter') captureEntry();
+});
+
+// ===================== INIT =====================
+renderEntries();
+renderGoals();
+renderWins();
+initFocus();
+</script>
+</body>
+</html>

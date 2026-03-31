@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Listing Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy-dark: #0A1929;
+            --navy-medium: #1A3A52;
+            --cyan-accent: #00E5FF;
+            --blue-primary: #1565C0;
+            --gold-accent: #FFD54F;
+            --text-light: #FFFFFF;
+            --text-muted: #B0BEC5;
+            --success: #4CAF50;
+            --spacing-unit: 1rem;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--navy-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, #0D2A47 100%);
+            min-height: 100vh;
+            padding-bottom: 3rem;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(to bottom, var(--navy-medium), var(--navy-dark));
+            border-bottom: 2px solid var(--cyan-accent);
+            padding: 2rem var(--spacing-unit);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .agent-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--blue-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--cyan-accent);
+            border: 2px solid var(--cyan-accent);
+            flex-shrink: 0;
+        }
+
+        .agent-text h1 {
+            font-family: Georgia, serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--cyan-accent);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .agent-text p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-unit);
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: var(--navy-medium);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--cyan-accent) 0deg,
+                var(--cyan-accent) calc(var(--percentage) * 3.6deg),
+                var(--navy-dark) calc(var(--percentage) * 3.6deg)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 0 4px var(--navy-medium), 0 0 30px rgba(0, 229, 255, 0.3);
+            animation: scoreUpdate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scoreUpdate {
+            from {
+                transform: scale(0.95);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .score-inner {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: var(--navy-medium);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .progress-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .progress-info h2 {
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--gold-accent);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue-primary), var(--cyan-accent));
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .progress-text strong {
+            color: var(--cyan-accent);
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--blue-primary), var(--cyan-accent));
+            color: var(--navy-dark);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: none;
+            animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 30px rgba(0, 229, 255, 0.3);
+        }
+
+        .cta-banner.visible {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Categories */
+        .categories {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .category {
+            background: var(--navy-medium);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, rgba(21, 101, 192, 0.3), rgba(0, 229, 255, 0.15));
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-title {
+            font-family: Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--cyan-accent);
+        }
+
+        .category-count {
+            background: var(--blue-primary);
+            color: var(--text-light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .category-items {
+            padding: 1.5rem;
+            display: grid;
+            gap: 1.2rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            animation: itemFadeIn 0.4s ease-out;
+        }
+
+        @keyframes itemFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .checkbox-wrapper {
+            flex-shrink: 0;
+            padding-top: 0.2rem;
+        }
+
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--cyan-accent);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 2px solid rgba(0, 229, 255, 0.4);
+            border-radius: 4px;
+            background: transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: var(--cyan-accent);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+
+        input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, var(--blue-primary), var(--cyan-accent));
+            border-color: var(--cyan-accent);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--navy-dark);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            display: block;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        input[type="checkbox"]:checked ~ .item-content .item-title {
+            color: var(--cyan-accent);
+        }
+
+        .item-description {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        input[type="checkbox"]:checked ~ .item-content {
+            opacity: 0.7;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: var(--navy-medium);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-section h2 {
+            font-family: Georgia, serif;
+            font-size: 1.4rem;
+            color: var(--cyan-accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-accent);
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: rgba(0, 229, 255, 0.2);
+            margin: 1.5rem 0;
+            grid-column: 1 / -1;
+        }
+
+        .summary-list {
+            list-style: none;
+        }
+
+        .summary-list li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .summary-list li::before {
+            content: "✓";
+            color: var(--cyan-accent);
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .summary-list-remaining li::before {
+            content: "○";
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 229, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .brokerage-name {
+            color: var(--cyan-accent);
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .agent-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .agent-text h1 {
+                font-size: 1.5rem;
+            }
+
+            .score-display {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .score-inner {
+                width: 110px;
+                height: 110px;
+            }
+
+            .score-value {
+                font-size: 2.5rem;
+            }
+
+            .progress-info h2 {
+                font-size: 1.2rem;
+            }
+
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .progress-section {
+                padding: 1.5rem;
+            }
+
+            .summary-section {
+                padding: 1.5rem;
+            }
+
+            header {
+                padding: 1.5rem var(--spacing-unit);
+            }
+
+            .agent-text h1 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --spacing-unit: 0.75rem;
+            }
+
+            .agent-text h1 {
+                font-size: 1.4rem;
+            }
+
+            .category-title {
+                font-size: 1.1rem;
+            }
+
+            .score-value {
+                font-size: 2rem;
+            }
+
+            .checklist-item {
+                gap: 0.75rem;
+            }
+
+            input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="agent-info">
+                <div class="agent-photo">👤</div>
+                <div class="agent-text">
+                    <h1>Home Pre-Listing Checklist</h1>
+                    <p>Prepare Your Home for Success with {{AGENT_NAME}}</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="progress-section">
+            <div class="score-display">
+                <div class="score-circle" style="--percentage: 0">
+                    <div class="score-inner">
+                        <div class="score-value" id="scoreValue">0</div>
+                        <div class="score-label">Ready</div>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <h2>Listing Readiness Score</h2>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <strong id="completedCount">0</strong> of <strong id="totalCount">29</strong> items completed
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-banner" id="ctaBanner">
+            Your home is ready to list! Contact {{AGENT_NAME}} at {{AGENT_PHONE}} to schedule your listing session.
+        </div>
+
+        <div class="categories" id="categoriesContainer"></div>
+
+        <div class="summary-section">
+            <h2>Checklist Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">Completed</div>
+                    <div class="summary-value" id="summaryCompleted">0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Remaining</div>
+                    <div class="summary-value" id="summaryRemaining">29</div>
+                </div>
+            </div>
+            <div class="summary-divider"></div>
+            <div>
+                <div class="summary-label" style="margin-bottom: 1rem;">Completed Items</div>
+                <ul class="summary-list" id="completedList">
+                    <li style="color: var(--text-muted); padding: 1rem 0;">No items completed yet. Start checking off your tasks above!</li>
+                </ul>
+            </div>
+            <div class="summary-divider"></div>
+            <div>
+                <div class="summary-label" style="margin-bottom: 1rem;">Items to Complete</div>
+                <ul class="summary-list summary-list-remaining" id="remainingList"></ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>{{BROKERAGE_NAME}}</p>
+        <p>Agent: {{AGENT_NAME}} | Phone: {{AGENT_PHONE}}</p>
+        <p>This checklist helps you prepare your home for a successful listing and sale.</p>
+    </footer>
+
+    <script>
+        const checklistData = {
+            "Curb Appeal": [
+                "Mow lawn and trim hedges",
+                "Power wash driveway, walkways, and exterior",
+                "Paint or touch up front door",
+                "Add potted plants or flowers to entrance",
+                "Clean gutters and repair any visible damage",
+                "Ensure house numbers are visible and attractive"
+            ],
+            "Interior Declutter": [
+                "Remove personal photos and memorabilia",
+                "Clear kitchen countertops of small appliances",
+                "Organize and thin out closets (buyers open them)",
+                "Remove excess furniture to make rooms feel larger",
+                "Pack away seasonal items and rarely used belongings"
+            ],
+            "Deep Clean": [
+                "Professional carpet cleaning",
+                "Clean all windows inside and out",
+                "Scrub bathrooms until they sparkle",
+                "Clean kitchen appliances inside and out",
+                "Dust all ceiling fans, light fixtures, and vents"
+            ],
+            "Repairs": [
+                "Fix any leaky faucets or running toilets",
+                "Repair holes, cracks, or scuffs in walls",
+                "Replace burned-out light bulbs (use bright, warm bulbs)",
+                "Fix squeaky doors and sticky drawers",
+                "Ensure all door locks and handles work properly"
+            ],
+            "Staging Touches": [
+                "Set dining table with nice place settings",
+                "Add fresh towels in bathrooms",
+                "Place fresh flowers or a bowl of fruit in kitchen",
+                "Light a subtle candle or use a light air freshener before showings"
+            ],
+            "Paperwork": [
+                "Gather all home improvement receipts and permits",
+                "Locate your property survey",
+                "Prepare a list of recent upgrades with dates and costs",
+                "Have utility bills for the past 12 months available"
+            ]
+        };
+
+        const descriptions = {
+            "Mow lawn and trim hedges": "First impressions matter. A well-maintained lawn signals pride of ownership and increases curb appeal dramatically.",
+            "Power wash driveway, walkways, and exterior": "Clean surfaces make your home look newer and better maintained. Buyers notice these details immediately.",
+            "Paint or touch up front door": "Your front door is the first thing buyers see. A fresh, attractive door creates a welcoming entrance.",
+            "Add potted plants or flowers to entrance": "Plants add color, life, and warmth to your entryway. They make homes feel more inviting and well-cared-for.",
+            "Clean gutters and repair any visible damage": "Visible damage concerns buyers. Clean gutters and repairs show the home is well-maintained.",
+            "Ensure house numbers are visible and attractive": "Buyers need to easily find your home. Attractive, clear house numbers are a simple but important detail.",
+            "Remove personal photos and memorabilia": "Buyers need to imagine their own lives in your space. Personal items can distract them.",
+            "Clear kitchen countertops of small appliances": "Clutter makes spaces feel smaller and cramped. Clear counters create a sense of space and cleanliness.",
+            "Organize and thin out closets (buyers open them)": "Buyers will open every closet. Organized, spacious closets suggest the home is well-managed.",
+            "Remove excess furniture to make rooms feel larger": "Too much furniture makes rooms feel cramped. Fewer pieces make spaces feel larger and more open.",
+            "Pack away seasonal items and rarely used belongings": "Clutter reduces perceived value and makes rooms feel smaller. Pack away what you won't need before showing.",
+            "Professional carpet cleaning": "Clean carpets look newer and fresher. Professional cleaning removes stains and odors that concern buyers.",
+            "Clean all windows inside and out": "Clean windows let in more light and make the home feel brighter and more cheerful.",
+            "Scrub bathrooms until they sparkle": "Bathrooms signal cleanliness to buyers. A spotless bathroom is one of the best investments you can make.",
+            "Clean kitchen appliances inside and out": "Clean appliances look newer and suggest the home was well-cared-for and maintained regularly.",
+            "Dust all ceiling fans, light fixtures, and vents": "Dust builds up in high places and goes unnoticed, but buyers spot it immediately.",
+            "Fix any leaky faucets or running toilets": "Even small leaks concern buyers about the home's condition and can affect your asking price.",
+            "Repair holes, cracks, or scuffs in walls": "Wall damage suggests neglect. Fill and paint small repairs to show the home is well-maintained.",
+            "Replace burned-out light bulbs (use bright, warm bulbs)": "Bright, warm lighting makes homes feel more welcoming and helps buyers see the best in every room.",
+            "Fix squeaky doors and sticky drawers": "Small annoyances add up. Fixing these little issues shows attention to detail and care.",
+            "Ensure all door locks and handles work properly": "Functional locks and handles suggest the home is secure and well-maintained.",
+            "Set dining table with nice place settings": "A well-set table helps buyers imagine hosting dinner and entertaining in your home.",
+            "Add fresh towels in bathrooms": "Fresh, coordinated towels create a spa-like atmosphere and suggest cleanliness and care.",
+            "Place fresh flowers or a bowl of fruit in kitchen": "Fresh flowers and fruit add color and life to key areas without being personal or cluttering.",
+            "Light a subtle candle or use a light air freshener before showings": "Pleasant scents create positive emotions and help buyers feel at home.",
+            "Gather all home improvement receipts and permits": "Documentation proves work was done professionally and adds value to your home's history.",
+            "Locate your property survey": "Buyers and their lenders will need this document. Having it ready speeds up the process.",
+            "Prepare a list of recent upgrades with dates and costs": "This helps justify your asking price and shows where money has been invested in the home.",
+            "Have utility bills for the past 12 months available": "Buyers want to know operating costs. Ready bills speed up due diligence and show you're organized."
+        };
+
+        function initializeChecklist() {
+            const container = document.getElementById("categoriesContainer");
+            let itemId = 0;
+
+            Object.entries(checklistData).forEach(([ category, items ]) => {
+                const categoryEl = document.createElement("div");
+                categoryEl.className = "category";
+
+                const headerEl = document.createElement("div");
+                headerEl.className = "category-header";
+                headerEl.innerHTML = `
+                    <span class="category-title">${category}</span>
+                    <span class="category-count"><span class="cat-completed-${itemId}">0</span>/${items.length}</span>
+                `;
+
+                const itemsEl = document.createElement("div");
+                itemsEl.className = "category-items";
+
+                items.forEach((item) => {
+                    const itemEl = document.createElement("label");
+                    itemEl.className = "checklist-item";
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.className = "item-checkbox";
+                    checkbox.dataset.itemId = itemId;
+                    checkbox.addEventListener("change", updateProgress);
+
+                    const contentEl = document.createElement("div");
+                    contentEl.className = "item-content";
+                    contentEl.innerHTML = `
+                        <span class="item-title">${item}</span>
+                        <span class="item-description">${descriptions[ item ] || ""}</span>
+                    `;
+
+                    itemEl.appendChild(checkbox);
+                    itemEl.appendChild(contentEl);
+                    itemsEl.appendChild(itemEl);
+
+                    itemId++;
+                });
+
+                categoryEl.appendChild(headerEl);
+                categoryEl.appendChild(itemsEl);
+                container.appendChild(categoryEl);
+            });
+
+            populateRemainingList();
+        }
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll(".item-checkbox");
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const totalCount = checkboxes.length;
+            const percentage = Math.round((checkedCount / totalCount) * 100);
+
+            document.getElementById("scoreValue").textContent = percentage;
+            document.getElementById("progressFill").style.width = percentage + "%";
+            document.getElementById("completedCount").textContent = checkedCount;
+            document.getElementById("summaryCompleted").textContent = checkedCount;
+            document.getElementById("summaryRemaining").textContent = totalCount - checkedCount;
+
+            document.querySelector(".score-circle").style.setProperty("--percentage", percentage);
+
+            updateCategoryCounters();
+            updateSummaryLists(checkedCount, totalCount);
+
+            if (percentage >= 80) {
+                document.getElementById("ctaBanner").classList.add("visible");
+            } else {
+                document.getElementById("ctaBanner").classList.remove("visible");
+            }
+        }
+
+        function updateCategoryCounters() {
+            let itemId = 0;
+            Object.keys(checklistData).forEach((category, catIndex) => {
+                const items = checklistData[ category ];
+                const categoryCheckboxes = Array.from(document.querySelectorAll(".item-checkbox"))
+                    .slice(itemId, itemId + items.length);
+                const completedInCategory = categoryCheckboxes.filter(cb => cb.checked).length;
+                const counter = document.querySelector(`.cat-completed-${itemId}`);
+                if (counter) {
+                    counter.textContent = completedInCategory;
+                }
+                itemId += items.length;
+            });
+        }
+
+        function updateSummaryLists(checkedCount, totalCount) {
+            const completedListEl = document.getElementById("completedList");
+            const remainingListEl = document.getElementById("remainingList");
+
+            completedListEl.innerHTML = "";
+            remainingListEl.innerHTML = "";
+
+            const checkboxes = document.querySelectorAll(".item-checkbox");
+            let checkedItems = [];
+            let uncheckedItems = [];
+
+            checkboxes.forEach((checkbox, index) => {
+                let itemName = "";
+                for (const [ category, items ] of Object.entries(checklistData)) {
+                    if (index < items.length) {
+                        itemName = items[ index ];
+                        break;
+                    }
+                    index -= items.length;
+                }
+
+                if (!itemName) {
+                    let count = 0;
+                    for (const [ category, items ] of Object.entries(checklistData)) {
+                        count += items.length;
+                        if (index < count) {
+                            itemName = items[ index - (count - items.length) ];
+                            break;
+                        }
+                    }
+                }
+
+                if (checkbox.checked) {
+                    checkedItems.push(itemName || "Item " + (index + 1));
+                } else {
+                    uncheckedItems.push(itemName || "Item " + (index + 1));
+                }
+            });
+
+            if (checkedItems.length === 0) {
+                completedListEl.innerHTML = '<li style="color: var(--text-muted); padding: 1rem 0;">No items completed yet. Start checking off your tasks above!</li>';
+            } else {
+                checkedItems.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    completedListEl.appendChild(li);
+                });
+            }
+
+            if (uncheckedItems.length === 0) {
+                const li = document.createElement("li");
+                li.textContent = "All items completed! Great work!";
+                li.style.color = "var(--cyan-accent)";
+                li.style.fontWeight = "600";
+                remainingListEl.appendChild(li);
+            } else {
+                uncheckedItems.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    remainingListEl.appendChild(li);
+                });
+            }
+        }
+
+        function populateRemainingList() {
+            const remainingListEl = document.getElementById("remainingList");
+            remainingListEl.innerHTML = "";
+
+            for (const [ category, items ] of Object.entries(checklistData)) {
+                items.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    remainingListEl.appendChild(li);
+                });
+            }
+        }
+
+        initializeChecklist();
+    </script>
+</body>
+</html>

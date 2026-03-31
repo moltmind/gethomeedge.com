@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeEdge — AI-Powered Seller Platform for Real Estate Agents</title>
+    <meta name="description" content="White-labeled AI seller tools for real estate agents. Branded to you. Built to convert sellers into listings.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy: #0B1426;
+            --navy-light: #121E36;
+            --navy-mid: #1A2A4A;
+            --cyan: #00D4FF;
+            --cyan-glow: rgba(0, 212, 255, 0.15);
+            --gold: #F5A623;
+            --gold-light: #FFD54F;
+            --white: #FFFFFF;
+            --gray: #94A3B8;
+            --gray-light: #CBD5E1;
+            --border: rgba(255,255,255,0.08);
+            --success: #10B981;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(11, 20, 38, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--cyan); }
+
+        .btn-header {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--navy);
+            padding: 0.65rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 166, 35, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .logo { font-size: 1.3rem; }
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 2rem 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px; right: -200px;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 60%);
+            border-radius: 50%;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px; left: -150px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(245, 166, 35, 0.08) 0%, transparent 60%);
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .hero-content {
+            max-width: 850px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: var(--cyan);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--gray-light);
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--navy);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(245, 166, 35, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(245, 166, 35, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .hero-proof {
+            margin-top: 3rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-proof-item {
+            text-align: center;
+        }
+
+        .hero-proof-item .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .hero-proof-item .label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 0.2rem;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== SECTION SHARED ===== */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--cyan);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* ===== PROBLEM ===== */
+        .problem-bg {
+            background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--navy-mid);
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: border-color 0.3s;
+        }
+
+        .stat-card:hover { border-color: rgba(0, 212, 255, 0.3); }
+
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--cyan);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text {
+            color: var(--gray);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .problem-callout {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(245, 166, 35, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem 3rem;
+            text-align: center;
+        }
+
+        .problem-callout h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--white);
+        }
+
+        .problem-callout h3 span { color: var(--cyan); }
+
+        /* ===== FEATURES ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--navy-light);
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--gold));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-icon {
+            width: 48px; height: 48px;
+            background: var(--cyan-glow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .steps-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+        }
+
+        .step-num {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin: 0 auto 1.2rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .step-card p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* ===== TESTIMONIAL ===== */
+        .testimonial-bg {
+            background: linear-gradient(180deg, var(--navy-light) 0%, var(--navy) 100%);
+        }
+
+        .testimonial-card {
+            background: var(--navy-mid);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            color: var(--cyan);
+            opacity: 0.2;
+            position: absolute;
+            top: -10px; left: 30px;
+            line-height: 1;
+        }
+
+        .testimonial-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-result {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        /* ===== PRICING ===== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .price-card {
+            background: var(--navy-light);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-card.featured {
+            border-color: var(--cyan);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+            transform: scale(1.03);
+        }
+
+        .price-badge {
+            position: absolute;
+            top: -12px; left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--cyan), #00B4D8);
+            color: var(--navy);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .price-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .price-card.featured:hover {
+            transform: scale(1.03) translateY(-6px);
+        }
+
+        .price-tier {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-desc {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-amount {
+            margin-bottom: 0.3rem;
+        }
+
+        .price-setup {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--cyan);
+        }
+
+        .price-setup-label {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .price-monthly {
+            color: var(--gold);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            flex: 1;
+        }
+
+        .price-features li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--gray-light);
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-features li::before {
+            content: '';
+            width: 18px; height: 18px;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310B981'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+            background-size: 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .price-cta {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .price-cta-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+        }
+
+        .price-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 166, 35, 0.3);
+        }
+
+        .price-cta-outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--border);
+        }
+
+        .price-cta-outline:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .brokerage-note {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background: var(--navy-light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .brokerage-note p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .brokerage-note strong { color: var(--gold); }
+
+        /* ===== ROI ===== */
+        .roi-card {
+            background: var(--navy-light);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .roi-item { text-align: center; }
+
+        .roi-label {
+            color: var(--gray);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .roi-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .roi-bottom {
+            background: rgba(245, 166, 35, 0.08);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+            padding: 1.2rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .roi-bottom p {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-q {
+            padding: 1.4rem 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.3s;
+        }
+
+        .faq-q:hover { color: var(--cyan); }
+
+        .faq-toggle {
+            color: var(--cyan);
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .faq-item.active .faq-toggle { transform: rotate(45deg); }
+
+        .faq-a {
+            display: none;
+            padding-bottom: 1.4rem;
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .faq-item.active .faq-a {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== FINAL CTA ===== */
+        .final-cta {
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .final-cta-content {
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .final-cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .final-cta p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-desc {
+            color: var(--gray);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        footer h4 {
+            color: var(--white);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: block;
+            line-height: 2;
+            transition: color 0.3s;
+        }
+
+        footer a:hover { color: var(--cyan); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-box {
+            background: var(--navy-light);
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 460px;
+            width: 92%;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .modal-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-box .modal-sub {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem; right: 1.2rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover { color: var(--white); }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--navy);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--cyan);
+        }
+
+        .form-group input::placeholder { color: var(--gray); }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 166, 35, 0.3);
+        }
+
+        .form-note {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* ===== SUCCESS MESSAGE ===== */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .form-success .check {
+            width: 60px; height: 60px;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+        }
+
+        .form-success h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-success p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+            .price-card.featured { transform: none; }
+            .price-card.featured:hover { transform: translateY(-6px); }
+            .roi-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.4rem; }
+            .hero-sub { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .steps-row { grid-template-columns: repeat(2, 1fr); }
+            .hero-proof { gap: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 100px 1rem 3rem; }
+            .hero h1 { font-size: 1.9rem; }
+            .section-title { font-size: 1.6rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: 1fr; }
+            .steps-row { grid-template-columns: 1fr; }
+            .roi-grid { grid-template-columns: 1fr; }
+            .hero-cta-group { flex-direction: column; align-items: center; }
+            .final-cta h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">HomeEdge</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <button class="btn-header" onclick="openModal()">Book a Demo</button>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">AI-Powered Seller Tools for Real Estate</div>
+            <h1>Your Sellers Deserve a <span>Smarter Platform</span></h1>
+            <p class="hero-sub">White-labeled AI tools that capture leads, build trust, and convert sellers into listings. Branded to you. Deployed in 48 hours.</p>
+            <div class="hero-cta-group">
+                <button class="btn-primary" onclick="openModal()">See Your Demo in 30 Seconds</button>
+                <a href="#pricing" class="btn-secondary">View Pricing</a>
+            </div>
+            <div class="hero-proof">
+                <div class="hero-proof-item">
+                    <div class="number">5</div>
+                    <div class="label">AI-Powered Tools</div>
+                </div>
+                <div class="hero-proof-item">
+                    <div class="number">48hr</div>
+                    <div class="label">Deploy Time</div>
+                </div>
+                <div class="hero-proof-item">
+                    <div class="number">$12K+</div>
+                    <div class="label">First Client Month 1</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="section problem-bg">
+        <div class="text-center">
+            <span class="section-label">The Problem</span>
+            <h2 class="section-title">The AI Adoption Gap in Real Estate</h2>
+        </div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-num">68%</div>
+                <div class="stat-text">of agents have adopted AI tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">17%</div>
+                <div class="stat-text">actually saw measurable impact</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">5-7</div>
+                <div class="stat-text">disconnected tools per agent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">$0</div>
+                <div class="stat-text">spent on seller-specific AI</div>
+            </div>
+        </div>
+        <div class="problem-callout">
+            <h3>There's no all-in-one seller platform. <span>Until now.</span></h3>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+        <div class="text-center">
+            <span class="section-label">What You Get</span>
+            <h2 class="section-title">Five Tools. One Branded Platform.</h2>
+            <p class="section-subtitle mx-auto">Every tool works together under your brand. Your clients see your logo, your colors, your domain.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F3E0;</div>
+                <h3>Branded Landing Page</h3>
+                <p>Captures seller leads 24/7 with your branding, your domain, your messaging. Converts curious homeowners into qualified prospects while you sleep.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F4B0;</div>
+                <h3>Seller Net Proceeds Calculator</h3>
+                <p>Builds instant trust. Sellers see exactly what they'll pocket. Positions you as the transparent, data-driven agent they want to work with.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F4CA;</div>
+                <h3>Fix vs. Sell Analyzer</h3>
+                <p>Side-by-side renovation ROI analysis. Shows sellers the smartest path forward with real numbers, not guesses. You look like the expert you are.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F916;</div>
+                <h3>AI Chatbot</h3>
+                <p>Answers seller questions 24/7 in your voice. Qualifies leads automatically. Your team focuses only on prospects who are ready to talk.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x270D;&#xFE0F;</div>
+                <h3>AI Listing Description Writer</h3>
+                <p>MLS-ready listing copy in one click. No more writer's block. Descriptions that sell, customized to your market and style.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+        <div class="text-center">
+            <span class="section-label">How It Works</span>
+            <h2 class="section-title">Live in 4 Simple Steps</h2>
+        </div>
+        <div class="steps-row">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h3>See Your Demo</h3>
+                <p>30 seconds to preview your own branded platform in action.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h3>Approve Your Brand</h3>
+                <p>Your logo, colors, domain, and content. You control everything.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h3>We Deploy It</h3>
+                <p>Fully live on your domain within 48 hours. Zero technical headaches.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h3>Start Converting</h3>
+                <p>Watch seller leads come in. Your tools do the heavy lifting.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="section testimonial-bg">
+        <div class="text-center">
+            <span class="section-label">Results</span>
+            <h2 class="section-title">Built for Results, Not Features</h2>
+        </div>
+        <div class="testimonial-card">
+            <p class="testimonial-quote">Jim saw the demo and tried to hire me on the spot. That reaction IS the product.</p>
+            <p class="testimonial-author">-- Cole Cummings, HomeEdge Creator</p>
+            <div class="testimonial-result">First client: $12K+ in month one</div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section" id="pricing">
+        <div class="text-center">
+            <span class="section-label">Pricing</span>
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle mx-auto">One listing pays for a full year. No hidden fees. No surprises.</p>
+        </div>
+        <div class="pricing-grid">
+            <!-- Starter -->
+            <div class="price-card">
+                <div class="price-tier">Starter</div>
+                <p class="price-desc">For solo agents getting started with AI</p>
+                <div class="price-amount">
+                    <span class="price-setup">$997</span>
+                    <span class="price-setup-label"> setup</span>
+                </div>
+                <p class="price-monthly">+ $197/month</p>
+                <ul class="price-features">
+                    <li>Branded Landing Page</li>
+                    <li>Seller Net Proceeds Calculator</li>
+                    <li>AI Chatbot (Basic)</li>
+                    <li>Email Support</li>
+                    <li>Monthly Platform Updates</li>
+                </ul>
+                <a href="https://buy.stripe.com/aFadR24qqaSsbmi13h7N600" class="price-cta price-cta-outline" id="cta-starter" target="_blank" rel="noopener">Get Started</a>
+            </div>
+
+            <!-- Professional -->
+            <div class="price-card featured">
+                <div class="price-badge">Most Popular</div>
+                <div class="price-tier">Professional</div>
+                <p class="price-desc">Full toolkit for serious listing agents</p>
+                <div class="price-amount">
+                    <span class="price-setup">$1,997</span>
+                    <span class="price-setup-label"> setup</span>
+                </div>
+                <p class="price-monthly">+ $397/month</p>
+                <ul class="price-features">
+                    <li>Everything in Starter</li>
+                    <li>Fix vs. Sell Analyzer</li>
+                    <li>AI Listing Description Writer</li>
+                    <li>Priority Support</li>
+                    <li>Quarterly Strategy Calls</li>
+                    <li>Advanced Analytics</li>
+                </ul>
+                <a href="https://buy.stripe.com/28E8wI4qqe4EgGC4ft7N601" class="price-cta price-cta-primary" id="cta-professional" target="_blank" rel="noopener">Get Started</a>
+            </div>
+
+            <!-- Elite -->
+            <div class="price-card">
+                <div class="price-tier">Elite</div>
+                <p class="price-desc">Everything, plus white-glove service</p>
+                <div class="price-amount">
+                    <span class="price-setup">$2,997</span>
+                    <span class="price-setup-label"> setup</span>
+                </div>
+                <p class="price-monthly">+ $697/month</p>
+                <ul class="price-features">
+                    <li>Everything in Professional</li>
+                    <li>Full 28-Tool Suite (as released)</li>
+                    <li>Agent Command Center</li>
+                    <li>Dedicated Account Manager</li>
+                    <li>Monthly Strategy Sessions</li>
+                    <li>Custom Integrations</li>
+                    <li>Priority Phone Support</li>
+                </ul>
+                <a href="https://buy.stripe.com/8x24gscWW0dO4XU5jx7N602" class="price-cta price-cta-outline" id="cta-elite" target="_blank" rel="noopener">Get Started</a>
+            </div>
+        </div>
+        <div class="brokerage-note">
+            <p><strong>Brokerage Pricing</strong> available for teams of 10+ agents. Custom packages that scale with your office.</p>
+        </div>
+    </section>
+
+    <!-- ROI -->
+    <section class="section">
+        <div class="text-center">
+            <span class="section-label">ROI</span>
+            <h2 class="section-title">One Listing Pays for a Full Year</h2>
+        </div>
+        <div class="roi-card">
+            <div class="roi-grid">
+                <div class="roi-item">
+                    <div class="roi-label">Annual Investment</div>
+                    <div class="roi-value">$6,761</div>
+                </div>
+                <div class="roi-item">
+                    <div class="roi-label">Avg. Commission</div>
+                    <div class="roi-value">$12,000</div>
+                </div>
+                <div class="roi-item">
+                    <div class="roi-label">Listings to Break Even</div>
+                    <div class="roi-value">0.56</div>
+                </div>
+                <div class="roi-item">
+                    <div class="roi-label">If You Get 2 Extra</div>
+                    <div class="roi-value">$24,000</div>
+                </div>
+            </div>
+            <div class="roi-bottom">
+                <p>255% ROI on the Professional plan -- and that's conservative.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <div class="text-center">
+            <span class="section-label">FAQ</span>
+            <h2 class="section-title">Questions? We've Got Answers.</h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>What if I'm not tech-savvy?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">You don't need to be. We handle all the technical setup, deployment, and maintenance. Your job is to approve the branding and start using it. No coding, no servers, no IT headaches.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>How fast can I go live?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">Your demo is ready in 30 seconds. After you approve, we deploy within 48 hours. You can be fully live and converting sellers by next week.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Is it really branded to me?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">100% your brand. Your logo, colors, domain, and voice. When sellers land on your platform, they see you -- not us. That's the entire point.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>What about my existing website?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">HomeEdge works alongside your website. It can be a subdomain, a separate property, or integrated into your existing site. No conflicts, no complications.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Can I cancel anytime?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">Yes. Month-to-month after your initial setup. No long-term lock-in, no penalties. We keep you because the platform delivers results, not because you're stuck.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">
+                    <span>Do you offer brokerage pricing?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">Absolutely. For teams of 10+ agents, we build a custom package that scales with your office. Much better per-agent value. Reach out and we'll put together a proposal.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="final-cta-content">
+            <h2>Ready to Own Your Market?</h2>
+            <p>See your branded demo in 30 seconds. No commitment. No credit card. Just proof that this works.</p>
+            <button class="btn-primary" onclick="openModal()">Book Your Free Demo</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">HomeEdge</div>
+                <p class="footer-desc">AI-powered seller tools for real estate agents who want to dominate their market. Built by agents, for agents.</p>
+            </div>
+            <div>
+                <h4>Product</h4>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <a href="mailto:gethomeedge@gmail.com">gethomeedge@gmail.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 HomeEdge. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Demo Modal -->
+    <div class="modal-overlay" id="demo-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+
+            <!-- Form -->
+            <form id="demo-form" onsubmit="handleDemo(event)">
+                <h2>Book Your Free Demo</h2>
+                <p class="modal-sub">See your branded platform in 30 seconds. No commitment.</p>
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="phone" placeholder="Phone (optional)">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="company" placeholder="Brokerage / Team Name" required>
+                </div>
+                <button type="submit" class="form-submit">Get My Demo</button>
+                <p class="form-note">No spam. We'll send your personalized demo link.</p>
+            </form>
+
+            <!-- Success State -->
+            <div class="form-success" id="form-success">
+                <div class="check">&#10003;</div>
+                <h3>You're In!</h3>
+                <p>Check your inbox -- your demo link is on the way.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal
+        function openModal() {
+            document.getElementById('demo-modal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('demo-modal').style.display = 'none';
+        }
+        document.getElementById('demo-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // FAQ Toggle
+        function toggleFaq(el) {
+            el.parentElement.classList.toggle('active');
+        }
+
+        // Demo Form — submits to MailerLite
+        function handleDemo(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                name: form.name.value,
+                email: form.email.value,
+                phone: form.phone.value,
+                company: form.company.value
+            };
+
+            // MailerLite subscriber API
+            // Replace GROUP_ID with your MailerLite group ID after setup
+            const MAILERLITE_GROUP_ID = 'REPLACE_WITH_GROUP_ID';
+
+            // For now, show success and log the lead
+            console.log('New HomeEdge lead:', data);
+
+            // Show success state
+            form.style.display = 'none';
+            document.getElementById('form-success').style.display = 'block';
+
+            // Reset after 3 seconds
+            setTimeout(function() {
+                closeModal();
+                form.style.display = 'block';
+                document.getElementById('form-success').style.display = 'none';
+                form.reset();
+            }, 3000);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                var href = this.getAttribute('href');
+                if (href !== '#' && !href.startsWith('#STRIPE') && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+        document.querySelectorAll('.feature-card, .stat-card, .step-card, .price-card').forEach(function(el) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
