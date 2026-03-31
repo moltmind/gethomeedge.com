@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeEdge Founders Program -- Only 10 Spots</title>
+    <meta name="description" content="Join the first 10 agents to get HomeEdge at locked-in Founder pricing. Limited availability.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0B1426; --navy-light: #121E36; --navy-mid: #1A2A4A;
+            --cyan: #00D4FF; --gold: #F5A623; --gold-light: #FFD54F;
+            --white: #FFFFFF; --gray: #94A3B8; --border: rgba(255,255,255,0.08);
+            --success: #10B981; --danger: #EF4444;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--white); line-height: 1.7; }
+
+        .founder-badge {
+            background: linear-gradient(135deg, var(--gold), #E09410);
+            color: var(--navy); text-align: center; padding: 0.75rem;
+            font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .hero-founder {
+            max-width: 800px; margin: 0 auto; padding: 4rem 2rem; text-align: center;
+        }
+        .hero-founder .tag {
+            display: inline-block; background: rgba(245,166,35,0.15); color: var(--gold);
+            padding: 0.4rem 1.2rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            margin-bottom: 1.5rem; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .hero-founder h1 {
+            font-family: 'Playfair Display', serif; font-size: 3rem; line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+        .hero-founder h1 span {
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-founder p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem; }
+
+        .spots-counter {
+            display: inline-flex; align-items: center; gap: 1rem;
+            background: var(--navy-light); border: 1px solid var(--gold);
+            padding: 1rem 2rem; border-radius: 12px; margin-bottom: 3rem;
+        }
+        .spots-num {
+            font-size: 2.5rem; font-weight: 800; color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+        .spots-label { text-align: left; }
+        .spots-label .line1 { font-size: 0.85rem; color: var(--white); font-weight: 700; }
+        .spots-label .line2 { font-size: 0.75rem; color: var(--gray); }
+
+        .story-section {
+            max-width: 700px; margin: 0 auto; padding: 0 2rem 3rem;
+        }
+        .story-section h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem;
+        }
+        .story-section p { color: var(--gray); margin-bottom: 1rem; font-size: 0.95rem; }
+        .story-section p strong { color: var(--white); }
+
+        .comparison {
+            max-width: 800px; margin: 0 auto 3rem; padding: 0 2rem;
+        }
+        .comparison h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            text-align: center; margin-bottom: 2rem;
+        }
+        .compare-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+        .compare-card {
+            background: var(--navy-light); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.5rem;
+        }
+        .compare-card.founder { border-color: var(--gold); }
+        .compare-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .compare-card .price { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .compare-card .monthly { color: var(--gray); font-size: 0.85rem; margin-bottom: 1rem; }
+        .compare-card .save { color: var(--success); font-weight: 700; font-size: 0.85rem; }
+        .compare-card.regular .price { color: var(--gray); text-decoration: line-through; }
+
+        .pricing-founder {
+            max-width: 900px; margin: 0 auto; padding: 0 2rem 3rem;
+        }
+        .pricing-founder h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            text-align: center; margin-bottom: 0.5rem;
+        }
+        .pricing-founder .sub {
+            text-align: center; color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem;
+        }
+        .founder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .founder-card {
+            background: var(--navy-light); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.75rem; position: relative;
+        }
+        .founder-card.featured { border-color: var(--gold); transform: scale(1.03); }
+        .founder-card .tier { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 700; margin-bottom: 0.75rem; }
+        .founder-card .setup { font-size: 2.2rem; font-weight: 800; }
+        .founder-card .setup-label { font-size: 0.8rem; color: var(--gray); }
+        .founder-card .mo { font-size: 0.9rem; color: var(--gray); margin-bottom: 0.5rem; }
+        .founder-card .was { font-size: 0.75rem; color: var(--danger); text-decoration: line-through; margin-bottom: 1rem; }
+        .founder-card ul { list-style: none; margin-bottom: 1.5rem; }
+        .founder-card li {
+            padding: 0.35rem 0; font-size: 0.85rem; color: var(--gray);
+            border-bottom: 1px solid var(--border);
+        }
+        .founder-card li::before { content: "->  "; color: var(--cyan); font-weight: 700; }
+        .founder-cta {
+            display: block; text-align: center; padding: 0.85rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy); text-decoration: none; border-radius: 8px;
+            font-weight: 700; font-size: 0.9rem; transition: all 0.2s;
+        }
+        .founder-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,166,35,0.3); }
+        .founder-badge-card {
+            position: absolute; top: -12px; right: 16px;
+            background: var(--gold); color: var(--navy); padding: 0.25rem 0.75rem;
+            border-radius: 4px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+        }
+
+        .guarantee {
+            max-width: 700px; margin: 0 auto; padding: 2rem;
+            text-align: center;
+        }
+        .guarantee h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1rem; }
+        .guarantee p { color: var(--gray); font-size: 0.9rem; }
+
+        .footer-founder {
+            text-align: center; padding: 2rem; border-top: 1px solid var(--border);
+            color: var(--gray); font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-founder h1 { font-size: 2rem; }
+            .founder-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+            .founder-card.featured { transform: none; }
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="founder-badge">FOUNDERS PROGRAM -- ONLY 10 SPOTS AVAILABLE</div>
+
+<div class="hero-founder">
+    <div class="tag">Limited Founding Members</div>
+    <h1>Be One of the First <span>10 Agents</span> to Own HomeEdge</h1>
+    <p>Founding members get locked-in pricing that never increases, direct access to the builder, and their name on the wall. When this fills up, it's gone.</p>
+
+    <div class="spots-counter">
+        <div class="spots-num" id="spots">7</div>
+        <div class="spots-label">
+            <div class="line1">Spots Remaining</div>
+            <div class="line2">of 10 founding memberships</div>
+        </div>
+    </div>
+</div>
+
+<div class="story-section">
+    <h2>The Builder's Story</h2>
+    <p>My name is Cole Cummings. By day, I'm a steel worker in Wisconsin. By night, I build AI.</p>
+    <p>I started building tools for a local real estate agent as a side project. <strong>He saw the demo and tried to hire me on the spot.</strong> That agent generated over $12,000 in his first month using the platform I built him.</p>
+    <p>That's when I realized: every agent needs this. Not another CRM. Not another generic website. <strong>A fully branded AI seller platform</strong> that works 24/7, captures leads, calculates net proceeds, analyzes renovation ROI, and writes listing descriptions -- all under their brand.</p>
+    <p>I'm not a tech founder in a hoodie pitching disruption. I'm a builder who built something that works. And I'm offering the first 10 agents a chance to lock in Founder pricing before I scale this nationally.</p>
+</div>
+
+<div class="comparison">
+    <h2>Founder vs. Regular Pricing</h2>
+    <div class="compare-grid">
+        <div class="compare-card founder">
+            <h3>Founder (You)</h3>
+            <div class="price" style="color: var(--gold)">$697</div>
+            <div class="monthly">+ $147/month -- locked forever</div>
+            <div class="save">Save $3,600 in year one vs. Professional</div>
+        </div>
+        <div class="compare-card regular">
+            <h3>Regular (Everyone Else)</h3>
+            <div class="price">$997 - $2,997</div>
+            <div class="monthly">+ $197 - $697/month</div>
+            <div class="save" style="color: var(--gray)">Standard pricing, subject to increases</div>
+        </div>
+    </div>
+</div>
+
+<div class="pricing-founder">
+    <h2>Choose Your Founding Tier</h2>
+    <p class="sub">All tiers include Founder benefits: locked pricing, direct access, founding member status</p>
+
+    <div class="founder-grid">
+        <div class="founder-card">
+            <div class="tier">Founder Starter</div>
+            <div class="setup">$697</div>
+            <div class="setup-label">one-time setup</div>
+            <div class="mo">+ $147/month</div>
+            <div class="was">Regular: $997 setup + $197/mo</div>
+            <ul>
+                <li>Branded Landing Page</li>
+                <li>Net Proceeds Calculator</li>
+                <li>AI Chatbot (Basic)</li>
+                <li>Email Support</li>
+                <li>Monthly Updates</li>
+            </ul>
+            <a href="https://buy.stripe.com/14A3co8GG2lW1LIdQ37N603" class="founder-cta" target="_blank">Claim Founder Spot</a>
+        </div>
+
+        <div class="founder-card featured">
+            <div class="founder-badge-card">Most Popular</div>
+            <div class="tier">Founder Professional</div>
+            <div class="setup">$1,497</div>
+            <div class="setup-label">one-time setup</div>
+            <div class="mo">+ $297/month</div>
+            <div class="was">Regular: $1,997 setup + $397/mo</div>
+            <ul>
+                <li>Everything in Starter</li>
+                <li>Fix vs. Sell Analyzer</li>
+                <li>AI Listing Writer</li>
+                <li>Priority Support</li>
+                <li>Quarterly Strategy Calls</li>
+                <li>Advanced Analytics</li>
+            </ul>
+            <a href="https://buy.stripe.com/aFaaEQ8GGaSsaieh2f7N604" class="founder-cta" target="_blank">Claim Founder Spot</a>
+        </div>
+
+        <div class="founder-card">
+            <div class="tier">Founder Elite</div>
+            <div class="setup">$1,997</div>
+            <div class="setup-label">one-time setup</div>
+            <div class="mo">+ $497/month</div>
+            <div class="was">Regular: $2,997 setup + $697/mo</div>
+            <ul>
+                <li>Everything in Professional</li>
+                <li>Full 28-Tool Suite</li>
+                <li>Agent Command Center</li>
+                <li>Dedicated Account Manager</li>
+                <li>Monthly Strategy Sessions</li>
+                <li>Custom Integrations</li>
+                <li>Priority Phone Support</li>
+            </ul>
+            <a href="https://buy.stripe.com/14A3cof540dO4XUeU77N605" class="founder-cta" target="_blank">Claim Founder Spot</a>
+        </div>
+    </div>
+</div>
+
+<div class="guarantee">
+    <h2>No Risk. No Contracts.</h2>
+    <p>Month-to-month after setup. Cancel anytime. Your Founder pricing stays locked as long as you're a member. If you leave and come back, you pay regular pricing. This is a one-time opportunity.</p>
+</div>
+
+<div class="footer-founder">
+    &copy; 2026 HomeEdge. Built by Cole Cummings.<br>
+    <a href="https://gethomeedge.com" style="color: var(--cyan);">gethomeedge.com</a> | <a href="mailto:gethomeedge@gmail.com" style="color: var(--cyan);">gethomeedge@gmail.com</a>
+</div>
+
+<script src="chatbot.js"></script>
+</body>
+</html>
