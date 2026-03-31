@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeEdge Demo — See What Your Agents Get</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0B1426;
+            --navy-light: #121E36;
+            --navy-mid: #1A2A4A;
+            --cyan: #00D4FF;
+            --cyan-glow: rgba(0, 212, 255, 0.12);
+            --gold: #F5A623;
+            --white: #FFFFFF;
+            --gray: #94A3B8;
+            --border: rgba(255,255,255,0.08);
+            --success: #10B981;
+            --danger: #EF4444;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--white); }
+
+        /* Top Bar */
+        .demo-bar {
+            background: linear-gradient(135deg, var(--gold), #E09410);
+            color: var(--navy);
+            text-align: center;
+            padding: 0.6rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Dashboard Header */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--navy-light);
+        }
+        .dash-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dash-agent {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .dash-avatar {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--cyan), var(--gold));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: var(--navy);
+        }
+        .dash-name { font-weight: 600; font-size: 0.9rem; }
+        .dash-tier { font-size: 0.75rem; color: var(--gold); }
+
+        /* Layout */
+        .dash-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--navy-light);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            color: var(--white);
+            background: var(--cyan-glow);
+            border-left: 3px solid var(--cyan);
+        }
+        .sidebar a .icon { font-size: 1.1rem; width: 24px; text-align: center; }
+        .sidebar-section {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .main h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .main .subtitle {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .stat-box {
+            background: var(--navy-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        .stat-box .label { color: var(--gray); font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .stat-box .value { font-size: 1.8rem; font-weight: 800; }
+        .stat-box .change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        .stat-box .change.up { color: var(--success); }
+        .stat-box .change.down { color: var(--danger); }
+
+        /* Cards */
+        .card {
+            background: var(--navy-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card h3 .badge {
+            font-size: 0.7rem;
+            background: var(--cyan-glow);
+            color: var(--cyan);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* Activity Feed */
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .activity-dot.lead { background: var(--cyan); }
+        .activity-dot.chat { background: var(--gold); }
+        .activity-dot.calc { background: var(--success); }
+        .activity-dot.visit { background: var(--gray); }
+        .activity-text { font-size: 0.85rem; line-height: 1.5; }
+        .activity-text strong { color: var(--white); }
+        .activity-text span { color: var(--gray); }
+        .activity-time { color: var(--gray); font-size: 0.75rem; margin-top: 0.15rem; }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .tool-card {
+            background: var(--navy-mid);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+        }
+        .tool-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-2px);
+        }
+        .tool-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .tool-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.35rem; }
+        .tool-stat { color: var(--gray); font-size: 0.8rem; }
+        .tool-stat strong { color: var(--cyan); }
+
+        /* Lead Table */
+        .lead-table { width: 100%; border-collapse: collapse; }
+        .lead-table th {
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            letter-spacing: 0.5px;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .lead-table td {
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .lead-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .lead-status.hot { background: rgba(239,68,68,0.15); color: #EF4444; }
+        .lead-status.warm { background: rgba(245,166,35,0.15); color: var(--gold); }
+        .lead-status.new { background: rgba(0,212,255,0.15); color: var(--cyan); }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .cta-banner h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.75rem; }
+        .cta-banner p { color: var(--gray); font-size: 0.9rem; margin-bottom: 1.25rem; }
+        .cta-btn {
+            display: inline-block;
+            padding: 0.85rem 2rem;
+            background: linear-gradient(135deg, var(--gold), #E09410);
+            color: var(--navy);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,166,35,0.3); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dash-layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .tools-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="demo-bar">DEMO MODE -- This is what your agents see when they log in to their HomeEdge dashboard</div>
+
+    <div class="dash-header">
+        <div class="dash-logo">HomeEdge</div>
+        <div class="dash-agent">
+            <div>
+                <div class="dash-name">Sarah Mitchell</div>
+                <div class="dash-tier">Professional Plan</div>
+            </div>
+            <div class="dash-avatar">SM</div>
+        </div>
+    </div>
+
+    <div class="dash-layout">
+        <nav class="sidebar">
+            <a href="#" class="active"><span class="icon">&#x1F4CA;</span> Dashboard</a>
+            <a href="#"><span class="icon">&#x1F464;</span> Leads</a>
+            <a href="#"><span class="icon">&#x1F4AC;</span> Chat Logs</a>
+
+            <div class="sidebar-section">Seller Tools</div>
+            <a href="#"><span class="icon">&#x1F3E0;</span> Landing Page</a>
+            <a href="#"><span class="icon">&#x1F4B0;</span> Net Proceeds</a>
+            <a href="#"><span class="icon">&#x1F527;</span> Fix vs. Sell</a>
+            <a href="#"><span class="icon">&#x1F916;</span> AI Chatbot</a>
+            <a href="#"><span class="icon">&#x270D;&#xFE0F;</span> Listing Writer</a>
+
+            <div class="sidebar-section">Account</div>
+            <a href="#"><span class="icon">&#x2699;&#xFE0F;</span> Settings</a>
+            <a href="#"><span class="icon">&#x1F4DE;</span> Support</a>
+        </nav>
+
+        <main class="main">
+            <h1>Welcome back, Sarah</h1>
+            <p class="subtitle">Here's how your HomeEdge platform is performing this month</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="label">Total Leads</div>
+                    <div class="value">47</div>
+                    <div class="change up">+12 this week</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Calculator Uses</div>
+                    <div class="value">128</div>
+                    <div class="change up">+34% vs last month</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Chat Conversations</div>
+                    <div class="value">83</div>
+                    <div class="change up">+18 this week</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Listings Won</div>
+                    <div class="value">3</div>
+                    <div class="change up">$36,000 in commissions</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="card">
+                    <h3>Recent Activity <span class="badge">Live</span></h3>
+                    <div class="activity-item">
+                        <div class="activity-dot lead"></div>
+                        <div>
+                            <div class="activity-text"><strong>Maria Gonzalez</strong> <span>submitted a demo request from your landing page</span></div>
+                            <div class="activity-time">12 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot chat"></div>
+                        <div>
+                            <div class="activity-text"><strong>Tom Richards</strong> <span>chatted with your AI assistant about selling timeline</span></div>
+                            <div class="activity-time">45 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot calc"></div>
+                        <div>
+                            <div class="activity-text"><strong>Jennifer Wu</strong> <span>used your Net Proceeds Calculator -- $485K home</span></div>
+                            <div class="activity-time">1 hour ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot visit"></div>
+                        <div>
+                            <div class="activity-text"><strong>David Park</strong> <span>visited your Fix vs. Sell Analyzer from Google</span></div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-dot lead"></div>
+                        <div>
+                            <div class="activity-text"><strong>Rachel Adams</strong> <span>scheduled a listing consultation via chatbot</span></div>
+                            <div class="activity-time">3 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Your Tools <span class="badge">5 Active</span></h3>
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon">&#x1F3E0;</div>
+                            <div class="tool-name">Landing Page</div>
+                            <div class="tool-stat"><strong>892</strong> visits</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icon">&#x1F4B0;</div>
+                            <div class="tool-name">Net Proceeds</div>
+                            <div class="tool-stat"><strong>128</strong> calculations</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icon">&#x1F527;</div>
+                            <div class="tool-name">Fix vs. Sell</div>
+                            <div class="tool-stat"><strong>64</strong> analyses</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icon">&#x1F916;</div>
+                            <div class="tool-name">AI Chatbot</div>
+                            <div class="tool-stat"><strong>83</strong> chats</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icon">&#x270D;&#xFE0F;</div>
+                            <div class="tool-name">Listing Writer</div>
+                            <div class="tool-stat"><strong>21</strong> descriptions</div>
+                        </div>
+                        <div class="tool-card" style="border-style: dashed; opacity: 0.5;">
+                            <div class="tool-icon">&#x1F513;</div>
+                            <div class="tool-name">+23 More</div>
+                            <div class="tool-stat">Coming soon</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Hot Leads <span class="badge">Needs Follow-Up</span></h3>
+                <table class="lead-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Source</th>
+                            <th>Home Value</th>
+                            <th>Status</th>
+                            <th>Last Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Maria Gonzalez</strong></td>
+                            <td>maria.g@email.com</td>
+                            <td>Landing Page</td>
+                            <td>$425,000</td>
+                            <td><span class="lead-status hot">Hot</span></td>
+                            <td>12 min ago</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tom Richards</strong></td>
+                            <td>tom.richards@email.com</td>
+                            <td>AI Chatbot</td>
+                            <td>$315,000</td>
+                            <td><span class="lead-status hot">Hot</span></td>
+                            <td>45 min ago</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jennifer Wu</strong></td>
+                            <td>j.wu@email.com</td>
+                            <td>Net Proceeds Calc</td>
+                            <td>$485,000</td>
+                            <td><span class="lead-status warm">Warm</span></td>
+                            <td>1 hour ago</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rachel Adams</strong></td>
+                            <td>rachel.a@email.com</td>
+                            <td>Chatbot Booking</td>
+                            <td>$290,000</td>
+                            <td><span class="lead-status warm">Warm</span></td>
+                            <td>3 hours ago</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Michael Torres</strong></td>
+                            <td>m.torres@email.com</td>
+                            <td>Fix vs. Sell</td>
+                            <td>$375,000</td>
+                            <td><span class="lead-status new">New</span></td>
+                            <td>Yesterday</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lisa Chen</strong></td>
+                            <td>lisa.chen@email.com</td>
+                            <td>Landing Page</td>
+                            <td>$520,000</td>
+                            <td><span class="lead-status new">New</span></td>
+                            <td>2 days ago</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cta-banner">
+                <h2>This Could Be Your Dashboard</h2>
+                <p>Every lead, every chat, every calculation -- all branded to you, all working 24/7.</p>
+                <a href="https://gethomeedge.com/#pricing" class="cta-btn">Get Your HomeEdge Platform</a>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
