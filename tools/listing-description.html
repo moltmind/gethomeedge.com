@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Listing Description Writer | HomeEdge</title>
+<style>
+  :root {
+    --bg-dark: #0A1929;
+    --bg-card: #132F4C;
+    --bg-input: #0E2240;
+    --accent-cyan: #00E5FF;
+    --accent-blue: #1565C0;
+    --accent-gold: #FFD54F;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0BEC5;
+    --border: #1A3A5C;
+    --success: #66BB6A;
+    --error: #EF5350;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ---- Header ---- */
+  header {
+    background: linear-gradient(135deg, #050E1A 0%, var(--bg-card) 100%);
+    border-bottom: 2px solid var(--accent-cyan);
+    padding: 32px;
+    text-align: center;
+    animation: slideDown 0.5s ease-out;
+  }
+
+  .brand {
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-cyan), #80F0FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
+  /* ---- Main ---- */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+  }
+
+  /* ---- Form Card ---- */
+  .form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    animation: fadeUp 0.5s ease-out 0.15s both;
+  }
+
+  .form-card h2 {
+    color: var(--accent-cyan);
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  label .required {
+    color: var(--accent-cyan);
+  }
+
+  input, select, textarea {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: #4A6178;
+  }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23B0BEC5' d='M6 8.825L0.35 3.175l0.7-0.7L6 7.425l4.95-4.95 0.7 0.7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .section-divider {
+    grid-column: 1 / -1;
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 4px 0;
+  }
+
+  .section-label {
+    grid-column: 1 / -1;
+    font-size: 0.8rem;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+
+  .submit-row {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .btn-generate {
+    background: linear-gradient(135deg, var(--accent-cyan), #00B8D4);
+    color: #0A1929;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 48px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+  }
+
+  .btn-generate:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ---- Loading ---- */
+  .loading-container {
+    display: none;
+    text-align: center;
+    padding: 48px 20px;
+  }
+
+  .loading-container.active {
+    display: block;
+  }
+
+  .loading-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .loading-dots span {
+    width: 12px;
+    height: 12px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+  .loading-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .loading-subtext {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  /* ---- Error ---- */
+  .error-message {
+    display: none;
+    background: rgba(239, 83, 80, 0.1);
+    border: 1px solid var(--error);
+    color: var(--error);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    font-size: 0.95rem;
+  }
+
+  .error-message.active {
+    display: block;
+  }
+
+  /* ---- Output ---- */
+  .output-container {
+    display: none;
+    margin-top: 32px;
+    animation: fadeUp 0.4s ease-out;
+  }
+
+  .output-container.active {
+    display: block;
+  }
+
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .output-header h2 {
+    color: var(--accent-cyan);
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .btn-copy {
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+  }
+
+  .btn-copy:hover {
+    background: rgba(0, 229, 255, 0.2);
+  }
+
+  .btn-copy.copied {
+    background: rgba(102, 187, 106, 0.15);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  .btn-copy svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .output-body {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    line-height: 1.8;
+  }
+
+  .output-body h1 {
+    color: var(--accent-cyan);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .output-body h2 {
+    color: var(--accent-gold);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  .output-body h3 {
+    color: var(--accent-cyan);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 16px;
+    margin-bottom: 6px;
+  }
+
+  .output-body strong {
+    color: var(--accent-cyan);
+  }
+
+  .output-body li strong {
+    color: var(--accent-gold);
+  }
+
+  .output-body ul, .output-body ol {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+
+  .output-body li {
+    margin-bottom: 4px;
+  }
+
+  .output-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 16px 0;
+  }
+
+  .output-body p {
+    margin-bottom: 8px;
+  }
+
+  .btn-reset {
+    display: block;
+    margin: 24px auto 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: 12px;
+    padding: 14px 36px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-reset:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    padding: 24px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: #4A6178;
+  }
+
+  footer a {
+    color: var(--accent-gold);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- Animations ---- */
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-12px); opacity: 1; }
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 640px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .btn-generate {
+      width: 100%;
+    }
+
+    header { padding: 24px 16px; }
+    .form-card { padding: 20px 16px; }
+    main { padding: 20px 12px 40px; }
+    .output-body { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">HomeEdge</div>
+  <h1>AI Listing Description Writer</h1>
+  <p>Create compelling listing descriptions in seconds</p>
+</header>
+
+<main>
+  <div class="form-card">
+    <h2>Property Details</h2>
+    <div class="form-grid" id="mainForm">
+
+      <div class="form-group full-width">
+        <label>Property Address <span class="required">*</span></label>
+        <input type="text" id="address" placeholder="123 Main Street" required>
+      </div>
+
+      <div class="form-group full-width">
+        <label>City, State <span class="required">*</span></label>
+        <input type="text" id="cityState" placeholder="Milwaukee, WI" required>
+      </div>
+
+      <div class="form-group">
+        <label>Bedrooms</label>
+        <input type="number" id="beds" placeholder="3" min="0">
+      </div>
+
+      <div class="form-group">
+        <label>Bathrooms</label>
+        <input type="number" id="baths" placeholder="2" min="0" step="0.5">
+      </div>
+
+      <div class="form-group">
+        <label>Square Footage</label>
+        <input type="number" id="sqft" placeholder="2,400" min="0">
+      </div>
+
+      <div class="form-group">
+        <label>Year Built</label>
+        <input type="number" id="yearBuilt" placeholder="2005" min="1800" max="2030">
+      </div>
+
+      <div class="form-group full-width">
+        <label>Property Type</label>
+        <select id="propertyType">
+          <option value="Single Family">Single Family</option>
+          <option value="Condo/Townhome">Condo/Townhome</option>
+          <option value="Multi-Family">Multi-Family</option>
+          <option value="Luxury Estate">Luxury Estate</option>
+        </select>
+      </div>
+
+      <hr class="section-divider">
+      <div class="section-label">Writing Style</div>
+
+      <div class="form-group full-width">
+        <label>Style</label>
+        <select id="style">
+          <option value="Professional">Professional</option>
+          <option value="Luxury">Luxury</option>
+          <option value="Casual & Friendly">Casual & Friendly</option>
+          <option value="Inviting & Warm">Inviting & Warm</option>
+          <option value="First-Time Buyer Focused">First-Time Buyer Focused</option>
+        </select>
+      </div>
+
+      <div class="form-group full-width">
+        <label>Key Features</label>
+        <textarea id="features" placeholder="Open floor plan, chef's kitchen, large backyard..." rows="3"></textarea>
+      </div>
+
+      <div class="form-group full-width">
+        <label>Recent Upgrades</label>
+        <textarea id="upgrades" placeholder="New roof 2024, updated HVAC, hardwood floors..." rows="3"></textarea>
+      </div>
+
+      <hr class="section-divider">
+      <div class="section-label">Your Branding</div>
+
+      <div class="form-group">
+        <label>Agent Name</label>
+        <input type="text" id="agentName" placeholder="Jane Smith">
+      </div>
+
+      <div class="form-group">
+        <label>Brokerage</label>
+        <input type="text" id="brokerage" placeholder="Keller Williams">
+      </div>
+
+      <div class="submit-row">
+        <button class="btn-generate" id="btnGenerate" onclick="generate()">Generate Listing Description</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-container" id="loading">
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="loading-text">Crafting your listing description...</div>
+    <div class="loading-subtext">Analyzing property details and writing copy</div>
+  </div>
+
+  <div class="error-message" id="errorMsg"></div>
+
+  <div class="output-container" id="output">
+    <div class="output-header">
+      <h2>Your Listing Description</h2>
+      <button class="btn-copy" id="btnCopy" onclick="copyOutput()">
+        <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        <span>Copy</span>
+      </button>
+    </div>
+    <div class="output-body" id="outputBody"></div>
+    <button class="btn-reset" onclick="resetForm()">Generate Another</button>
+  </div>
+</main>
+
+<footer>
+  Powered by <a href="https://gethomeedge.com" target="_blank">HomeEdge</a> | <a href="https://gethomeedge.com" target="_blank">gethomeedge.com</a>
+</footer>
+
+<script>
+const WORKER_URL = "https://homeedge-chat.moltmind.workers.dev/tool";
+let rawOutput = "";
+
+function renderMarkdown(text) {
+    let html = text;
+    html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
+    html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
+    html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    html = html.replace(/^---$/gm, "<hr>");
+    html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
+    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
+    html = html.replace(/^\d+\.\s+(.+)$/gm, "<oli>$1</oli>");
+    html = html.replace(/((?:<oli>.*<\/oli>\n?)+)/g, function(match) {
+        return "<ol>" + match.replace(/<\/?oli>/g, function(tag) { return tag.replace("oli","li"); }) + "</ol>";
+    });
+    html = html.replace(/\n\n+/g, "</p><p>");
+    html = html.replace(/\n/g, "<br>");
+    html = "<p>" + html + "</p>";
+    html = html.replace(/<p>\s*<(h[123]|ul|ol|hr)/g, "<$1");
+    html = html.replace(/<\/(h[123]|ul|ol)>\s*<\/p>/g, "</$1>");
+    html = html.replace(/<p>\s*<hr>\s*<\/p>/g, "<hr>");
+    html = html.replace(/<p>\s*<\/p>/g, "");
+    html = html.replace(/<br>\s*<(h[123]|ul|ol|hr)/g, "<$1");
+    html = html.replace(/<\/(h[123]|ul|ol)>\s*<br>/g, "</$1>");
+    html = html.replace(/<p><br>/g, "<p>");
+    return html;
+}
+
+function buildPrompt() {
+    const address = document.getElementById("address").value.trim();
+    const cityState = document.getElementById("cityState").value.trim();
+    const beds = document.getElementById("beds").value;
+    const baths = document.getElementById("baths").value;
+    const sqft = document.getElementById("sqft").value;
+    const year = document.getElementById("yearBuilt").value;
+    const propertyType = document.getElementById("propertyType").value;
+    const style = document.getElementById("style").value;
+    const features = document.getElementById("features").value.trim();
+    const upgrades = document.getElementById("upgrades").value.trim();
+    const agent = document.getElementById("agentName").value.trim();
+    const brokerage = document.getElementById("brokerage").value.trim();
+
+    let prompt = `Write a ${style} listing description for ${address}, ${cityState}.`;
+    if (beds) prompt += ` ${beds} bed,`;
+    if (baths) prompt += ` ${baths} bath,`;
+    if (sqft) prompt += ` ${sqft} sqft,`;
+    if (year) prompt += ` built ${year}.`;
+    prompt += ` ${propertyType}.`;
+    if (features) prompt += ` Key features: ${features}.`;
+    if (upgrades) prompt += ` Recent upgrades: ${upgrades}.`;
+    if (agent) prompt += ` Prepared by ${agent}`;
+    if (agent && brokerage) prompt += ` of ${brokerage}.`;
+    else if (brokerage) prompt += ` Prepared by ${brokerage}.`;
+
+    return prompt;
+}
+
+async function generate() {
+    const address = document.getElementById("address").value.trim();
+    const cityState = document.getElementById("cityState").value.trim();
+
+    if (!address || !cityState) {
+        showError("Please fill in the required fields: Property Address and City, State.");
+        return;
+    }
+
+    const btn = document.getElementById("btnGenerate");
+    const loading = document.getElementById("loading");
+    const errorEl = document.getElementById("errorMsg");
+    const output = document.getElementById("output");
+
+    btn.disabled = true;
+    errorEl.classList.remove("active");
+    output.classList.remove("active");
+    loading.classList.add("active");
+    loading.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    try {
+        const agentName = document.getElementById("agentName").value.trim();
+        const brokerage = document.getElementById("brokerage").value.trim();
+
+        const res = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                messages: [{ role: "user", content: buildPrompt() }],
+                toolType: "listingDescription",
+                context: { agentName: agentName || "Agent", company: brokerage || "" }
+            })
+        });
+
+        if (!res.ok) throw new Error(`Server error (${res.status})`);
+
+        const result = await res.json();
+        rawOutput = result.reply || "";
+
+        if (!rawOutput) throw new Error("No response received. Please try again.");
+
+        loading.classList.remove("active");
+        document.getElementById("outputBody").innerHTML = renderMarkdown(rawOutput);
+        output.classList.add("active");
+        output.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    } catch (err) {
+        loading.classList.remove("active");
+        showError(err.message || "Something went wrong. Please try again.");
+    }
+
+    btn.disabled = false;
+}
+
+function showError(msg) {
+    const errorEl = document.getElementById("errorMsg");
+    errorEl.textContent = msg;
+    errorEl.classList.add("active");
+}
+
+function copyOutput() {
+    const btn = document.getElementById("btnCopy");
+    navigator.clipboard.writeText(rawOutput).then(() => {
+        btn.classList.add("copied");
+        btn.querySelector("span").textContent = "Copied!";
+        setTimeout(() => {
+            btn.classList.remove("copied");
+            btn.querySelector("span").textContent = "Copy";
+        }, 2000);
+    });
+}
+
+function resetForm() {
+    document.getElementById("output").classList.remove("active");
+    document.getElementById("errorMsg").classList.remove("active");
+    document.querySelector(".form-card").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// Enter key submits form (except textarea)
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        generate();
+    }
+});
+</script>
+</body>
+</html>

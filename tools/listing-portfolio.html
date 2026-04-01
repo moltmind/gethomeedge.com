@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Portfolio | HomeEdge</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #0A1929;
+    color: #FFFFFF;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    background: linear-gradient(180deg, #050E1A 0%, #132F4C 100%);
+    border-bottom: 2px solid #00E5FF;
+    padding: 32px 16px 28px;
+    margin-bottom: 36px;
+  }
+
+  .brand {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #FFD54F;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #00E5FF 0%, #80F0FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: #B0BEC5;
+  }
+
+  /* ---- Stats Bar ---- */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: #132F4C;
+    border: 1px solid #1A3A5C;
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.2;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8899AA;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  .stat-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  .badge-cyan { background: rgba(0,229,255,0.15); color: #00E5FF; }
+  .badge-green { background: rgba(74,222,128,0.15); color: #4ADE80; }
+
+  /* ---- Filter Tabs ---- */
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 8px 18px;
+    border: 1px solid #1A3A5C;
+    border-radius: 24px;
+    background: transparent;
+    color: #B0BEC5;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .tab-btn:hover {
+    border-color: #00E5FF;
+    color: #FFFFFF;
+  }
+
+  .tab-btn.active {
+    background: #00E5FF;
+    border-color: #00E5FF;
+    color: #0A1929;
+  }
+
+  /* ---- Listing Grid ---- */
+  .listing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .listing-card {
+    background: #132F4C;
+    border: 1px solid #1A3A5C;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .listing-card:hover {
+    border-color: rgba(0,229,255,0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Photo placeholder */
+  .listing-photo {
+    height: 180px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .listing-photo svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.3;
+  }
+
+  .photo-gradient-1 { background: linear-gradient(135deg, #1A3A5C, #0E2240); }
+  .photo-gradient-2 { background: linear-gradient(135deg, #1B3044, #132F4C); }
+  .photo-gradient-3 { background: linear-gradient(135deg, #0E2240, #1A3A5C); }
+  .photo-gradient-4 { background: linear-gradient(135deg, #132F4C, #1B3044); }
+
+  .status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-active {
+    background: rgba(0,229,255,0.9);
+    color: #0A1929;
+  }
+
+  .status-pending {
+    background: rgba(255,213,79,0.9);
+    color: #0A1929;
+  }
+
+  .status-sold {
+    background: rgba(74,222,128,0.9);
+    color: #0A1929;
+  }
+
+  /* Card body */
+  .listing-body {
+    padding: 16px 18px 18px;
+  }
+
+  .listing-address {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 2px;
+  }
+
+  .listing-city {
+    font-size: 14px;
+    color: #B0BEC5;
+    margin-bottom: 10px;
+  }
+
+  .listing-price {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #00E5FF;
+    margin-bottom: 12px;
+  }
+
+  .listing-specs {
+    display: flex;
+    gap: 0;
+    font-size: 13px;
+    color: #B0BEC5;
+    margin-bottom: 10px;
+  }
+
+  .spec {
+    padding: 0 10px;
+    border-right: 1px solid #1A3A5C;
+  }
+
+  .spec:first-child { padding-left: 0; }
+  .spec:last-child { border-right: none; padding-right: 0; }
+
+  .listing-meta {
+    font-size: 12px;
+    color: #607D8B;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    padding: 32px 16px;
+    font-size: 13px;
+    color: #B0BEC5;
+  }
+
+  footer span { color: #00E5FF; }
+  footer a { color: #FFD54F; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 480px) {
+    .container { padding: 16px 12px 36px; }
+    header { padding: 24px 12px 20px; }
+    .stats-bar {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .listing-grid {
+      grid-template-columns: 1fr;
+    }
+    .stat-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">HomeEdge</div>
+  <h1>Listing Portfolio</h1>
+  <p class="subtitle">Showcase your track record</p>
+</header>
+
+<div class="container">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value">8</div>
+      <div class="stat-label">Total Listings</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">2 <span class="stat-badge badge-cyan">Active</span></div>
+      <div class="stat-label">Active</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">5 <span class="stat-badge badge-green">Sold</span></div>
+      <div class="stat-label">Sold</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">24</div>
+      <div class="stat-label">Avg Days on Market</div>
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <button class="tab-btn active" data-filter="all" onclick="filterListings('all', this)">All (8)</button>
+    <button class="tab-btn" data-filter="Active" onclick="filterListings('Active', this)">Active (2)</button>
+    <button class="tab-btn" data-filter="Pending" onclick="filterListings('Pending', this)">Pending (1)</button>
+    <button class="tab-btn" data-filter="Sold" onclick="filterListings('Sold', this)">Sold (5)</button>
+  </div>
+
+  <!-- Listing Grid -->
+  <div class="listing-grid" id="listingGrid"></div>
+
+</div>
+
+<footer>Powered by <span>HomeEdge</span> | <a href="https://gethomeedge.com">gethomeedge.com</a></footer>
+
+<script>
+  const houseSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>`;
+
+  const listings = [
+    { address: '742 Oakwood Dr', city: 'Springfield, IL', price: 385000, beds: 4, baths: 2.5, sqft: 2200, status: 'Sold', dom: 18, date: 'Jan 12, 2026' },
+    { address: '1201 Elm Street', city: 'Springfield, IL', price: 299000, beds: 3, baths: 2, sqft: 1650, status: 'Sold', dom: 22, date: 'Feb 3, 2026' },
+    { address: '556 Maple Ave', city: 'Rochester, IL', price: 425000, beds: 4, baths: 3, sqft: 2800, status: 'Active', dom: 8, date: 'Mar 20, 2026' },
+    { address: '89 Pine Court', city: 'Chatham, IL', price: 275000, beds: 3, baths: 1.5, sqft: 1400, status: 'Sold', dom: 31, date: 'Dec 8, 2025' },
+    { address: '2100 River Rd', city: 'Springfield, IL', price: 510000, beds: 5, baths: 3.5, sqft: 3200, status: 'Sold', dom: 14, date: 'Feb 18, 2026' },
+    { address: '334 Cedar Ln', city: 'Sherman, IL', price: 320000, beds: 3, baths: 2, sqft: 1800, status: 'Active', dom: 5, date: 'Mar 25, 2026' },
+    { address: '678 Birch Way', city: 'Rochester, IL', price: 345000, beds: 4, baths: 2, sqft: 2100, status: 'Pending', dom: 19, date: 'Mar 10, 2026' },
+    { address: '1450 Walnut Blvd', city: 'Springfield, IL', price: 265000, beds: 2, baths: 1, sqft: 1200, status: 'Sold', dom: 28, date: 'Jan 28, 2026' }
+  ];
+
+  const gradients = ['photo-gradient-1', 'photo-gradient-2', 'photo-gradient-3', 'photo-gradient-4'];
+
+  function formatPrice(n) {
+    return '$' + n.toLocaleString('en-US');
+  }
+
+  function formatBaths(b) {
+    return b % 1 === 0 ? b.toFixed(0) : b.toFixed(1);
+  }
+
+  function getStatusClass(status) {
+    if (status === 'Active') return 'status-active';
+    if (status === 'Pending') return 'status-pending';
+    return 'status-sold';
+  }
+
+  function renderListings(filter) {
+    const grid = document.getElementById('listingGrid');
+    grid.innerHTML = '';
+
+    const filtered = filter === 'all' ? listings : listings.filter(l => l.status === filter);
+
+    filtered.forEach((l, i) => {
+      const card = document.createElement('div');
+      card.className = 'listing-card';
+      card.innerHTML = `
+        <div class="listing-photo ${gradients[i % gradients.length]}">
+          ${houseSVG}
+          <div class="status-badge ${getStatusClass(l.status)}">${l.status}</div>
+        </div>
+        <div class="listing-body">
+          <div class="listing-address">${l.address}</div>
+          <div class="listing-city">${l.city}</div>
+          <div class="listing-price">${formatPrice(l.price)}</div>
+          <div class="listing-specs">
+            <span class="spec">${l.beds} bd</span>
+            <span class="spec">${formatBaths(l.baths)} ba</span>
+            <span class="spec">${l.sqft.toLocaleString()} sqft</span>
+          </div>
+          <div class="listing-meta">
+            <span>${l.dom} days on market</span>
+            <span>${l.date}</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterListings(filter, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderListings(filter);
+  }
+
+  // Initial render
+  renderListings('all');
+</script>
+
+</body>
+</html>

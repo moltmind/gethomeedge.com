@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Dashboard | HomeEdge</title>
+<style>
+:root {
+  --bg-dark: #0A1929;
+  --bg-card: #132F4C;
+  --bg-input: #0E2240;
+  --accent-cyan: #00E5FF;
+  --accent-gold: #FFD54F;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0BEC5;
+  --border: #1A3A5C;
+  --success: #4ADE80;
+  --error: #EF5350;
+  --warning: #FFD54F;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg-dark);color:var(--text-primary);
+  font-family:system-ui,-apple-system,sans-serif;
+  min-height:100vh;line-height:1.6;
+}
+header{
+  text-align:center;padding:32px 20px 28px;
+  background:linear-gradient(180deg,#050E1A,#132F4C);
+  border-bottom:2px solid var(--accent-cyan);
+}
+.brand{color:var(--accent-gold);text-transform:uppercase;letter-spacing:2px;font-size:.85rem;font-weight:600;margin-bottom:8px;}
+header h1{
+  font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,#00E5FF,#80F0FF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:6px;
+}
+header .subtitle{color:var(--text-secondary);font-size:1rem;}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px 40px;}
+.card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:14px;padding:28px;margin-bottom:24px;
+}
+.card-title{font-size:1.15rem;font-weight:700;margin-bottom:18px;color:var(--accent-gold);}
+
+/* TOP STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;
+}
+.stat-card .stat-number{font-size:2.5rem;font-weight:800;color:var(--accent-cyan);line-height:1.1;}
+.stat-card .stat-number.green{color:var(--success);}
+.stat-card .stat-label{color:var(--text-secondary);font-size:.85rem;margin-bottom:8px;font-weight:600;}
+.stat-card .stat-sub{font-size:.78rem;margin-top:6px;}
+.stat-sub.green{color:var(--success);}
+.stat-sub.gold{color:var(--accent-gold);}
+
+/* BAR CHART */
+.chart-area{
+  background:var(--bg-input);border-radius:10px;padding:24px 20px 16px;
+  position:relative;
+}
+.chart-bars{display:flex;align-items:flex-end;justify-content:space-around;height:220px;position:relative;}
+.chart-gridline{
+  position:absolute;left:0;right:0;top:50%;height:1px;
+  border-top:1px dashed rgba(176,190,197,.15);
+}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+.bar-value{font-size:.75rem;font-weight:600;color:var(--accent-cyan);}
+.bar{
+  width:36px;border-radius:6px 6px 0 0;
+  background:linear-gradient(to top,#00E5FF,#80F0FF);
+  transition:height .5s ease;
+}
+.bar-label{font-size:.72rem;color:var(--text-secondary);margin-top:2px;}
+
+/* TOOL USAGE */
+.tool-bars{display:flex;flex-direction:column;gap:12px;}
+.tool-row{display:flex;align-items:center;gap:14px;}
+.tool-name{width:180px;font-size:.85rem;font-weight:500;text-align:right;color:var(--text-secondary);flex-shrink:0;}
+.tool-track{flex:1;height:28px;background:var(--bg-input);border-radius:6px;overflow:hidden;position:relative;}
+.tool-fill{
+  height:100%;border-radius:6px;
+  background:linear-gradient(90deg,#00E5FF,#80F0FF);
+  display:flex;align-items:center;justify-content:flex-end;padding-right:10px;
+  font-size:.75rem;font-weight:700;color:#0A1929;
+  transition:width .6s ease;
+}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+th{
+  text-align:left;padding:12px 14px;font-size:.78rem;
+  color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;
+  border-bottom:1px solid var(--border);
+}
+td{padding:12px 14px;font-size:.88rem;border-bottom:1px solid rgba(26,58,92,.4);}
+tr:hover td{background:rgba(0,229,255,.03);}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.dot.red{background:var(--error);}
+.dot.gold{background:var(--accent-gold);}
+.dot.green{background:var(--success);}
+.dot.cyan{background:var(--accent-cyan);}
+.dot.gray{background:#78909C;}
+.badge-listed{
+  display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;
+  background:rgba(74,222,128,.15);color:var(--success);border:1px solid var(--success);
+}
+
+/* MONTHLY TREND */
+.trend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.trend-item{background:var(--bg-input);border-radius:10px;padding:18px;text-align:center;}
+.trend-label{font-size:.8rem;color:var(--text-secondary);margin-bottom:6px;}
+.trend-values{font-size:.9rem;font-weight:600;margin-bottom:4px;}
+.trend-values span{color:var(--text-secondary);font-weight:400;}
+.trend-change{font-size:.82rem;color:var(--success);font-weight:600;}
+
+footer{
+  text-align:center;padding:28px 20px;color:var(--text-secondary);font-size:.85rem;
+  border-top:1px solid var(--border);margin-top:20px;
+}
+footer a{color:var(--accent-gold);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+
+@media(max-width:768px){
+  .stats-row{grid-template-columns:1fr;}
+  .tool-name{width:110px;font-size:.78rem;}
+  .trend-grid{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .container{padding:16px 12px 32px;}
+  .card{padding:20px 16px;}
+  header{padding:24px 16px 20px;}
+  header h1{font-size:1.5rem;}
+  .bar{width:24px;}
+  .tool-name{width:90px;font-size:.72rem;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">HomeEdge</div>
+  <h1>Performance Dashboard</h1>
+  <p class="subtitle">Track your platform's impact at a glance</p>
+</header>
+
+<div class="container">
+
+  <!-- TOP STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Leads</div>
+      <div class="stat-number">47</div>
+      <div class="stat-sub green">+12 this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tool Uses</div>
+      <div class="stat-number">312</div>
+      <div class="stat-sub green">+89 this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Listings Won</div>
+      <div class="stat-number green">3</div>
+      <div class="stat-sub gold">$36,000 commission</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Response Time</div>
+      <div class="stat-number">&lt; 2 min</div>
+      <div class="stat-sub" style="color:var(--text-secondary)">AI-powered 24/7</div>
+    </div>
+  </div>
+
+  <!-- WEEKLY ACTIVITY CHART -->
+  <div class="card">
+    <div class="card-title">Weekly Activity (Last 8 Weeks)</div>
+    <div class="chart-area">
+      <div class="chart-gridline"></div>
+      <div class="chart-bars">
+        <div class="bar-col"><div class="bar-value">28</div><div class="bar" style="height:90px"></div><div class="bar-label">W1</div></div>
+        <div class="bar-col"><div class="bar-value">35</div><div class="bar" style="height:113px"></div><div class="bar-label">W2</div></div>
+        <div class="bar-col"><div class="bar-value">42</div><div class="bar" style="height:135px"></div><div class="bar-label">W3</div></div>
+        <div class="bar-col"><div class="bar-value">38</div><div class="bar" style="height:123px"></div><div class="bar-label">W4</div></div>
+        <div class="bar-col"><div class="bar-value">51</div><div class="bar" style="height:165px"></div><div class="bar-label">W5</div></div>
+        <div class="bar-col"><div class="bar-value">45</div><div class="bar" style="height:145px"></div><div class="bar-label">W6</div></div>
+        <div class="bar-col"><div class="bar-value">62</div><div class="bar" style="height:200px"></div><div class="bar-label">W7</div></div>
+        <div class="bar-col"><div class="bar-value">49</div><div class="bar" style="height:158px"></div><div class="bar-label">W8</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOL USAGE BREAKDOWN -->
+  <div class="card">
+    <div class="card-title">Most Used Tools</div>
+    <div class="tool-bars">
+      <div class="tool-row"><div class="tool-name">AI Chatbot</div><div class="tool-track"><div class="tool-fill" style="width:100%">89</div></div></div>
+      <div class="tool-row"><div class="tool-name">Net Proceeds Calculator</div><div class="tool-track"><div class="tool-fill" style="width:81%">72</div></div></div>
+      <div class="tool-row"><div class="tool-name">CMA Generator</div><div class="tool-track"><div class="tool-fill" style="width:65%">58</div></div></div>
+      <div class="tool-row"><div class="tool-name">Fix vs. Sell Analyzer</div><div class="tool-track"><div class="tool-fill" style="width:46%">41</div></div></div>
+      <div class="tool-row"><div class="tool-name">Social Media Generator</div><div class="tool-track"><div class="tool-fill" style="width:31%">28</div></div></div>
+      <div class="tool-row"><div class="tool-name">Listing Description Writer</div><div class="tool-track"><div class="tool-fill" style="width:25%">22</div></div></div>
+      <div class="tool-row"><div class="tool-name">Objection Handler</div><div class="tool-track"><div class="tool-fill" style="width:17%">15</div></div></div>
+      <div class="tool-row"><div class="tool-name">Market Snapshot</div><div class="tool-track"><div class="tool-fill" style="width:13%">12</div></div></div>
+    </div>
+  </div>
+
+  <!-- RECENT LEADS TABLE -->
+  <div class="card">
+    <div class="card-title">Recent Leads</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Source</th><th>Date</th><th>Status</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jennifer Walsh</td><td>AI Chatbot</td><td>Mar 30</td>
+            <td><span class="dot red"></span>Hot</td><td>$425K</td>
+          </tr>
+          <tr>
+            <td>Robert Chen</td><td>Calculator</td><td>Mar 28</td>
+            <td><span class="dot gold"></span>Warm</td><td>$380K</td>
+          </tr>
+          <tr>
+            <td>Maria Santos</td><td>Open House QR</td><td>Mar 27</td>
+            <td><span class="dot green"></span>Appointment Set</td><td>$310K</td>
+          </tr>
+          <tr>
+            <td>David Kim</td><td>Website Form</td><td>Mar 25</td>
+            <td><span class="dot cyan"></span>Contacted</td><td>$520K</td>
+          </tr>
+          <tr>
+            <td>Amanda Lewis</td><td>Referral</td><td>Mar 23</td>
+            <td><span class="badge-listed">Listed!</span></td><td>$295K</td>
+          </tr>
+          <tr>
+            <td>James O'Brien</td><td>AI Chatbot</td><td>Mar 21</td>
+            <td><span class="dot gray"></span>Cold</td><td>$450K</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MONTHLY TREND -->
+  <div class="card">
+    <div class="card-title">This Month vs Last Month</div>
+    <div class="trend-grid">
+      <div class="trend-item">
+        <div class="trend-label">Leads</div>
+        <div class="trend-values">47 <span>vs 35</span></div>
+        <div class="trend-change">&#9650; +34%</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-label">Tool Uses</div>
+        <div class="trend-values">312 <span>vs 223</span></div>
+        <div class="trend-change">&#9650; +40%</div>
+      </div>
+      <div class="trend-item">
+        <div class="trend-label">Conversion Rate</div>
+        <div class="trend-values">6.4% <span>vs 5.7%</span></div>
+        <div class="trend-change">&#9650; +0.7%</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Powered by <a href="https://gethomeedge.com">HomeEdge</a> | <a href="https://gethomeedge.com">gethomeedge.com</a></footer>
+</body>
+</html>
