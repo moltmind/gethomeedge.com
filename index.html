@@ -491,6 +491,25 @@
             font-size: 0.85rem;
         }
 
+        
+        /* ===== DEMO VIDEO ===== */
+        .demo-video-section {
+            background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+        .demo-video-wrapper {
+            max-width: 400px;
+            margin: 2rem auto 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .demo-video-wrapper video { width: 100%; display: block; }
+        .demo-video-cta { margin-top: 1.5rem; font-size: 0.9rem; color: var(--gray); }
+        .demo-video-cta a { color: var(--gold); text-decoration: none; font-weight: 700; }
+
         /* ===== TESTIMONIAL ===== */
         .testimonial-bg {
             background: linear-gradient(180deg, var(--navy-light) 0%, var(--navy) 100%);
@@ -1125,6 +1144,20 @@
                 </div>
             </div>
         </div>
+    </section>
+
+
+    <!-- Demo Video -->
+    <section class="demo-video-section" id="demo-video">
+        <span class="section-label">See It In Action</span>
+        <h2 class="section-title">Watch the AI Handle the Hardest Question in Real Estate</h2>
+        <p class="section-subtitle mx-auto" style="max-width:600px">We asked the AI: &ldquo;Why should I pay you a 6% commission?&rdquo; Watch what happens.</p>
+        <div class="demo-video-wrapper">
+            <video controls preload="metadata" playsinline>
+                <source src="demo-video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <p class="demo-video-cta">This is 1 of 28 AI tools. All branded to you. <a href="javascript:void(0)" onclick="openModal()">Try your free demo</a></p>
     </section>
 
     <!-- Problem -->
