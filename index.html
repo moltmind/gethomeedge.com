@@ -1019,6 +1019,17 @@
             .hero-cta-group { flex-direction: column; align-items: center; }
             .final-cta h2 { font-size: 2rem; }
         }
+
+        /* Tool list grid responsive */
+        .tools-full-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .tools-full-list { grid-template-columns: 1fr; gap: 1.5rem; }
+            .tools-full-box { padding: 2rem 1.5rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -1131,9 +1142,9 @@
                 <p>Net proceeds, fix vs. sell, commission value, staging ROI, closing costs, and more. Every calculator an agent needs to win the listing presentation.</p>
             </div>
         </div>
-        <div style="margin-top:3rem;background:var(--navy-light);border:1px solid var(--border);border-radius:16px;padding:2.5rem 3rem;">
+        <div class="tools-full-box" style="margin-top:3rem;background:var(--navy-light);border:1px solid var(--border);border-radius:16px;padding:2.5rem 3rem;">
             <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;text-align:center;">All 28 Tools Included</h3>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+            <div class="tools-full-list">
                 <div>
                     <h4 style="color:var(--cyan);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.75rem;">AI Generators (14)</h4>
                     <p style="color:var(--gray);font-size:0.85rem;line-height:2;">CMA Reports<br>Listing Descriptions<br>Social Media Posts<br>Follow-Up Emails<br>Market Snapshots<br>Listing Presentations<br>Video Scripts<br>Expired Listing Kits<br>Neighborhood Farming<br>Objection Handling<br>Seller Updates<br>Pricing Strategy<br>Testimonial Requests<br>Market Analysis</p>
@@ -1476,23 +1487,25 @@
             });
         });
 
-        // Intersection Observer for animations
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+        // Intersection Observer for animations (desktop only -- mobile gets instant visibility)
+        if (window.innerWidth > 768) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-        document.querySelectorAll('.feature-card, .stat-card, .step-card, .price-card').forEach(function(el) {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
+            document.querySelectorAll('.feature-card, .stat-card, .step-card, .price-card').forEach(function(el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
     </script>
     <script src="chatbot.js"></script>
 
