@@ -1468,7 +1468,10 @@
                 <div class="form-group">
                     <input type="text" name="company" placeholder="Brokerage / Team Name" required>
                 </div>
-                <button type="submit" class="form-submit">Get My Demo</button>
+                <div class="form-group">
+                    <input type="text" name="city" placeholder="City & State (e.g. Dallas, TX)" required>
+                </div>
+                <button type="submit" class="form-submit">Get My Free Demo</button>
                 <p class="form-note">No spam. We'll send your personalized demo link.</p>
             </form>
 
@@ -1476,7 +1479,7 @@
             <div class="form-success" id="form-success">
                 <div class="check">&#10003;</div>
                 <h3>You're In!</h3>
-                <p>Check your inbox -- your demo link is on the way.</p>
+                <p>Loading your demo now... We'll also email you a personalized version with your name on it within 24 hours.</p>
             </div>
         </div>
     </div>
@@ -1503,35 +1506,40 @@
             el.parentElement.classList.toggle('active');
         }
 
-        // Demo Form — submits to MailerLite
+        // Demo Form — captures lead, emails Cole, shows demo immediately
         function handleDemo(e) {
             e.preventDefault();
-            const form = e.target;
-            const data = {
+            var form = e.target;
+            var data = {
                 name: form.name.value,
                 email: form.email.value,
                 phone: form.phone.value,
-                company: form.company.value
+                company: form.company.value,
+                city: form.city.value
             };
 
-            // Subscribe via secure Cloudflare Worker (no API keys exposed)
+            // Try Cloudflare Worker (MailerLite)
             fetch('https://homeedge-chat.moltmind.workers.dev/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).catch(function() {});
 
+            // Backup: send to Cole via email notification worker
+            fetch('https://homeedge-chat.moltmind.workers.dev/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'demo_request', lead: data })
+            }).catch(function() {});
+
             // Show success state
             form.style.display = 'none';
             document.getElementById('form-success').style.display = 'block';
 
-            // Reset after 3 seconds
+            // Redirect to live demo after 2.5 seconds
             setTimeout(function() {
-                closeModal();
-                form.style.display = 'block';
-                document.getElementById('form-success').style.display = 'none';
-                form.reset();
-            }, 3000);
+                window.location.href = 'demo.html';
+            }, 2500);
         }
 
         // Smooth scroll
