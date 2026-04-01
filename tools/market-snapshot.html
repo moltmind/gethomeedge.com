@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Market Snapshot Generator | HomeEdge</title>
+    <style>
+        :root {
+            --bg-dark: #0A1929;
+            --bg-card: #132F4C;
+            --bg-input: #0E2240;
+            --accent-cyan: #00E5FF;
+            --accent-blue: #1565C0;
+            --accent-gold: #FFD54F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0BEC5;
+            --border: #1A3A5C;
+            --success: #66BB6A;
+            --error: #EF5350;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #050E1A 0%, var(--bg-card) 100%);
+            border-bottom: 2px solid var(--accent-cyan);
+            padding: 32px 24px;
+            text-align: center;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), #80F0FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 20px 48px;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            animation: fadeUp 0.5s ease-out 0.1s both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-card h2 {
+            font-size: 1.15rem;
+            color: var(--accent-cyan);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+        }
+
+        .form-group label .required {
+            color: var(--accent-cyan);
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #4A6178;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23B0BEC5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .form-group select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Section Divider */
+        .section-divider {
+            grid-column: 1 / -1;
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 4px 0;
+        }
+
+        .section-label {
+            grid-column: 1 / -1;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* Submit Button */
+        .submit-row {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--accent-cyan), #00B8D4);
+            color: #0A1929;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 48px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(0, 229, 255, 0.35);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 48px 24px;
+            animation: fadeUp 0.3s ease-out;
+        }
+
+        .loading-container.active {
+            display: block;
+        }
+
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .loading-dots span {
+            width: 12px;
+            height: 12px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-12px); opacity: 1; }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .loading-subtext {
+            color: #4A6178;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        /* Output Area */
+        .output-container {
+            display: none;
+            animation: fadeUp 0.5s ease-out;
+        }
+
+        .output-container.active {
+            display: block;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .output-header h2 {
+            font-size: 1.25rem;
+            color: var(--accent-cyan);
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-action:hover {
+            background: rgba(0, 229, 255, 0.2);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-action.copied {
+            background: rgba(102, 187, 106, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .btn-print {
+            background: rgba(255, 213, 79, 0.1);
+            border-color: rgba(255, 213, 79, 0.3);
+            color: var(--accent-gold);
+        }
+
+        .btn-print:hover {
+            background: rgba(255, 213, 79, 0.2);
+            border-color: var(--accent-gold);
+        }
+
+        .output-body {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            line-height: 1.8;
+        }
+
+        /* Markdown Rendered Content */
+        .output-body h1 {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin: 24px 0 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .output-body h1:first-child {
+            margin-top: 0;
+        }
+
+        .output-body h2 {
+            font-size: 1.25rem;
+            color: var(--accent-gold);
+            margin: 20px 0 10px;
+        }
+
+        .output-body h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin: 16px 0 8px;
+        }
+
+        .output-body p {
+            margin: 8px 0;
+            color: var(--text-primary);
+        }
+
+        .output-body strong {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .output-body ul,
+        .output-body ol {
+            margin: 8px 0 8px 24px;
+        }
+
+        .output-body li {
+            margin: 4px 0;
+            color: var(--text-primary);
+        }
+
+        .output-body li strong {
+            color: var(--accent-gold);
+        }
+
+        .output-body hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 16px 0;
+        }
+
+        /* New Report Button */
+        .btn-new-report {
+            display: inline-block;
+            margin-top: 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 28px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-new-report:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* Error State */
+        .error-message {
+            display: none;
+            background: rgba(239, 83, 80, 0.1);
+            border: 1px solid rgba(239, 83, 80, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            animation: fadeUp 0.3s ease-out;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 24px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: #4A6178;
+        }
+
+        footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: #fff;
+                color: #111;
+            }
+            header, footer, .form-card, .loading-container,
+            .error-message, .output-header, .btn-new-report {
+                display: none !important;
+            }
+            .output-container {
+                display: block !important;
+            }
+            .output-body {
+                background: #fff;
+                border: none;
+                padding: 0;
+                color: #111;
+            }
+            .output-body h1 { color: #111; border-bottom-color: #ccc; }
+            .output-body h2 { color: #333; }
+            .output-body h3 { color: #333; }
+            .output-body p, .output-body li { color: #111; }
+            .output-body strong { color: #111; }
+            .output-body li strong { color: #333; }
+            .output-body hr { border-top-color: #ccc; }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            header { padding: 24px 16px; }
+            header h1 { font-size: 1.5rem; }
+            main { padding: 20px 16px 40px; }
+            .form-card { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .output-body { padding: 20px; }
+            .btn-generate { width: 100%; padding: 16px 24px; }
+            .output-actions { width: 100%; }
+            .btn-action { flex: 1; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">HomeEdge</div>
+    <h1>AI Market Snapshot Generator</h1>
+    <p>Professional market reports in one click</p>
+</header>
+
+<main>
+    <!-- Input Form -->
+    <div class="form-card" id="formCard">
+        <h2>Market Details</h2>
+        <form id="snapshotForm" class="form-grid" onsubmit="return false;">
+
+            <div class="form-group">
+                <label>City / Neighborhood <span class="required">*</span></label>
+                <input type="text" id="city" placeholder="e.g. Naperville, Downtown Austin" required>
+            </div>
+
+            <div class="form-group">
+                <label>State <span class="required">*</span></label>
+                <input type="text" id="state" placeholder="e.g. Illinois, TX" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Property Type Focus</label>
+                <select id="propertyType">
+                    <option value="All">All Property Types</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Condo">Condo / Townhome</option>
+                    <option value="Luxury">Luxury</option>
+                </select>
+            </div>
+
+            <hr class="section-divider">
+            <div class="section-label">Your Branding</div>
+
+            <div class="form-group">
+                <label>Agent Name</label>
+                <input type="text" id="agentName" placeholder="Your name">
+            </div>
+
+            <div class="form-group">
+                <label>Brokerage</label>
+                <input type="text" id="brokerage" placeholder="Your brokerage">
+            </div>
+
+            <div class="submit-row">
+                <button type="button" class="btn-generate" id="btnGenerate" onclick="generateSnapshot()">Generate Report</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" id="loading">
+        <div class="loading-dots">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="loading-text">Generating your market snapshot...</div>
+        <div class="loading-subtext">Analyzing trends, pricing, and inventory data</div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-message" id="errorMsg"></div>
+
+    <!-- Output -->
+    <div class="output-container" id="output">
+        <div class="output-header">
+            <h2>Your Market Snapshot</h2>
+            <div class="output-actions">
+                <button class="btn-action" id="btnCopy" onclick="copyReport()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg>
+                    Copy
+                </button>
+                <button class="btn-action btn-print" onclick="printReport()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="9" width="10" height="5" rx="1"/><path d="M4 9V2h8v7"/><path d="M1 6h14v6H1z"/></svg>
+                    Print
+                </button>
+            </div>
+        </div>
+        <div class="output-body" id="outputBody"></div>
+        <div style="text-align:center;">
+            <button class="btn-new-report" onclick="resetForm()">Generate Another Report</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    Powered by <a href="https://gethomeedge.com" target="_blank">HomeEdge</a>
+</footer>
+
+<script>
+const WORKER_URL = "https://homeedge-chat.moltmind.workers.dev/tool";
+
+function getFormData() {
+    return {
+        city: document.getElementById("city").value.trim(),
+        state: document.getElementById("state").value.trim(),
+        propertyType: document.getElementById("propertyType").value,
+        agentName: document.getElementById("agentName").value.trim(),
+        brokerage: document.getElementById("brokerage").value.trim()
+    };
+}
+
+function buildPrompt(d) {
+    let market = d.city + ", " + d.state;
+    let prompt = "Generate a comprehensive market snapshot report for " + market + ".";
+
+    if (d.propertyType !== "All") {
+        prompt += " Focus on the " + d.propertyType.toLowerCase() + " segment.";
+    }
+
+    prompt += " Include current median home prices, price trends, average days on market, inventory levels, buyer vs seller market analysis, and neighborhood highlights.";
+
+    if (d.agentName) {
+        prompt += " Prepared by " + d.agentName;
+        if (d.brokerage) prompt += " of " + d.brokerage;
+        prompt += ".";
+    }
+
+    return { prompt: prompt, market: market };
+}
+
+function renderMarkdown(text) {
+    var html = text;
+
+    // Headings: ###, ##, #
+    html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
+    html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
+    html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
+
+    // Bold
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Italic
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+    // Horizontal rules
+    html = html.replace(/^---$/gm, "<hr>");
+
+    // Unordered lists
+    html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
+    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
+
+    // Ordered lists
+    html = html.replace(/^\d+\.\s+(.+)$/gm, "<oli>$1</oli>");
+    html = html.replace(/((?:<oli>.*<\/oli>\n?)+)/g, function(match) {
+        return "<ol>" + match.replace(/<\/?oli>/g, function(tag) {
+            return tag.replace("oli", "li");
+        }) + "</ol>";
+    });
+
+    // Paragraphs: double newlines
+    html = html.replace(/\n\n+/g, "</p><p>");
+
+    // Single newlines inside paragraphs
+    html = html.replace(/\n/g, "<br>");
+
+    // Wrap in paragraph tags
+    html = "<p>" + html + "</p>";
+
+    // Clean up empty paragraphs and bad nesting
+    html = html.replace(/<p>\s*<(h[123]|ul|ol|hr)/g, "<$1");
+    html = html.replace(/<\/(h[123]|ul|ol)>\s*<\/p>/g, "</$1>");
+    html = html.replace(/<p>\s*<hr>\s*<\/p>/g, "<hr>");
+    html = html.replace(/<p>\s*<\/p>/g, "");
+    html = html.replace(/<br>\s*<(h[123]|ul|ol|hr)/g, "<$1");
+    html = html.replace(/<\/(h[123]|ul|ol)>\s*<br>/g, "</$1>");
+    html = html.replace(/<p><br>/g, "<p>");
+
+    return html;
+}
+
+// Store raw text for clipboard
+var rawReportText = "";
+
+async function generateSnapshot() {
+    var data = getFormData();
+
+    // Validate required fields
+    if (!data.city) {
+        document.getElementById("city").focus();
+        return;
+    }
+    if (!data.state) {
+        document.getElementById("state").focus();
+        return;
+    }
+
+    var built = buildPrompt(data);
+    var btn = document.getElementById("btnGenerate");
+    var formCard = document.getElementById("formCard");
+    var loading = document.getElementById("loading");
+    var output = document.getElementById("output");
+    var errorMsg = document.getElementById("errorMsg");
+
+    // Reset states
+    btn.disabled = true;
+    errorMsg.classList.remove("active");
+    output.classList.remove("active");
+    loading.classList.add("active");
+
+    // Scroll to loading
+    loading.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    try {
+        var res = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                messages: [{ role: "user", content: built.prompt }],
+                toolType: "marketSnapshot",
+                context: {
+                    market: built.market,
+                    agentName: data.agentName || "Agent",
+                    company: data.brokerage || ""
+                }
+            })
+        });
+
+        if (!res.ok) {
+            throw new Error("Server responded with " + res.status);
+        }
+
+        var result = await res.json();
+        loading.classList.remove("active");
+
+        if (result.reply) {
+            rawReportText = result.reply;
+            document.getElementById("outputBody").innerHTML = renderMarkdown(result.reply);
+            output.classList.add("active");
+            output.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+            throw new Error("No response received");
+        }
+
+    } catch (err) {
+        loading.classList.remove("active");
+        errorMsg.textContent = "Something went wrong generating your report. Please try again.";
+        errorMsg.classList.add("active");
+        errorMsg.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    btn.disabled = false;
+}
+
+function copyReport() {
+    var btn = document.getElementById("btnCopy");
+
+    navigator.clipboard.writeText(rawReportText).then(function() {
+        btn.classList.add("copied");
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg> Copied!';
+
+        setTimeout(function() {
+            btn.classList.remove("copied");
+            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg> Copy';
+        }, 2000);
+    });
+}
+
+function printReport() {
+    window.print();
+}
+
+function resetForm() {
+    document.getElementById("output").classList.remove("active");
+    document.getElementById("errorMsg").classList.remove("active");
+    document.getElementById("formCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    rawReportText = "";
+
+    // Reset copy button state
+    var btn = document.getElementById("btnCopy");
+    btn.classList.remove("copied");
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg> Copy';
+}
+
+// Enter key submits form
+document.getElementById("snapshotForm").addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        generateSnapshot();
+    }
+});
+</script>
+
+</body>
+</html>
