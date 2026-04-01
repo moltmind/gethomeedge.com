@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Seller Assistant | Dan Gaza Team</title>
+<title>AI Seller Assistant | Kelly Brown Team</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0f1a;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column}
@@ -48,27 +48,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <body>
 <div class="header">
   <h1>AI Seller Assistant</h1>
-  <h2>Dan Gaza Team</h2>
-  <div class="company">eXp Realty | Milwaukee, WI</div>
-  <div class="market">Serving the Greater Milwaukee Area</div>
+  <h2>Kelly Brown Team</h2>
+  <div class="company">eXp Realty | Minneapolis, MN</div>
+  <div class="market">Serving the Twin Cities Metro Area</div>
 </div>
-<div class="demo-badge">Live Demo -- Built by Cole Cummings for Dan Gaza</div>
+<div class="demo-badge">Live Demo -- Built by Cole Cummings for Kelly Brown</div>
 <div class="chat-container">
   <div class="messages" id="messages">
     <div class="msg bot">
-      <p>Hi! I'm the AI seller assistant for Dan Gaza's team at eXp Realty. I help homeowners across the Milwaukee area understand everything about selling their home.</p>
-      <p>Milwaukee's market has a lot going on right now -- whether you're in Wauwatosa, Brookfield, or the East Side, I can help you figure out your next move.</p>
+      <p>Hi! I'm the AI seller assistant for Kelly Brown's team at eXp Realty. I help homeowners in the Twin Cities area understand everything about selling their home.</p>
+      <p>Whether you're in Minneapolis, St. Paul, Edina, or the surrounding suburbs -- I'm here to help you navigate the process.</p>
       <p><strong>What can I help you with?</strong></p>
       <div class="suggested">
-        <button onclick="sendSuggested(this)">What's the Milwaukee market like?</button>
-        <button onclick="sendSuggested(this)">How do I price my home right?</button>
-        <button onclick="sendSuggested(this)">What should I fix before listing?</button>
-        <button onclick="sendSuggested(this)">How much will I net after selling?</button>
+        <button onclick="sendSuggested(this)">What's the Twin Cities market like?</button>
+        <button onclick="sendSuggested(this)">How should I price my home?</button>
+        <button onclick="sendSuggested(this)">Best time to sell in Minnesota?</button>
+        <button onclick="sendSuggested(this)">What are closing costs in MN?</button>
       </div>
     </div>
   </div>
   <div class="input-area">
-    <input type="text" id="input" placeholder="Ask anything about selling your home in Milwaukee..." autocomplete="off">
+    <input type="text" id="input" placeholder="Ask anything about selling your home in the Twin Cities..." autocomplete="off">
     <button id="send" onclick="send()">Send</button>
   </div>
 </div>
@@ -77,7 +77,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 <script>
 const WORKER="https://homeedge-chat.moltmind.workers.dev/gift";
-const AGENT={name:"Dan Gaza",company:"eXp Realty",city:"Milwaukee",state:"WI"};
+const AGENT={name:"Kelly Brown",company:"eXp Realty",city:"Minneapolis",state:"MN"};
 const history=[];const msgBox=document.getElementById("messages");const input=document.getElementById("input");const sendBtn=document.getElementById("send");
 function sendSuggested(btn){input.value=btn.textContent;btn.parentElement.remove();send()}
 function addMsg(role,text){const d=document.createElement("div");d.className="msg "+role;if(role==="bot"){let html=text.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");html=html.replace(/\n\n/g,"</p><p>");html=html.replace(/\n- /g,"</p><ul><li>").replace(/<\/ul><ul>/g,"");if(html.includes("<li>"))html+="</li></ul>";html=html.replace(/\n(\d+)\. /g,"</p><ol><li>").replace(/<\/ol><ol>/g,"");if(html.includes("<ol>"))html+="</li></ol>";html=html.replace(/\n/g,"<br>");d.innerHTML="<p>"+html+"</p>";}else{d.textContent=text;}msgBox.appendChild(d);msgBox.scrollTop=msgBox.scrollHeight;}
