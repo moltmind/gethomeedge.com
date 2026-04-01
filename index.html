@@ -506,7 +506,7 @@
             border: 2px solid var(--border);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
-        .demo-video-wrapper video { width: 100%; display: block; }
+        .demo-video-wrapper video { width: 100%; max-height: 500px; object-fit: contain; display: block; background: #000; border-radius: 8px; }
         .demo-video-cta { margin-top: 1.5rem; font-size: 0.9rem; color: var(--gray); }
         .demo-video-cta a { color: var(--gold); text-decoration: none; font-weight: 700; }
 
@@ -1153,7 +1153,7 @@
         <h2 class="section-title">Watch the AI Handle the Hardest Question in Real Estate</h2>
         <p class="section-subtitle mx-auto" style="max-width:600px">We asked the AI: &ldquo;Why should I pay you a 6% commission?&rdquo; Watch what happens.</p>
         <div class="demo-video-wrapper">
-            <video controls preload="metadata" playsinline>
+            <video controls preload="metadata" playsinline poster="video-poster.jpg">
                 <source src="demo-video.mp4" type="video/mp4">
             </video>
         </div>
@@ -1293,20 +1293,21 @@
     <!-- Pricing -->
     <section class="section" id="pricing">
         <div class="text-center">
-            <span class="section-label">Pricing</span>
-            <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <p class="section-subtitle mx-auto">One listing pays for a full year. No hidden fees. No surprises.</p>
+            <span class="section-label">Founder Pricing</span>
+            <h2 class="section-title">Lock In Founder Pricing — 7 Spots Left</h2>
+            <p class="section-subtitle mx-auto">One listing pays for a full year. These prices are locked forever for founding agents. When they're gone, they're gone.</p>
         </div>
         <div class="pricing-grid">
-            <!-- Starter -->
+            <!-- Founder Starter -->
             <div class="price-card">
-                <div class="price-tier">Starter</div>
+                <div class="price-tier">Founder Starter</div>
                 <p class="price-desc">Full platform for agents ready to stand out</p>
                 <div class="price-amount">
-                    <span class="price-setup">$1,497</span>
+                    <span class="price-setup">$997</span>
                     <span class="price-setup-label"> setup</span>
                 </div>
-                <p class="price-monthly">+ $297/month</p>
+                <p class="price-monthly">+ $197/month</p>
+                <p style="color: var(--gray); font-size: 0.8rem; text-decoration: line-through; margin-top: 0.25rem;">Regular: $1,497 + $297/mo</p>
                 <ul class="price-features">
                     <li>All 28 AI-Powered Tools</li>
                     <li>Branded Landing Page</li>
@@ -1315,19 +1316,20 @@
                     <li>Email Support</li>
                     <li>Monthly Platform Updates</li>
                 </ul>
-                <a href="https://buy.stripe.com/3cIaEQ2ii9Oo4XU4ft7N606" class="price-cta price-cta-outline" id="cta-starter" target="_blank" rel="noopener">Get Started</a>
+                <a href="https://buy.stripe.com/aFa14g5uu0dOduq9zN7N609" class="price-cta price-cta-outline" id="cta-starter" target="_blank" rel="noopener">Claim Founder Spot</a>
             </div>
 
-            <!-- Professional -->
+            <!-- Founder Professional -->
             <div class="price-card featured">
                 <div class="price-badge">Most Popular</div>
-                <div class="price-tier">Professional</div>
+                <div class="price-tier">Founder Professional</div>
                 <p class="price-desc">Full toolkit + support for serious listing agents</p>
                 <div class="price-amount">
-                    <span class="price-setup">$2,997</span>
+                    <span class="price-setup">$1,997</span>
                     <span class="price-setup-label"> setup</span>
                 </div>
-                <p class="price-monthly">+ $497/month</p>
+                <p class="price-monthly">+ $347/month</p>
+                <p style="color: var(--gray); font-size: 0.8rem; text-decoration: line-through; margin-top: 0.25rem;">Regular: $2,997 + $497/mo</p>
                 <ul class="price-features">
                     <li>Everything in Starter</li>
                     <li>Seller Dashboard / Client Portal</li>
@@ -1336,18 +1338,19 @@
                     <li>Quarterly Strategy Calls</li>
                     <li>Performance Analytics</li>
                 </ul>
-                <a href="https://buy.stripe.com/6oU6oA2iie4EbmicLZ7N607" class="price-cta price-cta-primary" id="cta-professional" target="_blank" rel="noopener">Get Started</a>
+                <a href="https://buy.stripe.com/fZu00c4qqf8I0HEdQ37N60a" class="price-cta price-cta-primary" id="cta-professional" target="_blank" rel="noopener">Claim Founder Spot</a>
             </div>
 
-            <!-- Elite -->
+            <!-- Founder Elite -->
             <div class="price-card">
-                <div class="price-tier">Elite</div>
+                <div class="price-tier">Founder Elite</div>
                 <p class="price-desc">Everything, plus white-glove service</p>
                 <div class="price-amount">
-                    <span class="price-setup">$4,997</span>
+                    <span class="price-setup">$2,997</span>
                     <span class="price-setup-label"> setup</span>
                 </div>
-                <p class="price-monthly">+ $797/month</p>
+                <p class="price-monthly">+ $597/month</p>
+                <p style="color: var(--gray); font-size: 0.8rem; text-decoration: line-through; margin-top: 0.25rem;">Regular: $4,997 + $797/mo</p>
                 <ul class="price-features">
                     <li>Everything in Professional</li>
                     <li>Lead CRM Setup & Training</li>
@@ -1357,7 +1360,7 @@
                     <li>1-on-1 Onboarding Call</li>
                     <li>Priority Phone Support</li>
                 </ul>
-                <a href="https://buy.stripe.com/6oUfZa5uu1hS2PMeU77N608" class="price-cta price-cta-outline" id="cta-elite" target="_blank" rel="noopener">Get Started</a>
+                <a href="https://buy.stripe.com/14AbIU0aaaSsaieeU77N60b" class="price-cta price-cta-outline" id="cta-elite" target="_blank" rel="noopener">Claim Founder Spot</a>
             </div>
         </div>
         <div class="brokerage-note">
@@ -1374,8 +1377,8 @@
         <div class="roi-card">
             <div class="roi-grid">
                 <div class="roi-item">
-                    <div class="roi-label">Annual Investment</div>
-                    <div class="roi-value">$8,961</div>
+                    <div class="roi-label">Founder Annual Cost</div>
+                    <div class="roi-value">$6,161</div>
                 </div>
                 <div class="roi-item">
                     <div class="roi-label">Avg. Commission</div>
@@ -1383,7 +1386,7 @@
                 </div>
                 <div class="roi-item">
                     <div class="roi-label">Listings to Break Even</div>
-                    <div class="roi-value">0.75</div>
+                    <div class="roi-value">0.51</div>
                 </div>
                 <div class="roi-item">
                     <div class="roi-label">If You Get 2 Extra</div>
@@ -1391,7 +1394,7 @@
                 </div>
             </div>
             <div class="roi-bottom">
-                <p>168% ROI on the Professional plan with just 2 extra listings -- and that's conservative.</p>
+                <p>289% ROI on the Founder Professional plan with just 2 extra listings -- and that's conservative.</p>
             </div>
         </div>
     </section>
