@@ -464,7 +464,11 @@
             const agentName = document.getElementById("agentName").value.trim();
             const brokerage = document.getElementById("brokerage").value.trim();
 
-            if (!clientFirst || !clientLast) return;
+            if (!clientFirst || !clientLast) {
+                errorMsg.textContent = "Please enter the client's first and last name.";
+                errorMsg.classList.add("active");
+                return;
+            }
 
             btn.disabled = true;
             errorMsg.classList.remove("active");

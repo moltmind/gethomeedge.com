@@ -558,15 +558,15 @@
     <header class="header">
         <div class="header-content">
             <div class="agent-info">
-                <div class="agent-photo">{{AGENT_PHOTO}}</div>
+                <div class="agent-photo"></div>
                 <div class="agent-text">
-                    <h1>{{AGENT_NAME}}</h1>
-                    <p>{{BROKERAGE_NAME}}</p>
+                    <h1>Your Agent</h1>
+                    <p>Your Brokerage</p>
                 </div>
             </div>
             <div class="agent-contact">
                 <span>Contact:</span>
-                <div class="phone">{{AGENT_PHONE}}</div>
+                <div class="phone">(555) 000-0000</div>
             </div>
         </div>
     </header>
@@ -763,10 +763,10 @@
 
         // Update CTA button
         function updateCtaButton() {
-            const agentName = '{{AGENT_NAME}}';
-            const phone = '{{AGENT_PHONE}}';
+            const agentName = 'Your Agent';
+            const phone = '(555) 000-0000';
             DOM.ctaButton.textContent = `Contact ${agentName} to discuss staging options`;
-            if (phone && phone !== '{{AGENT_PHONE}}') {
+            if (phone && phone !== '(555) 000-0000') {
                 DOM.ctaButton.href = `tel:${phone}`;
             }
         }
@@ -844,5 +844,6 @@
         updateCtaButton();
         updateCalculations();
     </script>
+<div style="text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.8rem;color:#4A6178;margin-top:2rem;">Powered by <a href="https://gethomeedge.com" target="_blank" style="color:#FFD54F;text-decoration:none;font-weight:600;">HomeEdge</a></div>
 </body>
 </html>

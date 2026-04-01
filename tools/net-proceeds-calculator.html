@@ -471,14 +471,14 @@
     // Update results
     document.getElementById('rSalePrice').textContent = formatCurrency(sale);
     document.getElementById('rCommLabel').textContent = `Agent Commission (${rate}%)`;
-    document.getElementById('rComm').textContent = '-' + formatCurrency(commission);
-    document.getElementById('rTitle').textContent = '-' + formatCurrency(title);
-    document.getElementById('rWarranty').textContent = '-' + formatCurrency(warranty);
-    document.getElementById('rRepairs').textContent = '-' + formatCurrency(repairs);
-    document.getElementById('rTax').textContent = '-' + formatCurrency(tax);
-    document.getElementById('rOther').textContent = '-' + formatCurrency(other);
-    document.getElementById('rTotalCosts').textContent = '-' + formatCurrency(totalCosts);
-    document.getElementById('rMortgage').textContent = '-' + formatCurrency(mortgage);
+    document.getElementById('rComm').textContent = commission > 0 ? '-' + formatCurrency(commission) : '$0';
+    document.getElementById('rTitle').textContent = title > 0 ? '-' + formatCurrency(title) : '$0';
+    document.getElementById('rWarranty').textContent = warranty > 0 ? '-' + formatCurrency(warranty) : '$0';
+    document.getElementById('rRepairs').textContent = repairs > 0 ? '-' + formatCurrency(repairs) : '$0';
+    document.getElementById('rTax').textContent = tax > 0 ? '-' + formatCurrency(tax) : '$0';
+    document.getElementById('rOther').textContent = other > 0 ? '-' + formatCurrency(other) : '$0';
+    document.getElementById('rTotalCosts').textContent = totalCosts > 0 ? '-' + formatCurrency(totalCosts) : '$0';
+    document.getElementById('rMortgage').textContent = mortgage > 0 ? '-' + formatCurrency(mortgage) : '$0';
 
     const netEl = document.getElementById('rNet');
     netEl.textContent = formatCurrency(net);

@@ -660,7 +660,7 @@ Keep each response conversational and ready to use word-for-word in a ${context.
                 }
 
                 const data = await res.json();
-                const raw = data.response || data.content || data.message || (typeof data === 'string' ? data : JSON.stringify(data));
+                const raw = data.reply || data.response || data.content || data.message || (typeof data === 'string' ? data : JSON.stringify(data));
 
                 displayResponse(raw);
 

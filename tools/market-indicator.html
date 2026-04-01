@@ -456,7 +456,11 @@
             const priceHigh = document.getElementById("priceHigh").value.replace(/[^0-9]/g, "");
             const agentName = document.getElementById("agentName").value.trim();
 
-            if (!city || !state) return;
+            if (!city || !state) {
+                errorMsg.textContent = "Please enter both city and state.";
+                errorMsg.classList.add("active");
+                return;
+            }
 
             btn.disabled = true;
             errorMsg.classList.remove("active");

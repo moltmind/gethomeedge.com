@@ -103,8 +103,48 @@
             box-shadow: 0 8px 20px rgba(245, 166, 35, 0.3);
         }
 
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-size: 1.4rem;
+            padding: 0.4rem 0.7rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .mobile-menu-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(11, 20, 38, 0.97);
+            z-index: 1001;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .mobile-nav a:hover { color: var(--cyan); }
+        .mobile-nav .close-btn {
+            position: absolute;
+            top: 1.5rem; right: 2rem;
+            background: none; border: none;
+            color: var(--gray); font-size: 2rem;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            .mobile-hide { display: none; }
+            .mobile-menu-btn { display: block; }
             .logo img { height: 38px !important; }
             .logo span { font-size: 1.2rem !important; }
         }
@@ -1047,9 +1087,19 @@
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#faq">FAQ</a></li>
             </ul>
-            <button class="btn-header" onclick="openModal()">Book a Demo</button>
+            <button class="btn-header mobile-hide" onclick="openModal()">Book a Demo</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">&#9776;</button>
         </nav>
     </header>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav" id="mobile-nav">
+        <button class="close-btn" onclick="toggleMobileMenu()">&times;</button>
+        <a href="#features" onclick="toggleMobileMenu()">Features</a>
+        <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
+        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+        <a href="javascript:void(0)" onclick="toggleMobileMenu();openModal();" style="background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);padding:0.8rem 2rem;border-radius:8px;font-weight:700;">Book a Demo</a>
+    </div>
 
     <!-- Hero -->
     <section class="hero">
@@ -1436,6 +1486,11 @@
     </div>
 
     <script>
+        // Mobile Menu
+        function toggleMobileMenu() {
+            document.getElementById('mobile-nav').classList.toggle('open');
+        }
+
         // Modal
         function openModal() {
             document.getElementById('demo-modal').style.display = 'flex';
