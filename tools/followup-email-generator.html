@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Follow-Up Email Generator | HomeEdge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0A1929;
+            --bg-card: #132F4C;
+            --bg-light: #1B3A57;
+            --accent-cyan: #00E5FF;
+            --accent-blue: #1565C0;
+            --accent-gold: #FFD54F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0BEC5;
+            --border: #37474F;
+            --success: #66BB6A;
+            --warning: #FFA726;
+            --danger: #EF5350;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Form Card */
+        .form-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            animation: fadeIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        input, select, textarea {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 12px 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #546E7A;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23B0BEC5' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: inherit;
+            color: var(--bg-dark);
+            background: linear-gradient(135deg, var(--accent-cyan), #00B8D4);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--accent-cyan);
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 229, 255, 0.1);
+        }
+
+        .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--accent-gold);
+            background: rgba(255, 213, 79, 0.1);
+            border: 1px solid rgba(255, 213, 79, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 213, 79, 0.2);
+        }
+
+        .btn-copy.copied {
+            color: var(--success);
+            border-color: var(--success);
+            background: rgba(102, 187, 106, 0.1);
+        }
+
+        /* Loading */
+        .loading-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .loading-overlay.visible {
+            display: flex;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+
+        /* Output */
+        .output-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .output-section.visible {
+            display: block;
+        }
+
+        .output-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .email-preview {
+            background: #FFFFFF;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .email-subject-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F5F5F5;
+            padding: 16px 24px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .email-subject-bar .subject-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9E9E9E;
+            margin-bottom: 2px;
+        }
+
+        .email-subject-bar .subject-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #212121;
+        }
+
+        .email-body-area {
+            padding: 28px 24px;
+            color: #333333;
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        .email-body-area p {
+            margin-bottom: 16px;
+        }
+
+        .email-body-area p:last-child {
+            margin-bottom: 0;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Error */
+        .error-message {
+            display: none;
+            background: rgba(239, 83, 80, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 16px 20px;
+            color: var(--danger);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-title {
+                font-size: 1.6rem;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .email-subject-bar,
+            .email-body-area {
+                padding: 16px;
+            }
+
+            .output-actions {
+                flex-direction: column;
+            }
+
+            .btn-secondary,
+            .btn-copy {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand">HomeEdge</div>
+            <h1 class="header-title">AI Follow-Up Email Generator</h1>
+            <p class="header-subtitle">Professional follow-ups in one click</p>
+        </header>
+
+        <!-- Form -->
+        <div class="form-card">
+            <form id="emailForm" class="form-grid" onsubmit="return false;">
+                <div class="form-group full-width">
+                    <label for="scenario">Scenario</label>
+                    <select id="scenario" required>
+                        <option value="">-- Select a scenario --</option>
+                        <option value="After Listing Appointment">After Listing Appointment</option>
+                        <option value="After Showing">After Showing</option>
+                        <option value="After Open House">After Open House</option>
+                        <option value="After Receiving an Offer">After Receiving an Offer</option>
+                        <option value="After Closing">After Closing</option>
+                        <option value="Re-engagement (Cold Lead)">Re-engagement (Cold Lead)</option>
+                        <option value="Referral Request">Referral Request</option>
+                        <option value="Thank You Note">Thank You Note</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="clientName">Client / Prospect Name <span class="required">*</span></label>
+                    <input type="text" id="clientName" placeholder="e.g. Sarah Johnson" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="details">Key Details</label>
+                    <textarea id="details" placeholder="What happened? Any specifics to mention? (property details, conversation highlights, next steps discussed, etc.)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="agentName">Your Name</label>
+                    <input type="text" id="agentName" placeholder="e.g. Jane Smith">
+                </div>
+
+                <div class="form-group">
+                    <label for="brokerage">Your Brokerage</label>
+                    <input type="text" id="brokerage" placeholder="e.g. Keller Williams">
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="tone">Tone</label>
+                    <select id="tone">
+                        <option value="Professional">Professional</option>
+                        <option value="Warm & Friendly" selected>Warm & Friendly</option>
+                        <option value="Confident & Direct">Confident & Direct</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <button type="button" class="btn-primary" id="generateBtn" onclick="generateEmail()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        Generate Email
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading-overlay" id="loading">
+            <div class="spinner"></div>
+            <p class="loading-text">Crafting your follow-up<span class="loading-dots"></span></p>
+        </div>
+
+        <!-- Error -->
+        <div class="error-message" id="errorMsg"></div>
+
+        <!-- Output -->
+        <div class="output-section" id="output">
+            <div class="output-label">Email Preview</div>
+            <div class="email-preview">
+                <div class="email-subject-bar">
+                    <div>
+                        <div class="subject-label">Subject</div>
+                        <div class="subject-text" id="subjectText"></div>
+                    </div>
+                    <button class="btn-copy" onclick="copySubject(this)" title="Copy subject line">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        Copy
+                    </button>
+                </div>
+                <div class="email-body-area" id="emailBody"></div>
+            </div>
+
+            <div class="output-actions">
+                <button class="btn-copy" onclick="copyFullEmail(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    Copy Full Email
+                </button>
+                <button class="btn-secondary" onclick="regenerateEmail()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                    Regenerate
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            Powered by <strong>HomeEdge</strong> | <a href="https://gethomeedge.com" target="_blank" rel="noopener">gethomeedge.com</a>
+        </footer>
+    </div>
+
+    <script>
+        let lastPrompt = '';
+
+        function buildPrompt() {
+            const scenario = document.getElementById('scenario').value;
+            const clientName = document.getElementById('clientName').value.trim();
+            const details = document.getElementById('details').value.trim();
+            const agentName = document.getElementById('agentName').value.trim();
+            const brokerage = document.getElementById('brokerage').value.trim();
+            const tone = document.getElementById('tone').value;
+
+            let prompt = `Generate a follow-up email for the scenario: ${scenario}. Client name: ${clientName}.`;
+
+            if (details) {
+                prompt += ` Details: ${details}.`;
+            }
+
+            prompt += ` Tone: ${tone}.`;
+
+            if (agentName) {
+                prompt += ` Sign the email from ${agentName}`;
+                if (brokerage) {
+                    prompt += ` at ${brokerage}`;
+                }
+                prompt += '.';
+            }
+
+            prompt += '\n\nFormat your response with a clear subject line on the first line starting with "Subject:" followed by the email body. Do not include any markdown formatting, headers, or labels other than the Subject: prefix on the first line.';
+
+            return prompt;
+        }
+
+        function parseEmailResponse(text) {
+            let subject = '';
+            let body = '';
+
+            // Remove any leading/trailing whitespace
+            text = text.trim();
+
+            // Try to extract Subject: line
+            const subjectMatch = text.match(/^Subject:\s*(.+)/im);
+
+            if (subjectMatch) {
+                subject = subjectMatch[1].trim();
+                // Everything after the subject line is the body
+                body = text.substring(subjectMatch.index + subjectMatch[0].length).trim();
+            } else {
+                // Fallback: first line is subject, rest is body
+                const lines = text.split('\n');
+                subject = lines[0].replace(/^#+\s*/, '').replace(/^\*\*(.+)\*\*$/, '$1').trim();
+                body = lines.slice(1).join('\n').trim();
+            }
+
+            // Clean up subject
+            subject = subject.replace(/^\*\*(.+)\*\*$/, '$1').replace(/^["']|["']$/g, '');
+
+            return { subject, body };
+        }
+
+        function renderBody(text) {
+            // Convert markdown-ish text to clean HTML paragraphs
+            // Remove markdown bold/italic markers
+            let html = text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/^[-*]\s+/gm, '&bull; ');
+
+            // Split into paragraphs on double newlines
+            const paragraphs = html.split(/\n\s*\n/).filter(p => p.trim());
+
+            if (paragraphs.length > 1) {
+                return paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+            }
+
+            // If no double newlines, split on single newlines but group logically
+            return `<p>${html.replace(/\n/g, '<br>')}</p>`;
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.classList.add('visible');
+        }
+
+        function hideError() {
+            document.getElementById('errorMsg').classList.remove('visible');
+        }
+
+        function validateForm() {
+            const scenario = document.getElementById('scenario').value;
+            const clientName = document.getElementById('clientName').value.trim();
+
+            if (!scenario) {
+                showError('Please select a scenario.');
+                return false;
+            }
+            if (!clientName) {
+                showError('Please enter a client or prospect name.');
+                return false;
+            }
+            return true;
+        }
+
+        async function generateEmail() {
+            hideError();
+
+            if (!validateForm()) return;
+
+            const btn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const output = document.getElementById('output');
+
+            btn.disabled = true;
+            output.classList.remove('visible');
+            loading.classList.add('visible');
+
+            const prompt = buildPrompt();
+            lastPrompt = prompt;
+
+            const agentName = document.getElementById('agentName').value.trim();
+            const brokerage = document.getElementById('brokerage').value.trim();
+
+            try {
+                const response = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: prompt }],
+                        toolType: 'followup',
+                        context: {
+                            agentName: agentName || undefined,
+                            company: brokerage || undefined
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Extract text from response -- handle various response shapes
+                let text = '';
+                if (typeof data === 'string') {
+                    text = data;
+                } else if (data.reply) {
+                    text = data.reply;
+                } else if (data.response) {
+                    text = data.response;
+                } else if (data.content) {
+                    text = typeof data.content === 'string'
+                        ? data.content
+                        : (data.content[0]?.text || JSON.stringify(data.content));
+                } else if (data.choices?.[0]?.message?.content) {
+                    text = data.choices[0].message.content;
+                } else if (data.result) {
+                    text = data.result;
+                } else {
+                    text = JSON.stringify(data);
+                }
+
+                const { subject, body } = parseEmailResponse(text);
+
+                document.getElementById('subjectText').textContent = subject || 'Follow-Up';
+                document.getElementById('emailBody').innerHTML = renderBody(body || text);
+
+                loading.classList.remove('visible');
+                output.classList.add('visible');
+            } catch (err) {
+                loading.classList.remove('visible');
+                showError('Could not generate email. Please try again. (' + err.message + ')');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function regenerateEmail() {
+            hideError();
+
+            if (!validateForm()) return;
+
+            const output = document.getElementById('output');
+            const loading = document.getElementById('loading');
+            const btn = document.getElementById('generateBtn');
+
+            btn.disabled = true;
+            output.classList.remove('visible');
+            loading.classList.add('visible');
+
+            const prompt = buildPrompt() + '\n\nPlease generate a DIFFERENT version than before. Use a different subject line and vary the wording.';
+
+            const agentName = document.getElementById('agentName').value.trim();
+            const brokerage = document.getElementById('brokerage').value.trim();
+
+            try {
+                const response = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: prompt }],
+                        toolType: 'followup',
+                        context: {
+                            agentName: agentName || undefined,
+                            company: brokerage || undefined
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                let text = '';
+                if (typeof data === 'string') {
+                    text = data;
+                } else if (data.reply) {
+                    text = data.reply;
+                } else if (data.response) {
+                    text = data.response;
+                } else if (data.content) {
+                    text = typeof data.content === 'string'
+                        ? data.content
+                        : (data.content[0]?.text || JSON.stringify(data.content));
+                } else if (data.choices?.[0]?.message?.content) {
+                    text = data.choices[0].message.content;
+                } else if (data.result) {
+                    text = data.result;
+                } else {
+                    text = JSON.stringify(data);
+                }
+
+                const { subject, body } = parseEmailResponse(text);
+
+                document.getElementById('subjectText').textContent = subject || 'Follow-Up';
+                document.getElementById('emailBody').innerHTML = renderBody(body || text);
+
+                loading.classList.remove('visible');
+                output.classList.add('visible');
+            } catch (err) {
+                loading.classList.remove('visible');
+                showError('Could not regenerate email. Please try again. (' + err.message + ')');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function copySubject(btn) {
+            const text = document.getElementById('subjectText').textContent;
+            copyToClipboard(text, btn);
+        }
+
+        function copyFullEmail(btn) {
+            const subject = document.getElementById('subjectText').textContent;
+            const bodyEl = document.getElementById('emailBody');
+            // Get plain text from the rendered HTML
+            const body = bodyEl.innerText;
+            const full = `Subject: ${subject}\n\n${body}`;
+            copyToClipboard(full, btn);
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = original;
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                const original = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = original;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

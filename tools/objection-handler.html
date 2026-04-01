@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Objection Handler | HomeEdge</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0A1929;
+            color: #E0E0E0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+        }
+
+        .brand {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00E5FF;
+            margin-bottom: 0.5rem;
+        }
+
+        header h1 {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 0.4rem;
+        }
+
+        header h1 span {
+            color: #00E5FF;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #90CAF9;
+            font-weight: 400;
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Quick Pick Section */
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #90CAF9;
+            margin-bottom: 0.75rem;
+        }
+
+        .quick-picks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-pick-btn {
+            background: #132F4C;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            color: #E0E0E0;
+            padding: 0.55rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .quick-pick-btn:hover {
+            background: rgba(0, 229, 255, 0.12);
+            border-color: #00E5FF;
+            color: #FFFFFF;
+        }
+
+        .quick-pick-btn.active {
+            background: rgba(0, 229, 255, 0.18);
+            border-color: #00E5FF;
+            color: #00E5FF;
+        }
+
+        /* Divider */
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            color: #546E7A;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        /* Input Area */
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .objection-input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: #132F4C;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 10px;
+            color: #FFFFFF;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .objection-input::placeholder {
+            color: #546E7A;
+        }
+
+        .objection-input:focus {
+            border-color: #00E5FF;
+        }
+
+        /* Context Select */
+        .context-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .context-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #90CAF9;
+            white-space: nowrap;
+        }
+
+        .context-select {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.6rem 1rem;
+            background: #132F4C;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 10px;
+            color: #FFFFFF;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2390CAF9' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 2rem;
+        }
+
+        .context-select:focus {
+            border-color: #00E5FF;
+        }
+
+        .context-select option {
+            background: #132F4C;
+            color: #FFFFFF;
+        }
+
+        /* Handle It Button */
+        .handle-btn {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%);
+            border: none;
+            border-radius: 10px;
+            color: #0A1929;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+        }
+
+        .handle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .handle-btn:active {
+            transform: translateY(0);
+        }
+
+        .handle-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loading */
+        .loader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 3rem 1rem;
+        }
+
+        .loader.visible {
+            display: flex;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(0, 229, 255, 0.15);
+            border-top-color: #00E5FF;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            color: #90CAF9;
+            font-size: 0.9rem;
+        }
+
+        /* Response Cards */
+        .response-area {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .response-area.visible {
+            display: block;
+        }
+
+        .response-header {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #90CAF9;
+            margin-bottom: 1rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .response-card {
+            background: #132F4C;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-header {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .card-type-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Card accent colors */
+        .card-data .card-dot { background: #42A5F5; }
+        .card-data .card-type-label { color: #42A5F5; }
+        .card-data { border-top: 3px solid #42A5F5; }
+
+        .card-empathy .card-dot { background: #66BB6A; }
+        .card-empathy .card-type-label { color: #66BB6A; }
+        .card-empathy { border-top: 3px solid #66BB6A; }
+
+        .card-story .card-dot { background: #FFD54F; }
+        .card-story .card-type-label { color: #FFD54F; }
+        .card-story { border-top: 3px solid #FFD54F; }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #90CAF9;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            background: rgba(0, 229, 255, 0.12);
+            border-color: #00E5FF;
+            color: #00E5FF;
+        }
+
+        .copy-btn.copied {
+            background: rgba(102, 187, 106, 0.15);
+            border-color: #66BB6A;
+            color: #66BB6A;
+        }
+
+        .card-body {
+            padding: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #CFD8DC;
+        }
+
+        .card-body p {
+            margin-bottom: 0.6rem;
+        }
+
+        .card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-body strong {
+            color: #FFFFFF;
+        }
+
+        .card-body em {
+            color: #90CAF9;
+            font-style: italic;
+        }
+
+        .card-body ul, .card-body ol {
+            margin: 0.5rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .card-body li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* Fallback full response */
+        .full-response {
+            background: #132F4C;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #CFD8DC;
+        }
+
+        .full-response p {
+            margin-bottom: 0.6rem;
+        }
+
+        .full-response strong {
+            color: #FFFFFF;
+        }
+
+        .full-response em {
+            color: #90CAF9;
+        }
+
+        .full-response ul, .full-response ol {
+            margin: 0.5rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .full-response li {
+            margin-bottom: 0.3rem;
+        }
+
+        .full-response h1, .full-response h2, .full-response h3 {
+            color: #FFFFFF;
+            margin: 1rem 0 0.5rem;
+        }
+
+        /* Error */
+        .error-msg {
+            display: none;
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            color: #EF9A9A;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+        }
+
+        .error-msg.visible {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-top: 1px solid rgba(0, 229, 255, 0.1);
+            font-size: 0.8rem;
+            color: #546E7A;
+        }
+
+        footer a {
+            color: #00E5FF;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">HomeEdge</div>
+        <h1>AI <span>Objection Handler</span></h1>
+        <p class="subtitle">3 ways to handle any objection</p>
+    </header>
+
+    <main>
+        <!-- Quick Picks -->
+        <div class="section-label">Common Objections</div>
+        <div class="quick-picks">
+            <button class="quick-pick-btn" data-text="Your commission is too high">Your commission is too high</button>
+            <button class="quick-pick-btn" data-text="I want to sell FSBO">I want to sell FSBO</button>
+            <button class="quick-pick-btn" data-text="Zillow says my home is worth more">Zillow says my home is worth more</button>
+            <button class="quick-pick-btn" data-text="I want to wait for a better market">I want to wait for a better market</button>
+            <button class="quick-pick-btn" data-text="Another agent will do it for less">Another agent will do it for less</button>
+            <button class="quick-pick-btn" data-text="I don't think I need staging">I don't think I need staging</button>
+        </div>
+
+        <div class="or-divider">OR</div>
+
+        <!-- Text Input -->
+        <div class="input-group">
+            <textarea class="objection-input" id="objectionInput" rows="2" placeholder="Type any objection you're hearing..."></textarea>
+        </div>
+
+        <!-- Context -->
+        <div class="context-row">
+            <span class="context-label">Context:</span>
+            <select class="context-select" id="contextSelect">
+                <option value="Listing Appointment">Listing Appointment</option>
+                <option value="Phone Call">Phone Call</option>
+                <option value="Negotiation">Negotiation</option>
+                <option value="Open House">Open House</option>
+            </select>
+        </div>
+
+        <!-- Submit -->
+        <button class="handle-btn" id="handleBtn">Handle It</button>
+
+        <!-- Loading -->
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <div class="loader-text">Crafting your responses...</div>
+        </div>
+
+        <!-- Error -->
+        <div class="error-msg" id="errorMsg"></div>
+
+        <!-- Response -->
+        <div class="response-area" id="responseArea">
+            <div class="response-header">Your 3 Responses</div>
+            <div class="cards-grid" id="cardsGrid">
+
+                <div class="response-card card-data" id="cardData">
+                    <div class="card-header">
+                        <div class="card-type">
+                            <div class="card-dot"></div>
+                            <span class="card-type-label">Data-Driven</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyCard('cardDataBody')">Copy</button>
+                    </div>
+                    <div class="card-body" id="cardDataBody"></div>
+                </div>
+
+                <div class="response-card card-empathy" id="cardEmpathy">
+                    <div class="card-header">
+                        <div class="card-type">
+                            <div class="card-dot"></div>
+                            <span class="card-type-label">Empathetic</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyCard('cardEmpathyBody')">Copy</button>
+                    </div>
+                    <div class="card-body" id="cardEmpathyBody"></div>
+                </div>
+
+                <div class="response-card card-story" id="cardStory">
+                    <div class="card-header">
+                        <div class="card-type">
+                            <div class="card-dot"></div>
+                            <span class="card-type-label">Story-Based</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyCard('cardStoryBody')">Copy</button>
+                    </div>
+                    <div class="card-body" id="cardStoryBody"></div>
+                </div>
+
+            </div>
+
+            <!-- Fallback if parsing fails -->
+            <div class="full-response" id="fullResponse" style="display:none;"></div>
+        </div>
+    </main>
+
+    <footer>
+        Powered by <a href="https://gethomeedge.com" target="_blank">HomeEdge</a> | gethomeedge.com
+    </footer>
+
+    <script>
+        // --- Quick Pick Buttons ---
+        const quickPicks = document.querySelectorAll('.quick-pick-btn');
+        const objectionInput = document.getElementById('objectionInput');
+
+        quickPicks.forEach(btn => {
+            btn.addEventListener('click', () => {
+                quickPicks.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                objectionInput.value = btn.dataset.text;
+                objectionInput.focus();
+            });
+        });
+
+        // Clear active quick-pick when user types manually
+        objectionInput.addEventListener('input', () => {
+            const val = objectionInput.value;
+            let matched = false;
+            quickPicks.forEach(b => {
+                if (b.dataset.text === val) {
+                    b.classList.add('active');
+                    matched = true;
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+        });
+
+        // --- Handle It ---
+        const handleBtn = document.getElementById('handleBtn');
+        const loader = document.getElementById('loader');
+        const errorMsg = document.getElementById('errorMsg');
+        const responseArea = document.getElementById('responseArea');
+        const cardsGrid = document.getElementById('cardsGrid');
+        const fullResponse = document.getElementById('fullResponse');
+        const contextSelect = document.getElementById('contextSelect');
+
+        handleBtn.addEventListener('click', handleObjection);
+
+        // Allow Enter key in textarea (Shift+Enter for newline)
+        objectionInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleObjection();
+            }
+        });
+
+        async function handleObjection() {
+            const text = objectionInput.value.trim();
+            if (!text) {
+                objectionInput.focus();
+                return;
+            }
+
+            const context = contextSelect.value;
+
+            // Reset UI
+            handleBtn.disabled = true;
+            loader.classList.add('visible');
+            responseArea.classList.remove('visible');
+            errorMsg.classList.remove('visible');
+            cardsGrid.style.display = '';
+            fullResponse.style.display = 'none';
+
+            const prompt = `Handle this real estate objection 3 different ways. The objection is: "${text}". Context: ${context}.
+
+Please provide exactly 3 response approaches with these headers:
+
+**Data-Driven**
+(A response that uses facts, statistics, and market data to address the objection)
+
+**Empathetic**
+(A response that validates the client's feelings first, then gently redirects with understanding)
+
+**Story-Based**
+(A response that uses a brief anecdote or case study from a past client to illustrate the point)
+
+Keep each response conversational and ready to use word-for-word in a ${context.toLowerCase()}. Each response should be 2-4 sentences.`;
+
+            try {
+                const res = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: prompt }],
+                        toolType: 'objection'
+                    })
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Server returned ${res.status}`);
+                }
+
+                const data = await res.json();
+                const raw = data.response || data.content || data.message || (typeof data === 'string' ? data : JSON.stringify(data));
+
+                displayResponse(raw);
+
+            } catch (err) {
+                errorMsg.textContent = `Something went wrong: ${err.message}. Please try again.`;
+                errorMsg.classList.add('visible');
+            } finally {
+                handleBtn.disabled = false;
+                loader.classList.remove('visible');
+            }
+        }
+
+        // --- Parse & Display ---
+        function displayResponse(raw) {
+            const sections = parseThreeSections(raw);
+
+            if (sections) {
+                document.getElementById('cardDataBody').innerHTML = renderMarkdown(sections.data);
+                document.getElementById('cardEmpathyBody').innerHTML = renderMarkdown(sections.empathy);
+                document.getElementById('cardStoryBody').innerHTML = renderMarkdown(sections.story);
+                cardsGrid.style.display = '';
+                fullResponse.style.display = 'none';
+            } else {
+                // Fallback: show full response
+                cardsGrid.style.display = 'none';
+                fullResponse.style.display = '';
+                fullResponse.innerHTML = renderMarkdown(raw);
+            }
+
+            responseArea.classList.add('visible');
+            responseArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function parseThreeSections(text) {
+            // Try multiple header patterns
+            const patterns = [
+                /\*\*Data[- ]Driven\*\*/i,
+                /##?\s*Data[- ]Driven/i,
+                /Data[- ]Driven:/i,
+                /1[\.\)]\s*Data[- ]Driven/i
+            ];
+
+            const empathyPatterns = [
+                /\*\*Empathetic\*\*/i,
+                /##?\s*Empathetic/i,
+                /Empathetic:/i,
+                /2[\.\)]\s*Empathetic/i
+            ];
+
+            const storyPatterns = [
+                /\*\*Story[- ]Based\*\*/i,
+                /##?\s*Story[- ]Based/i,
+                /Story[- ]Based:/i,
+                /3[\.\)]\s*Story[- ]Based/i
+            ];
+
+            let dataIdx = -1, empathyIdx = -1, storyIdx = -1;
+            let dataMatch, empathyMatch, storyMatch;
+
+            for (const p of patterns) {
+                const m = text.match(p);
+                if (m) { dataIdx = text.indexOf(m[0]); dataMatch = m[0]; break; }
+            }
+
+            for (const p of empathyPatterns) {
+                const m = text.match(p);
+                if (m) { empathyIdx = text.indexOf(m[0]); empathyMatch = m[0]; break; }
+            }
+
+            for (const p of storyPatterns) {
+                const m = text.match(p);
+                if (m) { storyIdx = text.indexOf(m[0]); storyMatch = m[0]; break; }
+            }
+
+            if (dataIdx === -1 || empathyIdx === -1 || storyIdx === -1) {
+                return null;
+            }
+
+            // Sort indices to extract sections in order
+            const ordered = [
+                { key: 'data', idx: dataIdx, matchLen: dataMatch.length },
+                { key: 'empathy', idx: empathyIdx, matchLen: empathyMatch.length },
+                { key: 'story', idx: storyIdx, matchLen: storyMatch.length }
+            ].sort((a, b) => a.idx - b.idx);
+
+            const result = {};
+            for (let i = 0; i < ordered.length; i++) {
+                const start = ordered[i].idx + ordered[i].matchLen;
+                const end = i < ordered.length - 1 ? ordered[i + 1].idx : text.length;
+                result[ordered[i].key] = text.slice(start, end).trim();
+            }
+
+            return result;
+        }
+
+        // --- Simple Markdown Renderer ---
+        function renderMarkdown(md) {
+            if (!md) return '';
+            let html = md
+                // Escape HTML
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                // Bold
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/_(.+?)_/g, '<em>$1</em>')
+                // Headings
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                // Unordered lists
+                .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
+                // Numbered lists
+                .replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>');
+
+            // Wrap consecutive <li> in <ul>
+            html = html.replace(/((?:<li>.*<\/li>\s*)+)/g, '<ul>$1</ul>');
+
+            // Paragraphs: split by double newlines
+            html = html
+                .split(/\n{2,}/)
+                .map(block => {
+                    block = block.trim();
+                    if (!block) return '';
+                    if (block.startsWith('<h') || block.startsWith('<ul') || block.startsWith('<ol')) return block;
+                    // Single newlines become <br>
+                    return '<p>' + block.replace(/\n/g, '<br>') + '</p>';
+                })
+                .join('');
+
+            return html;
+        }
+
+        // --- Copy ---
+        function copyCard(bodyId) {
+            const el = document.getElementById(bodyId);
+            const text = el.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = el.parentElement.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
