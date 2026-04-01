@@ -105,7 +105,8 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .logo img { height: 44px !important; }
+            .logo img { height: 38px !important; }
+            .logo span { font-size: 1.2rem !important; }
         }
 
         /* ===== HERO ===== */
@@ -1037,7 +1038,10 @@
     <!-- Header -->
     <header>
         <nav>
-            <a href="/" class="logo"><img src="homeedge-logo.png" alt="HomeEdge" style="height:56px;vertical-align:middle;"></a>
+            <a href="/" class="logo" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                <img src="homeedge-logo.png" alt="" style="height:48px;">
+                <span style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;">HomeEdge</span>
+            </a>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#pricing">Pricing</a></li>
@@ -1375,7 +1379,10 @@
     <footer>
         <div class="footer-grid">
             <div>
-                <div class="footer-brand"><img src="homeedge-logo.png" alt="HomeEdge" style="height:52px;"></div>
+                <div class="footer-brand" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.75rem;">
+                    <img src="homeedge-logo.png" alt="" style="height:44px;">
+                    <span style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">HomeEdge</span>
+                </div>
                 <p class="footer-desc">AI-powered seller tools for real estate agents who want to dominate their market. Built by agents, for agents.</p>
             </div>
             <div>
