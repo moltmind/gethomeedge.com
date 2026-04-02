@@ -150,8 +150,8 @@ function cachedSystem(prompt) {
   return [{ type: "text", text: prompt, cache_control: { type: "ephemeral" } }];
 }
 
-const GROUP_ID = "183426847271290535";                // HomeEdge Demo Requests
-const ACTIVE_CLIENTS_GROUP_ID = "183333383303070983";  // HPS - Active Clients
+// MailerLite removed (account terminated April 2026)
+// All email now handled via Resend, all CRM via GHL
 
 // --- STRIPE WEBHOOK SIGNATURE VERIFICATION (Web Crypto API) ---
 async function verifyStripeSignature(payload, sigHeader, secret) {
@@ -205,20 +205,16 @@ function getTierFromAmount(amountCents) {
   return "Starter";
 }
 
-// Welcome email sequence moved to MailerLite automation (HomeEdge Welcome Sequence)
-// 5 emails: day 0 (welcome), day 2 (presentation problem), day 4 (ROI math), day 6 (28 tools), day 9 (last call)
-
 // --- EMAIL DRIP ---
-// Welcome email sequence is handled by MailerLite automation (HomeEdge Welcome Sequence).
-// Subscribers added to GROUP_ID automatically enter the automation.
-// No worker-side drip needed.
-
-// processDripEmails removed -- MailerLite automation handles the drip sequence now
+// Welcome email: sent instantly via Resend on /subscribe
+// Nurture sequence (5 emails over 10 days): handled by GHL workflow
+// SMS follow-up (6 texts over 14 days): handled by GHL workflow
+// All automations triggered by GHL contact creation + tags
 
 export default {
-  // --- CRON TRIGGER: Reserved for future use (drip handled by MailerLite automation) ---
+  // --- CRON TRIGGER: Reserved for future use (drip handled by GHL workflows) ---
   async scheduled(event, env, ctx) {
-    // No-op: email drip now handled by MailerLite Welcome Sequence automation
+    // No-op: email drip + SMS follow-up handled by GHL workflows
   },
 
   async fetch(request, env, ctx) {
@@ -778,40 +774,45 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
         const tier = getTierFromAmount(amount);
 
         if (email) {
-          // Add to Active Clients group in MailerLite
+          // Send onboarding email via Resend + tag in GHL as active client
           ctx.waitUntil(
-            fetch("https://connect.mailerlite.com/api/subscribers", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${env.MAILERLITE_API_KEY}`,
-              },
-              body: JSON.stringify({
-                email,
-                fields: { name, company: "", phone: "" },
-                groups: [ACTIVE_CLIENTS_GROUP_ID],
-              }),
-            }).then(() => {
-              // Send onboarding email via campaign
-              return fetch("https://connect.mailerlite.com/api/campaigns", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${env.MAILERLITE_API_KEY}`,
-                },
-                body: JSON.stringify({
-                  name: `Onboarding - ${email} - ${Date.now()}`,
-                  type: "regular",
-                  emails: [{
+            (async () => {
+              try {
+                // Send onboarding email via Resend
+                await fetch("https://api.resend.com/emails", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+                  },
+                  body: JSON.stringify({
+                    from: "HomeEdge <onboarding@resend.dev>",
+                    to: email,
                     subject: ONBOARDING_EMAIL.subject,
-                    from_name: "Cole Cummings",
-                    from: "gethomeedge@gmail.com",
-                    content: ONBOARDING_EMAIL.html,
-                  }],
-                  groups: [ACTIVE_CLIENTS_GROUP_ID],
-                }),
-              });
-            }).catch(err => console.log("Onboarding error:", err.message))
+                    html: ONBOARDING_EMAIL.html,
+                    reply_to: "cole@gethomeedge.com",
+                  }),
+                });
+                console.log(`Onboarding email sent to ${email} via Resend`);
+
+                // Notify Cole about the sale
+                await fetch("https://api.resend.com/emails", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+                  },
+                  body: JSON.stringify({
+                    from: "HomeEdge Sales <onboarding@resend.dev>",
+                    to: "cca.fam.acc@gmail.com",
+                    subject: `NEW SALE: ${name || email} - ${tier} ($${(amount / 100).toFixed(2)})`,
+                    html: `<p><strong>New ${tier} client!</strong></p><p>Name: ${name}<br>Email: ${email}<br>Amount: $${(amount / 100).toFixed(2)}</p><p>Onboarding email sent automatically. Start building their platform!</p>`,
+                  }),
+                });
+              } catch (err) {
+                console.log("Onboarding email error:", err.message);
+              }
+            })()
           );
 
           // Update GHL pipeline to Closed Won
@@ -863,6 +864,50 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
       });
     }
 
+    // --- SMS OPT-IN ENDPOINT ---
+    if (url.pathname === "/sms-optin") {
+      let optBody;
+      try { optBody = await request.json(); } catch {
+        return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+          status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      const { name, email, phone, company } = optBody;
+      if (!phone) {
+        return new Response(JSON.stringify({ error: "Phone required" }), {
+          status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      // Create or update GHL contact with SMS opt-in tag
+      ctx.waitUntil(
+        (async () => {
+          try {
+            await createGHLContact(env, {
+              name: name || "",
+              email: email || undefined,
+              phone,
+              company: company || "",
+              city: "",
+              tags: ["homeedge-lead", "sms-opted-in", "website"],
+            });
+            console.log(`SMS opt-in: ${phone} (${name || "unknown"})`);
+          } catch (err) {
+            console.log("SMS opt-in GHL error:", err.message);
+          }
+        })()
+      );
+
+      // Store backup
+      const key = `sms_optin_${Date.now()}`;
+      await env.RATE_LIMITS.put(key, JSON.stringify({ ...optBody, ts: new Date().toISOString() }), { expirationTtl: 86400 * 365 });
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+      });
+    }
+
     // --- NOTIFY ENDPOINT (backup lead capture - logs to KV) ---
     if (url.pathname === "/notify") {
       let notifyBody;
@@ -901,67 +946,10 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
       const leadKey = `lead_${Date.now()}_${email.replace(/[^a-z0-9]/gi, '')}`;
       await env.RATE_LIMITS.put(leadKey, JSON.stringify({ email, name, phone, company, city, ts: new Date().toISOString() }), { expirationTtl: 86400 * 365 });
 
-      try {
-        // Send welcome email via Resend
-        const firstName = (name || "").split(" ")[0] || "there";
-        const welcomeHtml = `
-<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;color:#333;line-height:1.6">
-  <div style="background:#0B1426;padding:30px;text-align:center;border-radius:12px 12px 0 0">
-    <h1 style="color:#00D4FF;margin:0;font-size:24px">HomeEdge</h1>
-    <p style="color:#94A3B8;margin:8px 0 0;font-size:14px">28 AI Tools for Listing Agents</p>
-  </div>
-  <div style="padding:30px;background:#f9fafb;border-radius:0 0 12px 12px">
-    <p>Hey ${firstName},</p>
-    <p>Thanks for checking out HomeEdge. You just joined a small group of agents who are about to have an unfair advantage.</p>
-    <p>Your personalized AI demo is being built right now. Cole (the founder) will send you the link within 24 hours with your name, your brokerage, and your market baked in.</p>
-    <p>In the meantime, here is what 28 AI tools can do for your listing business:</p>
-    <ul>
-      <li><strong>AI Chatbot</strong> that answers seller questions on your website 24/7</li>
-      <li><strong>Listing descriptions</strong> written in 10 seconds</li>
-      <li><strong>Net proceeds calculator</strong> that builds trust instantly</li>
-      <li><strong>Social media posts</strong> generated in your voice</li>
-      <li>Plus 24 more tools, all branded to you</li>
-    </ul>
-    <p style="text-align:center;margin:30px 0">
-      <a href="https://gethomeedge.com/#demo-video" style="background:linear-gradient(135deg,#00D4FF,#0099cc);color:#0B1426;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block">Watch the Demo Video</a>
-    </p>
-    <p>Questions? Just reply to this email. I read every one.</p>
-    <p>-- Cole Cummings<br>Founder, HomeEdge<br><a href="https://gethomeedge.com" style="color:#00D4FF">gethomeedge.com</a></p>
-  </div>
-</div>`;
+      const firstName = (name || "").split(" ")[0] || "there";
 
-        const resendRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${env.RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "HomeEdge <onboarding@resend.dev>",
-            to: email,
-            subject: `${firstName}, your AI demo is being built`,
-            html: welcomeHtml,
-            reply_to: "cole@gethomeedge.com",
-          }),
-        });
-
-        // Notify Cole about the new lead
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${env.RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "HomeEdge Leads <onboarding@resend.dev>",
-            to: "cca.fam.acc@gmail.com",
-            subject: `NEW LEAD: ${name || email} from ${city || "unknown"}`,
-            html: `<p><strong>New demo request!</strong></p><p>Name: ${name}<br>Email: ${email}<br>Phone: ${phone}<br>Brokerage: ${company}<br>City: ${city}</p><p>Build their gift bot and send the link ASAP.</p>`,
-          }),
-        });
-
-        // Create contact + pipeline opportunity in GHL (non-blocking)
-        ctx.waitUntil(
+      // Create contact + pipeline opportunity in GHL (non-blocking, independent of email)
+      ctx.waitUntil(
           (async () => {
             try {
               const contact = await createGHLContact(env, {
@@ -988,16 +976,76 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
           })()
         );
 
-        return new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-        });
-      } catch (err) {
-        return new Response(JSON.stringify({ error: "Email send failed", detail: err.message }), {
-          status: 502,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-        });
-      }
+      // Send welcome email + notify Cole via Resend (non-blocking, independent of GHL)
+      ctx.waitUntil(
+        (async () => {
+          try {
+            const welcomeHtml = `
+<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;color:#333;line-height:1.6">
+  <div style="background:#0B1426;padding:30px;text-align:center;border-radius:12px 12px 0 0">
+    <h1 style="color:#00D4FF;margin:0;font-size:24px">HomeEdge</h1>
+    <p style="color:#94A3B8;margin:8px 0 0;font-size:14px">28 AI Tools for Listing Agents</p>
+  </div>
+  <div style="padding:30px;background:#f9fafb;border-radius:0 0 12px 12px">
+    <p>Hey ${firstName},</p>
+    <p>Thanks for checking out HomeEdge. You just joined a small group of agents who are about to have an unfair advantage.</p>
+    <p>Your personalized AI demo is being built right now. Cole (the founder) will send you the link within 24 hours with your name, your brokerage, and your market baked in.</p>
+    <p>In the meantime, here is what 28 AI tools can do for your listing business:</p>
+    <ul>
+      <li><strong>AI Chatbot</strong> that answers seller questions on your website 24/7</li>
+      <li><strong>Listing descriptions</strong> written in 10 seconds</li>
+      <li><strong>Net proceeds calculator</strong> that builds trust instantly</li>
+      <li><strong>Social media posts</strong> generated in your voice</li>
+      <li>Plus 24 more tools, all branded to you</li>
+    </ul>
+    <p style="text-align:center;margin:30px 0">
+      <a href="https://gethomeedge.com/#demo-video" style="background:linear-gradient(135deg,#00D4FF,#0099cc);color:#0B1426;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block">Watch the Demo Video</a>
+    </p>
+    <p>Questions? Just reply to this email. I read every one.</p>
+    <p>-- Cole Cummings<br>Founder, HomeEdge<br><a href="https://gethomeedge.com" style="color:#00D4FF">gethomeedge.com</a></p>
+  </div>
+</div>`;
+
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+              },
+              body: JSON.stringify({
+                from: "HomeEdge <onboarding@resend.dev>",
+                to: email,
+                subject: `${firstName}, your AI demo is being built`,
+                html: welcomeHtml,
+                reply_to: "cole@gethomeedge.com",
+              }),
+            });
+            console.log(`Welcome email sent to ${email}`);
+
+            // Notify Cole
+            await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+              },
+              body: JSON.stringify({
+                from: "HomeEdge Leads <onboarding@resend.dev>",
+                to: "cca.fam.acc@gmail.com",
+                subject: `NEW LEAD: ${name || email} from ${city || "unknown"}`,
+                html: `<p><strong>New demo request!</strong></p><p>Name: ${name}<br>Email: ${email}<br>Phone: ${phone}<br>Brokerage: ${company}<br>City: ${city}</p>`,
+              }),
+            });
+          } catch (err) {
+            console.log("Resend email error:", err.message);
+          }
+        })()
+      );
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+      });
     }
 
     // --- CHAT ENDPOINT (default) ---
