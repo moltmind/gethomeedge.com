@@ -335,6 +335,8 @@ LEADS = [
     {"first": "Kristine", "last": "Trcka", "company": "RE/MAX Corridor", "city": "San Antonio", "state": "TX", "market": "San Antonio"},
     {"first": "Jenny", "last": "Bingham", "company": "RE/MAX Associates", "city": "San Antonio", "state": "TX", "market": "San Antonio"},
     {"first": "Bryan", "last": "Treat", "company": "Orchard Brokerage", "city": "San Antonio", "state": "TX", "market": "San Antonio"},
+    # Inbound leads
+    {"first": "Lauren", "last": "Toman", "company": "Century 21", "city": "Tampa", "state": "FL", "market": "Tampa Bay"},
 ]
 
 def slug(first, last):
