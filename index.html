@@ -22,6 +22,8 @@
     <meta name="twitter:title" content="HomeEdge | 28 AI Tools for Real Estate Agents">
     <meta name="twitter:description" content="Property descriptions, social content, lead follow-up, and 25 more AI tools. All under your brand.">
     <meta name="twitter:image" content="https://gethomeedge.com/homeedge-logo.png">
+    <link rel="canonical" href="https://gethomeedge.com/">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -163,7 +165,7 @@
 
         /* ===== HERO ===== */
         .hero {
-            min-height: 100vh;
+            min-height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -320,7 +322,7 @@
 
         /* ===== SECTION SHARED ===== */
         .section {
-            padding: 6rem 2rem;
+            padding: 4rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -1117,7 +1119,7 @@
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#faq">FAQ</a></li>
             </ul>
-            <a href="https://calendly.com/gethomeedge/30min" target="_blank" class="btn-header mobile-hide" style="text-decoration:none">Book a Call</a>
+            <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank" class="btn-header mobile-hide" style="text-decoration:none">Book a Call</a>
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">&#9776;</button>
         </nav>
     </header>
@@ -1128,7 +1130,7 @@
         <a href="#features" onclick="toggleMobileMenu()">Features</a>
         <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
         <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
-        <a href="https://calendly.com/gethomeedge/30min" onclick="toggleMobileMenu();" target="_blank" style="background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);padding:0.8rem 2rem;border-radius:8px;font-weight:700;">Book a Call</a>
+        <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" onclick="toggleMobileMenu();" target="_blank" style="background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);padding:0.8rem 2rem;border-radius:8px;font-weight:700;">Book a Call</a>
     </div>
 
     <!-- Hero -->
@@ -1232,7 +1234,7 @@
             <div class="feature-card">
                 <div class="feature-icon">&#x270D;&#xFE0F;</div>
                 <h3>AI Content Suite</h3>
-                <p>Listing descriptions, social media posts, follow-up emails, video scripts, and seller updates -- all generated in seconds, all in your voice.</p>
+                <p>Listing descriptions, social media posts, follow-up emails, video scripts, and seller updates, all generated in seconds, all in your voice.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">&#x1F4B0;</div>
@@ -1297,7 +1299,7 @@
         </div>
         <div class="testimonial-card">
             <p class="testimonial-quote">Jim saw the demo and tried to hire me on the spot. That reaction IS the product.</p>
-            <p class="testimonial-author">-- Cole Cummings, HomeEdge Creator</p>
+            <p class="testimonial-author">Cole Cummings, HomeEdge Creator</p>
             <div class="testimonial-result">First client: $12K+ in month one</div>
         </div>
     </section>
@@ -1406,7 +1408,7 @@
                 </div>
             </div>
             <div class="roi-bottom">
-                <p>289% ROI on the Founder Professional plan with just 2 extra listings -- and that's conservative.</p>
+                <p>289% ROI on the Founder Professional plan with just 2 extra listings, and that's conservative.</p>
             </div>
         </div>
     </section>
@@ -1468,7 +1470,7 @@
         <div class="final-cta-content">
             <h2>Ready to Own Your Market?</h2>
             <p>See your branded demo in 30 seconds. No commitment. No credit card. Just proof that this works.</p>
-            <a href="https://calendly.com/gethomeedge/30min" target="_blank" class="btn-primary" style="text-decoration:none;display:inline-block">Book a Free Call</a>
+            <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank" class="btn-primary" style="text-decoration:none;display:inline-block">Book a Free Call</a>
         </div>
     </section>
 
@@ -1489,7 +1491,7 @@
                 <h4>Contact</h4>
                 <a href="mailto:cole@gethomeedge.com">cole@gethomeedge.com</a>
                 <a href="tel:+18883164609">+1 (888) 316-4609</a>
-                <a href="https://calendly.com/gethomeedge/30min" target="_blank">Book a Free Call</a>
+                <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank">Book a Free Call</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1568,7 +1570,7 @@
                 city: form.city.value
             };
 
-            // Try Cloudflare Worker (MailerLite)
+            // Send lead to GHL via Cloudflare Worker
             fetch('https://homeedge-chat.moltmind.workers.dev/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1603,7 +1605,7 @@
             });
         });
 
-        // Intersection Observer for animations (desktop only -- mobile gets instant visibility)
+        // Intersection Observer for animations (desktop only, mobile gets instant visibility)
         if (window.innerWidth > 768) {
             var observer = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
