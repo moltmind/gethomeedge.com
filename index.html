@@ -536,27 +536,27 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
 
             <!-- Video Tabs -->
             <div class="flex flex-wrap justify-center gap-3 mb-8">
-                <button onclick="switchVideo('cma')" id="tab-cma" class="video-tab active px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-white">
+                <button onclick="switchVideo('dash')" id="tab-dash" class="video-tab active px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-white">
+                    <i class="ph-bold ph-layout mr-1.5"></i> Agent Dashboard
+                </button>
+                <button onclick="switchVideo('cma')" id="tab-cma" class="video-tab px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-slate-400">
                     <i class="ph-bold ph-chart-bar mr-1.5"></i> CMA Generator
                 </button>
                 <button onclick="switchVideo('net')" id="tab-net" class="video-tab px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-slate-400">
                     <i class="ph-bold ph-calculator mr-1.5"></i> Net Proceeds
                 </button>
-                <button onclick="switchVideo('dash')" id="tab-dash" class="video-tab px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-slate-400">
-                    <i class="ph-bold ph-layout mr-1.5"></i> Agent Dashboard
-                </button>
             </div>
 
             <!-- Video Player -->
             <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,242,254,0.08)] bg-navy-800">
-                <video id="video-cma" class="w-full block" autoplay muted loop playsinline>
-                    <source src="HomeEdge-CMA-Final.mp4" type="video/mp4">
+                <video id="video-dash" class="w-full block" autoplay muted loop playsinline poster="videos/dashboard-poster.jpg">
+                    <source src="videos/dashboard-demo.mp4" type="video/mp4">
+                </video>
+                <video id="video-cma" class="w-full hidden" muted loop playsinline>
+                    <source src="video-scripts/HomeEdge-CMA-Final.mp4" type="video/mp4">
                 </video>
                 <video id="video-net" class="w-full hidden" muted loop playsinline>
-                    <source src="HomeEdge-NetProceeds-Final.mp4" type="video/mp4">
-                </video>
-                <video id="video-dash" class="w-full hidden" muted loop playsinline>
-                    <source src="HomeEdge-Dashboard-Final.mp4" type="video/mp4">
+                    <source src="video-scripts/HomeEdge-NetProceeds-Final.mp4" type="video/mp4">
                 </video>
 
                 <!-- Mute/Unmute toggle -->
@@ -599,12 +599,12 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
     function toggleMute() {
         const videos = ['video-cma', 'video-net', 'video-dash'];
         const icon = document.getElementById('mute-icon');
-        const isMuted = document.getElementById('video-cma').muted;
+        const isMuted = document.getElementById('video-dash').muted;
         videos.forEach(id => { document.getElementById(id).muted = !isMuted; });
         icon.className = isMuted ? 'ph-bold ph-speaker-high text-lg' : 'ph-bold ph-speaker-x text-lg';
     }
-    // Initialize first tab
-    switchVideo('cma');
+    // Initialize first tab (Dashboard masterpiece)
+    switchVideo('dash');
     </script>
 
 
