@@ -736,7 +736,17 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
 
             try {
                 Clerk.load({
-                    ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined
+                    ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined,
+                    appearance: {
+                        variables: {
+                            colorBackground: '#0A1128',
+                            colorText: '#FFFFFF',
+                            colorTextSecondary: '#94A3B8',
+                            colorPrimary: '#00F2FE',
+                            colorTextOnPrimaryBackground: '#040711',
+                            fontFamily: 'Inter, sans-serif',
+                        }
+                    }
                 }).then(function() {
                     // Check auth
                     if (!Clerk.user) {

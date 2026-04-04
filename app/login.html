@@ -239,13 +239,39 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                     // Mount sign-in component
                     Clerk.mountSignIn(document.getElementById('clerk-sign-in'), {
                         appearance: {
+                            baseTheme: undefined,
+                            variables: {
+                                colorBackground: '#0A1128',
+                                colorText: '#FFFFFF',
+                                colorTextSecondary: '#94A3B8',
+                                colorInputBackground: '#141E3E',
+                                colorInputText: '#FFFFFF',
+                                colorPrimary: '#00F2FE',
+                                colorTextOnPrimaryBackground: '#040711',
+                                borderRadius: '0.75rem',
+                                fontFamily: 'Inter, sans-serif',
+                            },
                             elements: {
                                 rootBox: 'w-full',
-                                card: 'bg-transparent shadow-none border-none',
-                                formButtonPrimary: 'bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-navy-900 font-semibold',
-                                formFieldInput: 'bg-navy-700 border-white/10 text-white',
-                                formFieldLabel: 'text-gray-400',
+                                card: 'bg-transparent shadow-none border-none !text-white',
+                                headerTitle: '!text-white',
+                                headerSubtitle: '!text-slate-400',
+                                formFieldLabel: '!text-slate-300',
+                                formFieldInput: '!bg-[#141E3E] !border-white/10 !text-white placeholder:!text-slate-500',
+                                formButtonPrimary: '!bg-gradient-to-r !from-[#D4AF37] !to-[#F8E9A1] !text-[#040711] font-bold hover:!shadow-lg',
+                                formFieldInputShowPasswordButton: '!text-slate-400',
+                                identityPreviewText: '!text-white',
+                                identityPreviewEditButton: '!text-cyan-400',
+                                socialButtonsBlockButton: '!bg-[#141E3E] !border-white/10 !text-white hover:!bg-[#1D2A54]',
+                                socialButtonsBlockButtonText: '!text-white',
+                                dividerLine: '!bg-white/10',
+                                dividerText: '!text-slate-500',
                                 footerAction: 'hidden',
+                                formResendCodeLink: '!text-cyan-400',
+                                otpCodeFieldInput: '!bg-[#141E3E] !border-white/10 !text-white',
+                                alertText: '!text-white',
+                                formFieldWarningText: '!text-amber-400',
+                                formFieldErrorText: '!text-red-400',
                             }
                         }
                     });
