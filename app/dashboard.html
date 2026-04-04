@@ -1,10 +1,10 @@
 <!--
 aesthetic_dna: Premium, High-Trust, Cyber-Elegance
-ui_paradigm: Member dashboard with tier-gated tool grid
+ui_paradigm: Sidebar-based member dashboard with tier-gated navigation
 palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
 -->
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <!-- Google tag (gtag.js) -->
@@ -19,241 +19,217 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
     <title>Dashboard | HomeEdge</title>
     <meta name="description" content="Your HomeEdge dashboard. Access all your AI-powered real estate seller tools.">
     <link rel="icon" href="/homeedge-logo.png" type="image/png">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
                     colors: {
-                        navy: {
-                            900: '#040711',
-                            800: '#0A1128',
-                            700: '#141E3E',
-                            600: '#1D2A54',
-                        },
-                        cyan: {
-                            glow: '#00F2FE',
-                            deep: '#4FACFE',
-                        },
-                        gold: {
-                            light: '#F8E9A1',
-                            base: '#D4AF37',
-                            dark: '#A6821A',
-                        }
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
                     },
                     backgroundImage: {
                         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                         'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
                         'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
-                            '50%': { opacity: '0.6', transform: 'scale(1.05)' },
-                        },
                     }
                 }
             }
         }
     </script>
-
-    <!-- =====================================================
-         CLERK AUTH SCRIPTS (PLACEHOLDER)
-         =====================================================
-         After creating your Clerk application at clerk.com:
-         1. Go to your Clerk Dashboard > API Keys
-         2. Copy your "Publishable Key" (starts with pk_live_ or pk_test_)
-         3. Copy your "Frontend API URL" (looks like: https://your-app-name.clerk.accounts.dev)
-         4. Replace the URLs and key below with your real values
-         ===================================================== -->
-    <script defer crossorigin="anonymous"
-      src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
-    <script defer crossorigin="anonymous"
-      data-clerk-publishable-key="pk_test_aG9uZXN0LXBlbmd1aW4tNi5jbGVyay5hY2NvdW50cy5kZXYk"
-      src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
-
+    <script defer crossorigin="anonymous" src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+    <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_aG9uZXN0LXBlbmd1aW4tNi5jbGVyay5hY2NvdW50cy5kZXYk" src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
     <style>
-        body {
-            background-color: #040711;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #040711; }
-        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        body { background: #040711; color: #fff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
-
-        .glass-panel {
-            background: rgba(10, 17, 40, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .glass-card {
-            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .glass-card:hover {
-            border-color: rgba(0, 242, 254, 0.3);
-            box-shadow: 0 12px 40px 0 rgba(0, 242, 254, 0.1), inset 0 0 20px 0 rgba(0, 242, 254, 0.05);
-            transform: translateY(-4px);
-        }
-
-        .glass-card.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .glass-card.locked:hover {
-            border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transform: none;
-        }
-
-        .text-gradient-cyan {
-            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .text-gradient-brand {
-            background: linear-gradient(135deg, #00F2FE, #D4AF37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .text-gradient-gold {
-            background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Ambient background */
-        .ambient-glow {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.12;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Tier badge styles */
-        .tier-badge-starter {
-            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
-            color: #040711;
-        }
-        .tier-badge-pro {
-            background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728);
-            color: #040711;
-        }
-        .tier-badge-elite {
-            background: linear-gradient(135deg, #BF953F, #FCF6BA, #D4AF37, #FCF6BA, #BF953F);
-            color: #040711;
-        }
-
-        /* Copy button animation */
-        .copy-success {
-            animation: copyPulse 0.3s ease;
-        }
-        @keyframes copyPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Grid pattern */
-        .grid-bg {
-            background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
+        .text-gradient-brand { background: linear-gradient(135deg, #00F2FE, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .text-gradient-cyan { background: linear-gradient(90deg, #4FACFE, #00F2FE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glass-card { background: linear-gradient(180deg, rgba(20,30,62,0.6), rgba(10,17,40,0.4)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+        .glass-card:hover { border-color: rgba(0,242,254,0.3); box-shadow: 0 12px 40px rgba(0,242,254,0.1); transform: translateY(-2px); }
+        .tier-badge-starter { background: linear-gradient(90deg, #4FACFE, #00F2FE); color: #040711; }
+        .tier-badge-pro { background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728); color: #040711; }
+        .tier-badge-elite { background: linear-gradient(135deg, #BF953F, #FCF6BA, #D4AF37, #FCF6BA, #BF953F); color: #040711; }
+        /* Sidebar */
+        #sidebar { transition: width 0.25s ease, transform 0.25s ease; }
+        #sidebar.collapsed { width: 64px; }
+        #sidebar.collapsed .sb-label, #sidebar.collapsed .sb-section-label, #sidebar.collapsed .sb-search,
+        #sidebar.collapsed .sb-user-name, #sidebar.collapsed .sb-tier, #sidebar.collapsed .sb-collapse-text { display: none; }
+        #sidebar.collapsed .sb-logo-text { display: none; }
+        #sidebar.collapsed .sb-nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+        #sidebar.collapsed .sb-nav-item i { margin-right: 0; }
+        #sidebar.collapsed .sb-section-head { justify-content: center; padding-left: 0; padding-right: 0; }
+        #sidebar.collapsed .sb-section-head i.sb-arrow { display: none; }
+        #sidebar.collapsed .sb-fav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+        #sidebar.collapsed .sb-fav-item .sb-fav-star { display: none; }
+        /* Mobile overlay */
+        #sidebar-backdrop { display: none; }
+        @media (max-width: 767px) {
+            #sidebar { position: fixed; z-index: 50; transform: translateX(-100%); width: 280px !important; }
+            #sidebar.mobile-open { transform: translateX(0); }
+            #sidebar-backdrop.active { display: block; }
+            #sidebar.collapsed { width: 280px !important; }
+            #sidebar.collapsed .sb-label, #sidebar.collapsed .sb-section-label, #sidebar.collapsed .sb-search,
+            #sidebar.collapsed .sb-user-name, #sidebar.collapsed .sb-tier, #sidebar.collapsed .sb-collapse-text,
+            #sidebar.collapsed .sb-logo-text { display: inline; }
+            #sidebar.collapsed .sb-nav-item { justify-content: flex-start; padding-left: 12px; padding-right: 12px; }
+            #sidebar.collapsed .sb-nav-item i { margin-right: 10px; }
+            #sidebar.collapsed .sb-section-head { justify-content: space-between; padding-left: 12px; padding-right: 12px; }
+            #sidebar.collapsed .sb-section-head i.sb-arrow { display: inline; }
+            #sidebar.collapsed .sb-fav-item { justify-content: flex-start; padding-left: 12px; padding-right: 12px; }
+            #sidebar.collapsed .sb-fav-item .sb-fav-star { display: flex; }
         }
     </style>
 </head>
 <body class="font-sans min-h-screen">
 
-    <!-- Ambient glows -->
-    <div class="ambient-glow bg-cyan-glow/50" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
-    <div class="ambient-glow" style="width:400px;height:400px;bottom:10%;left:-50px;background:#D4AF37;opacity:0.06;"></div>
+<!-- Backdrop for mobile sidebar -->
+<div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onclick="toggleMobileSidebar()"></div>
 
-    <!-- Grid overlay -->
-    <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed top-0 left-0 h-screen bg-navy-800/80 backdrop-blur-xl border-r border-white/5 flex flex-col z-50" style="width:240px;">
 
-    <!-- ============================================ -->
-    <!-- FIXED NAVIGATION BAR                         -->
-    <!-- ============================================ -->
-    <nav class="glass-panel fixed top-0 left-0 right-0 z-50 border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <a href="https://gethomeedge.com" class="font-serif text-xl sm:text-2xl font-bold text-gradient-brand tracking-tight">
-                    HomeEdge
-                </a>
+    <!-- Logo + Collapse -->
+    <div class="flex items-center justify-between px-4 h-14 flex-shrink-0 border-b border-white/5">
+        <a href="/app/dashboard.html" class="flex items-center gap-2">
+            <img src="/homeedge-logo.png" alt="HomeEdge" class="w-7 h-7 rounded-md">
+            <span class="sb-logo-text font-serif text-lg font-bold text-gradient-brand">HomeEdge</span>
+        </a>
+        <button onclick="toggleSidebarCollapse()" class="hidden md:flex w-6 h-6 items-center justify-center rounded hover:bg-white/5 transition-colors" title="Collapse sidebar">
+            <i id="collapse-icon" class="ph ph-caret-left text-gray-500 text-sm"></i>
+        </button>
+    </div>
 
-                <!-- Right side: user info -->
-                <div class="flex items-center gap-4">
-                    <span id="nav-user-name" class="hidden sm:block text-sm text-gray-300"></span>
-                    <div id="nav-user-button" class="w-9 h-9 rounded-full bg-navy-700 border border-white/10 flex items-center justify-center overflow-hidden">
-                        <!-- Clerk UserButton mounts here, or fallback avatar -->
-                        <i class="ph ph-user text-gray-400"></i>
-                    </div>
-                </div>
+    <!-- Search -->
+    <div class="sb-search px-3 pt-3 pb-1 flex-shrink-0">
+        <div class="relative">
+            <i class="ph ph-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+            <input id="sb-search-input" type="text" placeholder="Search tools..."
+                class="w-full bg-navy-700/50 border border-white/5 rounded-lg pl-8 pr-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow/30 transition-colors">
+        </div>
+    </div>
+
+    <!-- Scrollable nav -->
+    <nav class="flex-1 overflow-y-auto px-2 py-2" id="sidebar-nav">
+        <!-- Quick Access -->
+        <div class="mb-1" id="sb-quick-access">
+            <div class="sb-section-label flex items-center gap-2 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <i class="ph-fill ph-star text-gold-base text-xs"></i> Quick Access
             </div>
+            <div id="sb-fav-list"></div>
+        </div>
+
+        <!-- Dashboard link -->
+        <a href="/app/dashboard.html" class="sb-nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white bg-cyan-glow/5 border-l-[3px] border-cyan-glow mb-1">
+            <i class="ph ph-squares-four text-cyan-glow text-base" style="margin-right:2px;"></i>
+            <span class="sb-label">Dashboard</span>
+        </a>
+
+        <!-- AI Generators -->
+        <div class="mt-1" data-section="generators">
+            <button onclick="toggleSection('generators')" class="sb-section-head w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/3 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i class="ph ph-sparkle text-cyan-glow text-base"></i>
+                    <span class="sb-section-label text-xs font-semibold text-gray-400">AI Generators</span>
+                </div>
+                <i class="ph ph-caret-down sb-arrow text-gray-600 text-[10px] transition-transform duration-200" id="arrow-generators"></i>
+            </button>
+            <div id="section-generators" class="overflow-hidden transition-all duration-200" style="max-height:0;opacity:0;"></div>
+        </div>
+
+        <!-- Calculators -->
+        <div class="mt-1" data-section="calculators">
+            <button onclick="toggleSection('calculators')" class="sb-section-head w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/3 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i class="ph ph-calculator text-gold-base text-base"></i>
+                    <span class="sb-section-label text-xs font-semibold text-gray-400">Calculators</span>
+                </div>
+                <i class="ph ph-caret-down sb-arrow text-gray-600 text-[10px] transition-transform duration-200" id="arrow-calculators"></i>
+            </button>
+            <div id="section-calculators" class="overflow-hidden transition-all duration-200" style="max-height:0;opacity:0;"></div>
+        </div>
+
+        <!-- Dashboards -->
+        <div class="mt-1" data-section="dashboards">
+            <button onclick="toggleSection('dashboards')" class="sb-section-head w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/3 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i class="ph ph-layout text-emerald-400 text-base"></i>
+                    <span class="sb-section-label text-xs font-semibold text-gray-400">Dashboards</span>
+                </div>
+                <i class="ph ph-caret-down sb-arrow text-gray-600 text-[10px] transition-transform duration-200" id="arrow-dashboards"></i>
+            </button>
+            <div id="section-dashboards" class="overflow-hidden transition-all duration-200" style="max-height:0;opacity:0;"></div>
         </div>
     </nav>
 
-    <!-- ============================================ -->
-    <!-- MAIN CONTENT                                 -->
-    <!-- ============================================ -->
-    <main class="relative z-10 pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <!-- Bottom: Settings + User -->
+    <div class="flex-shrink-0 border-t border-white/5 px-3 py-3 space-y-2">
+        <a href="/app/settings.html" class="sb-nav-item flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+            <i class="ph ph-gear text-base"></i>
+            <span class="sb-label">Settings</span>
+        </a>
+        <div class="flex items-center gap-3 px-2">
+            <div id="sb-user-btn" class="w-8 h-8 rounded-full bg-navy-700 border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+                <i class="ph ph-user text-gray-400 text-sm"></i>
+            </div>
+            <div class="min-w-0">
+                <p id="sb-user-name" class="sb-user-name text-sm font-medium text-white truncate">Agent</p>
+                <span id="sb-tier-badge" class="sb-tier inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider tier-badge-pro">
+                    <i class="ph-fill ph-star" style="font-size:8px;"></i>
+                    <span id="sb-tier-label">Pro</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</aside>
 
-        <!-- Demo mode banner (shown when Clerk is not loaded) -->
+<!-- Main Content -->
+<div id="main-wrapper" class="transition-all duration-250" style="margin-left:240px;">
+
+    <!-- Top bar -->
+    <header class="sticky top-0 z-30 bg-navy-900/80 backdrop-blur-xl border-b border-white/5">
+        <div class="flex items-center justify-between px-4 sm:px-6 h-14">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileSidebar()" class="md:hidden w-9 h-9 rounded-lg bg-navy-700/50 border border-white/5 flex items-center justify-center">
+                    <i class="ph ph-list text-white text-lg"></i>
+                </button>
+                <nav class="flex items-center gap-2 text-sm">
+                    <i class="ph ph-house text-gray-500 text-sm"></i>
+                    <span class="text-gray-400">Dashboard</span>
+                </nav>
+            </div>
+            <div class="flex items-center gap-3">
+                <button class="w-9 h-9 rounded-lg bg-navy-700/30 border border-white/5 flex items-center justify-center hover:bg-navy-700/50 transition-colors" title="Notifications">
+                    <i class="ph ph-bell text-gray-400"></i>
+                </button>
+                <div id="topbar-user-btn" class="md:hidden w-8 h-8 rounded-full bg-navy-700 border border-white/10 flex items-center justify-center overflow-hidden">
+                    <i class="ph ph-user text-gray-400 text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-4 sm:p-6 lg:p-8 max-w-6xl">
+
+        <!-- Demo banner -->
         <div id="demo-banner" class="hidden mb-6">
             <div class="bg-gold-base/10 border border-gold-base/30 rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
                 <i class="ph ph-eye text-gold-base text-lg"></i>
-                <span class="text-gold-light">Demo Mode: Showing all tools as if on the Pro tier. Connect Clerk to enable real authentication.</span>
+                <span class="text-gold-light">Demo Mode: Showing all tools as if on the Pro tier.</span>
             </div>
         </div>
 
-        <!-- Welcome section -->
-        <section class="mb-10">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+        <!-- Welcome -->
+        <section class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
                 <h1 class="text-2xl sm:text-3xl font-bold text-white">
                     Welcome back, <span id="user-first-name" class="text-gradient-cyan">Agent</span>
                 </h1>
@@ -262,554 +238,518 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                     <span id="tier-label">Pro</span>
                 </span>
             </div>
-            <p class="text-gray-400 mt-2 text-sm sm:text-base">Your AI-powered seller tools are ready. Pick a tool to get started.</p>
+            <p class="text-gray-400 mt-2 text-sm">Your AI-powered seller tools are ready</p>
         </section>
 
-        <!-- ============================================ -->
-        <!-- QUICK ACCESS (favorites or top picks)        -->
-        <!-- ============================================ -->
-        <section class="mb-10" id="quick-access-section">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-semibold text-white flex items-center gap-2">
-                    <i class="ph-fill ph-star text-gold-base"></i>
-                    Quick Access
-                </h2>
-                <span class="text-xs text-gray-600">Click the star on any tool to pin it here</span>
-            </div>
-            <div id="quick-access-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                <!-- Favorites injected by JS -->
-            </div>
-            <div id="quick-access-empty" class="hidden glass-card rounded-xl p-6 text-center">
-                <i class="ph ph-star text-2xl text-gray-600 mb-2"></i>
-                <p class="text-sm text-gray-500">Star your favorite tools to pin them here for quick access</p>
-            </div>
-        </section>
-
-        <!-- ============================================ -->
-        <!-- SEARCH (compact)                             -->
-        <!-- ============================================ -->
-        <div class="mb-6">
-            <div class="relative w-full sm:w-80">
-                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                <input id="tool-search" type="text" placeholder="Search all 28 tools..."
-                    class="w-full bg-navy-700/40 border border-white/5 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow/30 transition-colors">
-            </div>
-        </div>
-
-        <!-- Search results (hidden until searching) -->
-        <section id="search-results" class="mb-10 hidden">
-            <div id="search-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
-            <div id="no-results" class="hidden text-center py-8">
-                <i class="ph ph-magnifying-glass text-3xl text-gray-600 mb-2"></i>
-                <p class="text-sm text-gray-500">No tools match your search</p>
-            </div>
-        </section>
-
-        <!-- ============================================ -->
-        <!-- TOOL CATEGORIES (collapsible)                -->
-        <!-- ============================================ -->
-        <section class="mb-12" id="categories-section">
-            <!-- AI Generators -->
-            <div class="mb-6">
-                <button onclick="toggleCategory('generators')" class="w-full flex items-center justify-between py-3 group">
-                    <div class="flex items-center gap-3">
-                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-cyan-glow/10 text-cyan-glow border border-cyan-glow/20">AI</span>
-                        <h3 class="text-sm font-semibold text-white">Generators</h3>
-                        <span class="text-xs text-gray-600" id="gen-count">14 tools</span>
-                    </div>
-                    <i class="ph ph-caret-down text-gray-500 group-hover:text-white transition-all duration-300" id="gen-arrow"></i>
-                </button>
-                <div id="cat-generators" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-2 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+        <!-- Stats row -->
+        <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="ph ph-users text-cyan-glow"></i>
+                    <span class="text-xs text-gray-500">Total Leads</span>
                 </div>
+                <p class="text-2xl font-bold text-white" id="stat-leads">0</p>
             </div>
-
-            <!-- Calculators -->
-            <div class="mb-6">
-                <button onclick="toggleCategory('calculators')" class="w-full flex items-center justify-between py-3 group">
-                    <div class="flex items-center gap-3">
-                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-gold-base/10 text-gold-base border border-gold-base/20">Math</span>
-                        <h3 class="text-sm font-semibold text-white">Calculators</h3>
-                        <span class="text-xs text-gray-600" id="calc-count">7 tools</span>
-                    </div>
-                    <i class="ph ph-caret-down text-gray-500 group-hover:text-white transition-all duration-300" id="calc-arrow"></i>
-                </button>
-                <div id="cat-calculators" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-2 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="ph ph-toolbox text-cyan-glow"></i>
+                    <span class="text-xs text-gray-500">Tools Available</span>
                 </div>
+                <p class="text-2xl font-bold text-white"><span id="stat-tools-count">28</span> <span class="text-sm font-normal text-gray-500">of 28</span></p>
             </div>
-
-            <!-- Dashboards -->
-            <div class="mb-6">
-                <button onclick="toggleCategory('dashboards')" class="w-full flex items-center justify-between py-3 group">
-                    <div class="flex items-center gap-3">
-                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Systems</span>
-                        <h3 class="text-sm font-semibold text-white">Dashboards</h3>
-                        <span class="text-xs text-gray-600" id="dash-count">7 tools</span>
-                    </div>
-                    <i class="ph ph-caret-down text-gray-500 group-hover:text-white transition-all duration-300" id="dash-arrow"></i>
-                </button>
-                <div id="cat-dashboards" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-2 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="ph ph-chat-circle-dots text-cyan-glow"></i>
+                    <span class="text-xs text-gray-500">Chatbot Conversations</span>
                 </div>
+                <p class="text-2xl font-bold text-white">0</p>
+            </div>
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="ph ph-calendar text-cyan-glow"></i>
+                    <span class="text-xs text-gray-500">This Month</span>
+                </div>
+                <p class="text-2xl font-bold text-white" id="stat-month">April 2026</p>
             </div>
         </section>
 
-        <!-- ============================================ -->
-        <!-- SIDEBAR CARDS (3-column on desktop)          -->
-        <!-- ============================================ -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
+        <!-- Info cards row -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <!-- Your Brand -->
-            <div class="glass-card rounded-2xl p-6">
+            <div class="glass-card rounded-2xl p-5">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center">
-                        <i class="ph ph-paint-brush text-cyan-glow text-xl"></i>
+                    <div class="w-9 h-9 rounded-lg bg-navy-700 flex items-center justify-center">
+                        <i class="ph ph-paint-brush text-cyan-glow text-lg"></i>
                     </div>
-                    <h3 class="font-semibold text-white">Your Brand</h3>
+                    <h3 class="font-semibold text-white text-sm">Your Brand</h3>
                 </div>
-                <div class="space-y-3 mb-5">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-lg bg-navy-700 border border-dashed border-white/10 flex items-center justify-center">
-                            <i class="ph ph-image text-gray-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <p id="brand-name" class="text-sm font-medium text-white">Your Business Name</p>
-                            <p class="text-xs text-gray-500">Logo not yet uploaded</p>
-                        </div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-11 h-11 rounded-lg bg-navy-700 border border-dashed border-white/10 flex items-center justify-center">
+                        <i class="ph ph-image text-gray-500 text-lg"></i>
                     </div>
-                    <div class="flex gap-2">
-                        <div class="w-6 h-6 rounded-full bg-cyan-glow border-2 border-navy-800" title="Primary color"></div>
-                        <div class="w-6 h-6 rounded-full bg-gold-base border-2 border-navy-800" title="Accent color"></div>
-                        <div class="w-6 h-6 rounded-full bg-white border-2 border-navy-800" title="Text color"></div>
+                    <div>
+                        <p id="brand-name" class="text-sm font-medium text-white">Your Business Name</p>
+                        <p class="text-xs text-gray-500">Logo not yet uploaded</p>
                     </div>
                 </div>
-                <a href="/app/settings.html"
-                   class="inline-flex items-center gap-2 text-sm text-cyan-glow hover:text-white transition-colors duration-200 font-medium">
-                    <i class="ph ph-gear text-base"></i>
-                    Edit Branding
+                <a href="/app/settings.html" class="inline-flex items-center gap-2 text-xs text-cyan-glow hover:text-white transition-colors font-medium">
+                    <i class="ph ph-gear text-sm"></i> Edit Branding
                 </a>
             </div>
 
             <!-- Chatbot Embed -->
-            <div class="glass-card rounded-2xl p-6">
+            <div class="glass-card rounded-2xl p-5">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center">
-                        <i class="ph ph-robot text-cyan-glow text-xl"></i>
+                    <div class="w-9 h-9 rounded-lg bg-navy-700 flex items-center justify-center">
+                        <i class="ph ph-robot text-cyan-glow text-lg"></i>
                     </div>
-                    <h3 class="font-semibold text-white">Chatbot Embed</h3>
+                    <h3 class="font-semibold text-white text-sm">Chatbot Embed</h3>
                 </div>
-                <p class="text-sm text-gray-400 mb-4">Add the AI chatbot to your website. Paste this snippet before your closing <code class="text-cyan-glow/70">&lt;/body&gt;</code> tag:</p>
+                <p class="text-xs text-gray-400 mb-3">Add the AI chatbot to your website:</p>
                 <div class="relative">
-                    <pre id="embed-code" class="bg-navy-900 border border-white/5 rounded-lg p-3 text-xs text-gray-300 overflow-x-auto font-mono leading-relaxed">&lt;script src="https://homeedge-chat.moltmind.workers.dev/chatbot.js"
+                    <pre id="embed-code" class="bg-navy-900 border border-white/5 rounded-lg p-2.5 text-[10px] text-gray-300 overflow-x-auto font-mono leading-relaxed">&lt;script src="https://homeedge-chat.moltmind.workers.dev/chatbot.js"
   data-agent="AGENT_ID"&gt;&lt;/script&gt;</pre>
-                    <button onclick="copyEmbed()" id="copy-btn"
-                            class="absolute top-2 right-2 w-8 h-8 rounded-lg bg-navy-700 hover:bg-navy-600 border border-white/10 flex items-center justify-center transition-colors duration-200"
-                            title="Copy to clipboard">
-                        <i class="ph ph-copy text-gray-400 text-sm" id="copy-icon"></i>
+                    <button onclick="copyEmbed()" id="copy-btn" class="absolute top-1.5 right-1.5 w-7 h-7 rounded-md bg-navy-700 hover:bg-navy-600 border border-white/10 flex items-center justify-center transition-colors" title="Copy">
+                        <i class="ph ph-copy text-gray-400 text-xs" id="copy-icon"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Quick Stats -->
-            <div class="glass-card rounded-2xl p-6">
+            <div class="glass-card rounded-2xl p-5">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center">
-                        <i class="ph ph-chart-bar text-cyan-glow text-xl"></i>
+                    <div class="w-9 h-9 rounded-lg bg-navy-700 flex items-center justify-center">
+                        <i class="ph ph-chart-bar text-cyan-glow text-lg"></i>
                     </div>
-                    <h3 class="font-semibold text-white">Quick Stats</h3>
+                    <h3 class="font-semibold text-white text-sm">Quick Stats</h3>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-400">Total Leads</span>
-                        <span class="text-lg font-bold text-white" id="stat-leads">0</span>
+                        <span class="text-xs text-gray-400">Active Listings</span>
+                        <span class="text-sm font-bold text-white">0</span>
                     </div>
                     <div class="h-px bg-white/5"></div>
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-400">Tools Used</span>
-                        <span class="text-lg font-bold text-white" id="stat-tools">0</span>
+                        <span class="text-xs text-gray-400">Page Views</span>
+                        <span class="text-sm font-bold text-white">0</span>
                     </div>
                     <div class="h-px bg-white/5"></div>
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-400">This Month</span>
-                        <span class="text-lg font-bold text-white" id="stat-month">0</span>
+                        <span class="text-xs text-gray-400">Conversions</span>
+                        <span class="text-sm font-bold text-white">0</span>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+</div>
 
-    <!-- ============================================ -->
-    <!-- FOOTER                                       -->
-    <!-- ============================================ -->
-    <footer class="relative z-10 border-t border-white/5 py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p class="text-xs text-gray-600">&copy; 2026 HomeEdge. Powered by HomeEdge.</p>
-            <div class="flex items-center gap-4">
-                <a href="https://gethomeedge.com" class="text-xs text-gray-600 hover:text-gray-400 transition-colors">Home</a>
-                <a href="/app/settings.html" class="text-xs text-gray-600 hover:text-gray-400 transition-colors">Settings</a>
-                <a href="mailto:support@gethomeedge.com" class="text-xs text-gray-600 hover:text-gray-400 transition-colors">Support</a>
-            </div>
-        </div>
-    </footer>
+<!-- Upgrade toast (injected by JS) -->
 
-    <!-- ============================================ -->
-    <!-- JAVASCRIPT                                   -->
-    <!-- ============================================ -->
-    <script>
-    (function() {
+<script>
+(function() {
+    // ==========================================
+    // TIER DEFINITIONS (kept exactly)
+    // ==========================================
+    const TIERS = {
+        starter: {
+            tools: ['cma-generator', 'listing-description', 'net-proceeds-calculator',
+                'commission-calculator', 'social-media-generator', 'followup-email-generator',
+                'market-snapshot', 'closing-cost-explainer', 'pre-list-checklist', 'open-house-qr'],
+            label: 'Starter', color: 'cyan'
+        },
+        pro: { tools: 'all', label: 'Pro', color: 'gold' },
+        elite: { tools: 'all', label: 'Elite', color: 'gold' }
+    };
 
-        // ==========================================
-        // TIER DEFINITIONS
-        // ==========================================
-        const TIERS = {
-            starter: {
-                tools: [
-                    'cma-generator', 'listing-description', 'net-proceeds-calculator',
-                    'commission-calculator', 'social-media-generator', 'followup-email-generator',
-                    'market-snapshot', 'closing-cost-explainer', 'pre-list-checklist', 'open-house-qr'
-                ],
-                label: 'Starter',
-                color: 'cyan'
-            },
-            pro: {
-                tools: 'all',
-                label: 'Pro',
-                color: 'gold'
-            },
-            elite: {
-                tools: 'all',
-                label: 'Elite',
-                color: 'gold'
-            }
-        };
+    // ==========================================
+    // ALL 28 TOOLS (sidebar-specific icons/names per spec)
+    // ==========================================
+    const ALL_TOOLS = [
+        { id: 'cma-generator', icon: 'ph-chart-bar', name: 'CMA Generator', cat: 'generators', desc: 'Generate comparative market analyses with AI-powered insights' },
+        { id: 'listing-description', icon: 'ph-text-aa', name: 'Listing Writer', cat: 'generators', desc: 'Write compelling MLS-ready listing descriptions in seconds' },
+        { id: 'social-media-generator', icon: 'ph-share-network', name: 'Social Media', cat: 'generators', desc: 'Create scroll-stopping posts for every platform' },
+        { id: 'followup-email-generator', icon: 'ph-envelope', name: 'Follow-Up Emails', cat: 'generators', desc: 'Personalized follow-ups that keep leads warm' },
+        { id: 'market-snapshot', icon: 'ph-globe-hemisphere-west', name: 'Market Snapshot', cat: 'generators', desc: 'Instant local market reports for any ZIP code' },
+        { id: 'listing-presentation', icon: 'ph-presentation-chart', name: 'Presentations', cat: 'generators', desc: 'Build branded listing presentations that win appointments' },
+        { id: 'video-script-generator', icon: 'ph-video-camera', name: 'Video Scripts', cat: 'generators', desc: 'Scripts for property tours, market updates, and social videos' },
+        { id: 'expired-listing-kit', icon: 'ph-clock-countdown', name: 'Expired Listings', cat: 'generators', desc: 'Complete outreach packages for expired and withdrawn listings' },
+        { id: 'neighborhood-farming', icon: 'ph-map-pin', name: 'Neighborhood Farming', cat: 'generators', desc: 'Hyper-local content and mailer campaigns for your farm area' },
+        { id: 'objection-handler', icon: 'ph-shield-check', name: 'Objection Handler', cat: 'generators', desc: 'Smart responses for every common seller objection' },
+        { id: 'seller-updates', icon: 'ph-megaphone', name: 'Seller Updates', cat: 'generators', desc: 'Automated weekly updates to keep sellers confident' },
+        { id: 'pricing-engine', icon: 'ph-tag', name: 'Pricing Strategy', cat: 'generators', desc: 'Data-driven pricing recommendations to win listings' },
+        { id: 'testimonial-collector', icon: 'ph-star', name: 'Testimonials', cat: 'generators', desc: 'Automated review collection with shareable cards' },
+        { id: 'market-indicator', icon: 'ph-trend-up', name: 'Market Indicator', cat: 'generators', desc: 'Real-time market health scores for your area' },
+        { id: 'net-proceeds-calculator', icon: 'ph-calculator', name: 'Net Proceeds', cat: 'calculators', desc: 'Show sellers exactly what they walk away with' },
+        { id: 'fix-vs-sell', icon: 'ph-wrench', name: 'Fix vs. Sell', cat: 'calculators', desc: 'Help sellers decide whether to repair or sell as-is' },
+        { id: 'commission-calculator', icon: 'ph-currency-dollar', name: 'Commission', cat: 'calculators', desc: 'Transparent commission breakdowns for listing appointments' },
+        { id: 'closing-cost-explainer', icon: 'ph-receipt', name: 'Closing Costs', cat: 'calculators', desc: 'Visual closing cost breakdowns sellers actually understand' },
+        { id: 'home-value-tracker', icon: 'ph-house-line', name: 'Home Value', cat: 'calculators', desc: 'Branded home value pages that capture seller leads' },
+        { id: 'offer-comparison-matrix', icon: 'ph-scales', name: 'Offer Comparison', cat: 'calculators', desc: 'Side-by-side offer analysis when multiple bids come in' },
+        { id: 'staging-roi-calculator', icon: 'ph-couch', name: 'Staging ROI', cat: 'calculators', desc: 'Prove the ROI of staging with real numbers' },
+        { id: 'lead-crm', icon: 'ph-address-book', name: 'Lead CRM', cat: 'dashboards', desc: 'Track and manage every seller lead in one place' },
+        { id: 'seller-dashboard', icon: 'ph-squares-four', name: 'Seller Portal', cat: 'dashboards', desc: 'A branded portal your sellers log into for updates' },
+        { id: 'performance-dashboard', icon: 'ph-chart-line-up', name: 'Performance', cat: 'dashboards', desc: 'Track your listings, leads, and conversion metrics' },
+        { id: 'listing-portfolio', icon: 'ph-images', name: 'Portfolio', cat: 'dashboards', desc: 'Beautiful portfolio pages showcasing your active listings' },
+        { id: 'open-house-qr', icon: 'ph-qr-code', name: 'Open House QR', cat: 'dashboards', desc: 'Digital sign-in sheets with instant lead capture' },
+        { id: 'pre-list-checklist', icon: 'ph-check-square', name: 'Pre-List Checklist', cat: 'dashboards', desc: 'Guided checklists that prep sellers before you arrive' },
+    ];
 
-        // ==========================================
-        // ALL 28 TOOLS
-        // ==========================================
-        const ALL_TOOLS = [
-            { id: 'cma-generator', icon: 'ph-chart-bar', name: 'AI CMA Generator', desc: 'Generate comparative market analyses with AI-powered insights', cat: 'generators' },
-            { id: 'listing-description', icon: 'ph-text-aa', name: 'Listing Description Writer', desc: 'Write compelling MLS-ready listing descriptions in seconds', cat: 'generators' },
-            { id: 'social-media-generator', icon: 'ph-share-network', name: 'Social Media Generator', desc: 'Create scroll-stopping posts for every platform', cat: 'generators' },
-            { id: 'followup-email-generator', icon: 'ph-envelope', name: 'Follow-Up Email Generator', desc: 'Personalized follow-ups that keep leads warm', cat: 'generators' },
-            { id: 'market-snapshot', icon: 'ph-globe-hemisphere-west', name: 'Market Snapshot', desc: 'Instant local market reports for any ZIP code', cat: 'generators' },
-            { id: 'listing-presentation', icon: 'ph-presentation-chart', name: 'Listing Presentation', desc: 'Build branded listing presentations that win appointments', cat: 'generators' },
-            { id: 'video-script-generator', icon: 'ph-video-camera', name: 'Video Script Generator', desc: 'Scripts for property tours, market updates, and social videos', cat: 'generators' },
-            { id: 'expired-listing-kit', icon: 'ph-clock-countdown', name: 'Expired Listing Kit', desc: 'Complete outreach packages for expired and withdrawn listings', cat: 'generators' },
-            { id: 'neighborhood-farming', icon: 'ph-map-pin', name: 'Neighborhood Farming', desc: 'Hyper-local content and mailer campaigns for your farm area', cat: 'generators' },
-            { id: 'objection-handler', icon: 'ph-shield-check', name: 'Objection Handler', desc: 'Smart responses for every common seller objection', cat: 'generators' },
-            { id: 'seller-updates', icon: 'ph-megaphone', name: 'Seller Updates', desc: 'Automated weekly updates to keep sellers confident', cat: 'generators' },
-            { id: 'pricing-engine', icon: 'ph-tag', name: 'Pricing Strategy', desc: 'Data-driven pricing recommendations to win listings', cat: 'generators' },
-            { id: 'testimonial-collector', icon: 'ph-star', name: 'Testimonial Collector', desc: 'Automated review collection with shareable cards', cat: 'generators' },
-            { id: 'market-indicator', icon: 'ph-trend-up', name: 'Market Indicator', desc: 'Real-time market health scores for your area', cat: 'generators' },
-            { id: 'net-proceeds-calculator', icon: 'ph-calculator', name: 'Net Proceeds Calculator', desc: 'Show sellers exactly what they walk away with', cat: 'calculators' },
-            { id: 'fix-vs-sell', icon: 'ph-wrench', name: 'Fix vs. Sell Analyzer', desc: 'Help sellers decide whether to repair or sell as-is', cat: 'calculators' },
-            { id: 'commission-calculator', icon: 'ph-currency-dollar', name: 'Commission Calculator', desc: 'Transparent commission breakdowns for listing appointments', cat: 'calculators' },
-            { id: 'closing-cost-explainer', icon: 'ph-receipt', name: 'Closing Cost Explainer', desc: 'Visual closing cost breakdowns sellers actually understand', cat: 'calculators' },
-            { id: 'home-value-tracker', icon: 'ph-house-line', name: 'Home Value Tracker', desc: 'Branded home value pages that capture seller leads', cat: 'calculators' },
-            { id: 'offer-comparison-matrix', icon: 'ph-scales', name: 'Offer Comparison', desc: 'Side-by-side offer analysis when multiple bids come in', cat: 'calculators' },
-            { id: 'staging-roi-calculator', icon: 'ph-couch', name: 'Staging ROI Calculator', desc: 'Prove the ROI of staging with real numbers', cat: 'calculators' },
-            { id: 'lead-crm', icon: 'ph-address-book', name: 'Seller Lead CRM', desc: 'Track and manage every seller lead in one place', cat: 'dashboards' },
-            { id: 'seller-dashboard', icon: 'ph-squares-four', name: 'Seller Dashboard', desc: 'A branded portal your sellers log into for updates', cat: 'dashboards' },
-            { id: 'performance-dashboard', icon: 'ph-chart-line-up', name: 'Performance Dashboard', desc: 'Track your listings, leads, and conversion metrics', cat: 'dashboards' },
-            { id: 'listing-portfolio', icon: 'ph-images', name: 'Listing Portfolio', desc: 'Beautiful portfolio pages showcasing your active listings', cat: 'dashboards' },
-            { id: 'open-house-qr', icon: 'ph-qr-code', name: 'Open House QR System', desc: 'Digital sign-in sheets with instant lead capture', cat: 'dashboards' },
-            { id: 'pre-list-checklist', icon: 'ph-check-square', name: 'Pre-List Checklist', desc: 'Guided checklists that prep sellers before you arrive', cat: 'dashboards' },
-        ];
+    const DEFAULT_FAVS = ['cma-generator', 'listing-description', 'net-proceeds-calculator', 'social-media-generator', 'lead-crm', 'seller-dashboard'];
+    var favorites = JSON.parse(localStorage.getItem('he_favorites') || '[]');
+    var sidebarCollapsed = localStorage.getItem('he_sidebar_collapsed') === 'true';
+    var openSections = JSON.parse(localStorage.getItem('he_open_sections') || '{}');
+    var _currentTier = 'pro';
+    var _unlockedTools = [];
 
-        // Category labels and colors
-        var CAT_COLORS = {
-            generators: { border: 'cyan-glow', bg: 'cyan-glow', text: 'cyan-glow', label: 'AI Generator' },
-            calculators: { border: 'gold-base', bg: 'gold-base', text: 'gold-base', label: 'Calculator' },
-            dashboards: { border: 'emerald-400', bg: 'emerald-500', text: 'emerald-400', label: 'Dashboard' }
-        };
+    // ==========================================
+    // SIDEBAR RENDERING
+    // ==========================================
+    function renderSidebar() {
+        renderFavorites();
+        renderSectionTools('generators');
+        renderSectionTools('calculators');
+        renderSectionTools('dashboards');
+        // Restore open sections
+        ['generators', 'calculators', 'dashboards'].forEach(function(s) {
+            if (openSections[s]) openSectionNow(s);
+        });
+    }
 
-        // Favorites (localStorage)
-        var favorites = JSON.parse(localStorage.getItem('he_favorites') || '[]');
-
-        // Current filter state
-        var currentFilter = 'all';
-        var searchTerm = '';
-
-        // ==========================================
-        // RENDER FUNCTIONS
-        // ==========================================
-
-        var _currentTier = 'pro';
-        var _unlockedTools = [];
-        var openCategories = {};
-
-        // Default favorites for new users (best first impression)
-        var DEFAULT_FAVS = ['cma-generator', 'listing-description', 'net-proceeds-calculator', 'social-media-generator', 'lead-crm', 'seller-dashboard'];
-
-        function renderDashboard(user, tier) {
-            var tierDef = TIERS[tier] || TIERS.starter;
-            _currentTier = tier;
-            var firstName = user ? (user.firstName || user.emailAddresses?.[0]?.emailAddress?.split('@')[0] || 'Agent') : 'Agent';
-
-            document.getElementById('user-first-name').textContent = firstName;
-            document.getElementById('nav-user-name').textContent = firstName;
-
-            var badge = document.getElementById('tier-badge');
-            var badgeLabel = document.getElementById('tier-label');
-            badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider tier-badge-' + tier + ' w-fit';
-            badgeLabel.textContent = tierDef.label;
-
-            _unlockedTools = tierDef.tools === 'all'
-                ? ALL_TOOLS.map(function(t) { return t.id; })
-                : tierDef.tools;
-
-            // Use defaults if no favorites set
-            if (favorites.length === 0) {
-                favorites = DEFAULT_FAVS.slice();
-                localStorage.setItem('he_favorites', JSON.stringify(favorites));
-            }
-
-            renderQuickAccess();
-            renderCategories();
-
-            // Search
-            document.getElementById('tool-search').addEventListener('input', function(e) {
-                searchTerm = e.target.value.toLowerCase().trim();
-                var searchSection = document.getElementById('search-results');
-                var catSection = document.getElementById('categories-section');
-                var qaSection = document.getElementById('quick-access-section');
-
-                if (searchTerm) {
-                    searchSection.classList.remove('hidden');
-                    catSection.classList.add('hidden');
-                    qaSection.classList.add('hidden');
-                    renderSearchResults();
-                } else {
-                    searchSection.classList.add('hidden');
-                    catSection.classList.remove('hidden');
-                    qaSection.classList.remove('hidden');
-                }
-            });
+    function renderFavorites() {
+        var list = document.getElementById('sb-fav-list');
+        list.innerHTML = '';
+        var favTools = ALL_TOOLS.filter(function(t) {
+            return favorites.indexOf(t.id) !== -1 && _unlockedTools.indexOf(t.id) !== -1;
+        });
+        if (favTools.length === 0) {
+            list.innerHTML = '<p class="sb-label text-[10px] text-gray-600 px-3 py-1">Star tools to pin them here</p>';
+            return;
         }
+        favTools.forEach(function(tool) {
+            var a = document.createElement('a');
+            a.href = '/tools/' + tool.id + '.html';
+            a.className = 'sb-fav-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors group';
+            a.innerHTML =
+                '<i class="ph ' + tool.icon + ' text-base text-gray-500 group-hover:text-cyan-glow" style="min-width:18px;"></i>' +
+                '<span class="sb-label truncate text-xs">' + tool.name + '</span>' +
+                '<button onclick="event.preventDefault();event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="sb-fav-star ml-auto w-5 h-5 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all" title="Remove from favorites">' +
+                    '<i class="ph-fill ph-star text-gold-base text-[10px]"></i>' +
+                '</button>';
+            list.appendChild(a);
+        });
+    }
 
-        function buildCard(tool, showStar) {
+    function renderSectionTools(cat) {
+        var container = document.getElementById('section-' + cat);
+        container.innerHTML = '';
+        var tools = ALL_TOOLS.filter(function(t) { return t.cat === cat; });
+        tools.forEach(function(tool) {
             var isLocked = _unlockedTools.indexOf(tool.id) === -1;
             var isFav = favorites.indexOf(tool.id) !== -1;
-            var catColor = CAT_COLORS[tool.cat] || CAT_COLORS.generators;
-
-            var card = document.createElement('div');
-            card.className = 'glass-card rounded-xl p-4 flex flex-col items-start gap-2.5 relative group' + (isLocked ? ' locked' : '');
-
-            var starHtml = '';
-            if (showStar && !isLocked) {
-                var starClass = isFav ? 'ph-fill ph-star text-gold-base' : 'ph ph-star text-gray-600 group-hover:text-gray-400';
-                starHtml = '<button onclick="event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-navy-900/60 border border-white/5 flex items-center justify-center hover:border-gold-base/30 transition-colors"><i class="' + starClass + ' text-[10px]"></i></button>';
-            }
+            var a = document.createElement('a');
+            a.href = isLocked ? '#' : '/tools/' + tool.id + '.html';
+            if (isLocked) a.onclick = function(e) { e.preventDefault(); showUpgradeHint(); };
+            a.className = 'sb-nav-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-xs transition-colors group ' +
+                (isLocked ? 'text-gray-600 cursor-not-allowed' : 'text-gray-300 hover:text-white hover:bg-white/5');
+            var lockOrStar = '';
             if (isLocked) {
-                starHtml = '<div class="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-navy-900/80 border border-white/10 flex items-center justify-center"><i class="ph ph-lock-simple text-gray-500 text-[10px]"></i></div>';
-            }
-
-            card.innerHTML = starHtml +
-                '<a href="' + (isLocked ? '#' : '/tools/' + tool.id + '.html') + '" ' + (isLocked ? 'onclick="event.preventDefault();showUpgradeHint()"' : '') + ' class="flex items-center gap-3 w-full">' +
-                    '<div class="w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center ' +
-                        (isLocked ? 'bg-navy-700/50' : 'bg-navy-700 group-hover:bg-' + catColor.bg + '/10') +
-                        ' transition-colors">' +
-                        '<i class="ph ' + tool.icon + ' text-lg ' + (isLocked ? 'text-gray-600' : 'text-' + catColor.text) + '"></i>' +
-                    '</div>' +
-                    '<div class="min-w-0">' +
-                        '<h3 class="text-sm font-semibold ' + (isLocked ? 'text-gray-500' : 'text-white') + ' leading-snug truncate">' + tool.name + '</h3>' +
-                        '<p class="text-[11px] ' + (isLocked ? 'text-gray-600' : 'text-gray-500') + ' truncate">' + tool.desc + '</p>' +
-                    '</div>' +
-                '</a>';
-
-            return card;
-        }
-
-        function renderQuickAccess() {
-            var grid = document.getElementById('quick-access-grid');
-            var empty = document.getElementById('quick-access-empty');
-            grid.innerHTML = '';
-
-            var favTools = ALL_TOOLS.filter(function(t) {
-                return favorites.indexOf(t.id) !== -1 && _unlockedTools.indexOf(t.id) !== -1;
-            });
-
-            if (favTools.length === 0) {
-                grid.classList.add('hidden');
-                empty.classList.remove('hidden');
-                return;
-            }
-
-            grid.classList.remove('hidden');
-            empty.classList.add('hidden');
-            favTools.forEach(function(tool) { grid.appendChild(buildCard(tool, true)); });
-        }
-
-        function renderCategories() {
-            ['generators', 'calculators', 'dashboards'].forEach(function(cat) {
-                var container = document.getElementById('cat-' + cat);
-                container.innerHTML = '';
-                var tools = ALL_TOOLS.filter(function(t) { return t.cat === cat; });
-                tools.forEach(function(tool) { container.appendChild(buildCard(tool, true)); });
-            });
-        }
-
-        function renderSearchResults() {
-            var grid = document.getElementById('search-grid');
-            var noResults = document.getElementById('no-results');
-            grid.innerHTML = '';
-
-            var filtered = ALL_TOOLS.filter(function(tool) {
-                return tool.name.toLowerCase().indexOf(searchTerm) !== -1 || tool.desc.toLowerCase().indexOf(searchTerm) !== -1;
-            });
-
-            if (filtered.length === 0) { noResults.classList.remove('hidden'); return; }
-            noResults.classList.add('hidden');
-            filtered.forEach(function(tool) { grid.appendChild(buildCard(tool, true)); });
-        }
-
-        // Toggle favorite
-        window.toggleFav = function(toolId) {
-            var idx = favorites.indexOf(toolId);
-            if (idx === -1) { favorites.push(toolId); } else { favorites.splice(idx, 1); }
-            localStorage.setItem('he_favorites', JSON.stringify(favorites));
-            renderQuickAccess();
-            renderCategories();
-        };
-
-        // Toggle category open/closed
-        window.toggleCategory = function(cat) {
-            var container = document.getElementById('cat-' + cat);
-            var arrow = document.getElementById(cat === 'generators' ? 'gen-arrow' : cat === 'calculators' ? 'calc-arrow' : 'dash-arrow');
-
-            if (openCategories[cat]) {
-                container.style.maxHeight = '0';
-                container.style.opacity = '0';
-                arrow.style.transform = 'rotate(0deg)';
-                openCategories[cat] = false;
+                lockOrStar = '<i class="ph ph-lock-simple text-gray-600 text-[10px] ml-auto sb-label"></i>';
             } else {
+                var starIcon = isFav ? 'ph-fill ph-star text-gold-base' : 'ph ph-star text-gray-600 hover:text-gold-base';
+                lockOrStar = '<button onclick="event.preventDefault();event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="sb-label ml-auto w-5 h-5 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all" title="Toggle favorite"><i class="' + starIcon + ' text-[10px]"></i></button>';
+            }
+            a.innerHTML =
+                '<i class="ph ' + tool.icon + ' text-base ' + (isLocked ? 'text-gray-600' : 'text-gray-500 group-hover:text-cyan-glow') + '" style="min-width:18px;"></i>' +
+                '<span class="sb-label truncate">' + tool.name + '</span>' +
+                lockOrStar;
+            container.appendChild(a);
+        });
+    }
+
+    // ==========================================
+    // SECTION TOGGLE
+    // ==========================================
+    window.toggleSection = function(section) {
+        var container = document.getElementById('section-' + section);
+        var arrow = document.getElementById('arrow-' + section);
+        if (openSections[section]) {
+            container.style.maxHeight = '0';
+            container.style.opacity = '0';
+            arrow.style.transform = 'rotate(0deg)';
+            openSections[section] = false;
+        } else {
+            openSectionNow(section);
+        }
+        localStorage.setItem('he_open_sections', JSON.stringify(openSections));
+    };
+
+    function openSectionNow(section) {
+        var container = document.getElementById('section-' + section);
+        var arrow = document.getElementById('arrow-' + section);
+        container.style.maxHeight = container.scrollHeight + 'px';
+        container.style.opacity = '1';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+        openSections[section] = true;
+    }
+
+    // ==========================================
+    // SIDEBAR COLLAPSE (desktop)
+    // ==========================================
+    window.toggleSidebarCollapse = function() {
+        sidebarCollapsed = !sidebarCollapsed;
+        applySidebarState();
+        localStorage.setItem('he_sidebar_collapsed', sidebarCollapsed ? 'true' : 'false');
+    };
+
+    function applySidebarState() {
+        var sb = document.getElementById('sidebar');
+        var main = document.getElementById('main-wrapper');
+        var icon = document.getElementById('collapse-icon');
+        if (window.innerWidth < 768) return; // Mobile uses overlay, not margin
+        if (sidebarCollapsed) {
+            sb.classList.add('collapsed');
+            main.style.marginLeft = '64px';
+            icon.className = 'ph ph-caret-right text-gray-500 text-sm';
+        } else {
+            sb.classList.remove('collapsed');
+            main.style.marginLeft = '240px';
+            icon.className = 'ph ph-caret-left text-gray-500 text-sm';
+        }
+    }
+
+    // ==========================================
+    // MOBILE SIDEBAR
+    // ==========================================
+    window.toggleMobileSidebar = function() {
+        var sb = document.getElementById('sidebar');
+        var bd = document.getElementById('sidebar-backdrop');
+        if (sb.classList.contains('mobile-open')) {
+            sb.classList.remove('mobile-open');
+            bd.classList.remove('active');
+        } else {
+            sb.classList.add('mobile-open');
+            bd.classList.add('active');
+        }
+    };
+
+    // ==========================================
+    // SEARCH
+    // ==========================================
+    document.getElementById('sb-search-input').addEventListener('input', function(e) {
+        var term = e.target.value.toLowerCase().trim();
+        if (!term) {
+            // Reset: hide search state, restore sections
+            document.querySelectorAll('#sidebar-nav [data-section]').forEach(function(el) { el.style.display = ''; });
+            document.getElementById('sb-quick-access').style.display = '';
+            ['generators', 'calculators', 'dashboards'].forEach(function(s) {
+                if (openSections[s]) openSectionNow(s);
+                else { document.getElementById('section-' + s).style.maxHeight = '0'; document.getElementById('section-' + s).style.opacity = '0'; }
+            });
+            document.querySelectorAll('.sb-nav-item').forEach(function(el) { el.style.display = ''; });
+            return;
+        }
+        document.getElementById('sb-quick-access').style.display = 'none';
+        ['generators', 'calculators', 'dashboards'].forEach(function(s) {
+            var container = document.getElementById('section-' + s);
+            var sectionDiv = container.parentElement;
+            var hasMatch = false;
+            container.querySelectorAll('.sb-nav-item').forEach(function(item) {
+                var text = item.textContent.toLowerCase();
+                if (text.indexOf(term) !== -1) {
+                    item.style.display = '';
+                    hasMatch = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            if (hasMatch) {
+                sectionDiv.style.display = '';
                 container.style.maxHeight = container.scrollHeight + 'px';
                 container.style.opacity = '1';
-                arrow.style.transform = 'rotate(180deg)';
-                openCategories[cat] = true;
-            }
-        };
-
-        function showUpgradeHint() {
-            // Brief visual hint
-            var existing = document.getElementById('upgrade-toast');
-            if (existing) existing.remove();
-
-            var toast = document.createElement('div');
-            toast.id = 'upgrade-toast';
-            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-navy-700 border border-gold-base/40 rounded-xl px-5 py-3 flex items-center gap-3 shadow-2xl';
-            toast.innerHTML =
-                '<i class="ph ph-lock-simple text-gold-base text-lg"></i>' +
-                '<span class="text-sm text-white">Upgrade your plan to unlock this tool</span>' +
-                '<a href="https://gethomeedge.com/#pricing" class="ml-2 text-xs font-semibold text-gold-base hover:text-gold-light transition-colors">View Plans</a>';
-
-            document.body.appendChild(toast);
-            setTimeout(function() {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s';
-                setTimeout(function() { toast.remove(); }, 300);
-            }, 3500);
-        }
-
-        // ==========================================
-        // COPY EMBED CODE
-        // ==========================================
-        window.copyEmbed = function() {
-            var code = document.getElementById('embed-code').textContent;
-            navigator.clipboard.writeText(code).then(function() {
-                var icon = document.getElementById('copy-icon');
-                var btn = document.getElementById('copy-btn');
-                icon.className = 'ph ph-check text-cyan-glow text-sm';
-                btn.classList.add('copy-success');
-                setTimeout(function() {
-                    icon.className = 'ph ph-copy text-gray-400 text-sm';
-                    btn.classList.remove('copy-success');
-                }, 2000);
-            });
-        };
-
-        // ==========================================
-        // AUTH + INIT
-        // ==========================================
-        var isDemo = new URLSearchParams(window.location.search).get('demo') === 'true';
-
-        function tryClerkInit() {
-            if (typeof Clerk === 'undefined') return false;
-
-            try {
-                Clerk.load({
-                    ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined,
-                    appearance: {
-                        variables: {
-                            colorBackground: '#0A1128',
-                            colorText: '#FFFFFF',
-                            colorTextSecondary: '#94A3B8',
-                            colorPrimary: '#00F2FE',
-                            colorTextOnPrimaryBackground: '#040711',
-                            fontFamily: 'Inter, sans-serif',
-                        }
-                    }
-                }).then(function() {
-                    // Check auth
-                    if (!Clerk.user) {
-                        window.location.href = '/app/login.html';
-                        return;
-                    }
-
-                    // Hide demo banner
-                    document.getElementById('demo-banner').style.display = 'none';
-
-                    // Get user info and tier
-                    var user = Clerk.user;
-                    var tier = (user.publicMetadata && user.publicMetadata.subscription_tier) || 'starter';
-
-                    // Mount UserButton in nav
-                    var userBtn = document.getElementById('nav-user-button');
-                    userBtn.innerHTML = '';
-                    Clerk.mountUserButton(userBtn, {
-                        appearance: {
-                            elements: {
-                                avatarBox: 'w-9 h-9'
-                            }
-                        }
-                    });
-
-                    // Render dashboard
-                    renderDashboard(user, tier);
-
-                }).catch(function(err) {
-                    console.warn('Clerk load error:', err);
-                    enterDemoMode();
-                });
-
-                return true;
-            } catch(e) {
-                return false;
-            }
-        }
-
-        function enterDemoMode() {
-            document.getElementById('demo-banner').style.display = 'block';
-            // Render with demo data (Pro tier, all tools visible)
-            renderDashboard(null, 'pro');
-        }
-
-        // Init on load
-        window.addEventListener('load', function() {
-            if (isDemo || !tryClerkInit()) {
-                // Clerk not available, enter demo mode
-                enterDemoMode();
-            }
-
-            // Retry after delay in case Clerk loads late
-            if (!isDemo) {
-                setTimeout(function() {
-                    if (typeof Clerk !== 'undefined') {
-                        tryClerkInit();
-                    }
-                }, 3000);
+            } else {
+                sectionDiv.style.display = 'none';
             }
         });
+    });
 
-    })();
-    </script>
+    // ==========================================
+    // FAVORITES
+    // ==========================================
+    window.toggleFav = function(toolId) {
+        var idx = favorites.indexOf(toolId);
+        if (idx === -1) { favorites.push(toolId); } else { favorites.splice(idx, 1); }
+        localStorage.setItem('he_favorites', JSON.stringify(favorites));
+        renderSidebar();
+    };
+
+    // ==========================================
+    // UPGRADE TOAST
+    // ==========================================
+    function showUpgradeHint() {
+        var existing = document.getElementById('upgrade-toast');
+        if (existing) existing.remove();
+        var toast = document.createElement('div');
+        toast.id = 'upgrade-toast';
+        toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-navy-700 border border-gold-base/40 rounded-xl px-5 py-3 flex items-center gap-3 shadow-2xl';
+        toast.innerHTML =
+            '<i class="ph ph-lock-simple text-gold-base text-lg"></i>' +
+            '<span class="text-sm text-white">Upgrade your plan to unlock this tool</span>' +
+            '<a href="https://gethomeedge.com/#pricing" class="ml-2 text-xs font-semibold text-gold-base hover:text-gold-light transition-colors">View Plans</a>';
+        document.body.appendChild(toast);
+        setTimeout(function() {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
+            setTimeout(function() { toast.remove(); }, 300);
+        }, 3500);
+    }
+
+    // ==========================================
+    // COPY EMBED
+    // ==========================================
+    window.copyEmbed = function() {
+        var code = document.getElementById('embed-code').textContent;
+        navigator.clipboard.writeText(code).then(function() {
+            var icon = document.getElementById('copy-icon');
+            icon.className = 'ph ph-check text-cyan-glow text-xs';
+            setTimeout(function() { icon.className = 'ph ph-copy text-gray-400 text-xs'; }, 2000);
+        });
+    };
+
+    // ==========================================
+    // RENDER DASHBOARD STATE
+    // ==========================================
+    function renderDashboard(user, tier) {
+        var tierDef = TIERS[tier] || TIERS.starter;
+        _currentTier = tier;
+        var firstName = user ? (user.firstName || user.emailAddresses?.[0]?.emailAddress?.split('@')[0] || 'Agent') : 'Agent';
+
+        document.getElementById('user-first-name').textContent = firstName;
+        document.getElementById('sb-user-name').textContent = firstName;
+
+        // Tier badges (main + sidebar)
+        ['tier-badge', 'sb-tier-badge'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (id === 'tier-badge') {
+                el.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider tier-badge-' + tier + ' w-fit';
+            } else {
+                el.className = 'sb-tier inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider tier-badge-' + tier;
+            }
+        });
+        document.getElementById('tier-label').textContent = tierDef.label;
+        document.getElementById('sb-tier-label').textContent = tierDef.label;
+
+        _unlockedTools = tierDef.tools === 'all'
+            ? ALL_TOOLS.map(function(t) { return t.id; })
+            : tierDef.tools;
+
+        document.getElementById('stat-tools-count').textContent = _unlockedTools.length;
+
+        // Default favorites for new users
+        if (favorites.length === 0) {
+            favorites = DEFAULT_FAVS.slice();
+            localStorage.setItem('he_favorites', JSON.stringify(favorites));
+        }
+
+        renderSidebar();
+    }
+
+    // ==========================================
+    // AUTH + INIT (kept exactly)
+    // ==========================================
+    var isDemo = new URLSearchParams(window.location.search).get('demo') === 'true';
+
+    function tryClerkInit() {
+        if (typeof Clerk === 'undefined') return false;
+        try {
+            Clerk.load({
+                ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined,
+                appearance: {
+                    variables: {
+                        colorBackground: '#0A1128',
+                        colorText: '#FFFFFF',
+                        colorTextSecondary: '#94A3B8',
+                        colorPrimary: '#00F2FE',
+                        colorTextOnPrimaryBackground: '#040711',
+                        fontFamily: 'Inter, sans-serif',
+                    }
+                }
+            }).then(function() {
+                if (!Clerk.user) {
+                    window.location.href = '/app/login.html';
+                    return;
+                }
+                document.getElementById('demo-banner').style.display = 'none';
+                var user = Clerk.user;
+                var tier = (user.publicMetadata && user.publicMetadata.subscription_tier) || 'starter';
+
+                // Mount Clerk UserButton in sidebar
+                var userBtn = document.getElementById('sb-user-btn');
+                userBtn.innerHTML = '';
+                Clerk.mountUserButton(userBtn, { appearance: { elements: { avatarBox: 'w-8 h-8' } } });
+
+                // Mount on topbar for mobile too
+                var topBtn = document.getElementById('topbar-user-btn');
+                if (topBtn) {
+                    topBtn.innerHTML = '';
+                    Clerk.mountUserButton(topBtn, { appearance: { elements: { avatarBox: 'w-8 h-8' } } });
+                }
+
+                renderDashboard(user, tier);
+            }).catch(function(err) {
+                console.warn('Clerk load error:', err);
+                enterDemoMode();
+            });
+            return true;
+        } catch(e) {
+            return false;
+        }
+    }
+
+    function enterDemoMode() {
+        document.getElementById('demo-banner').style.display = 'block';
+        renderDashboard(null, 'pro');
+    }
+
+    // ==========================================
+    // INIT
+    // ==========================================
+    window.addEventListener('load', function() {
+        // Apply sidebar collapsed state on desktop
+        if (window.innerWidth >= 768 && sidebarCollapsed) {
+            applySidebarState();
+        }
+        // On mobile, reset margin
+        if (window.innerWidth < 768) {
+            document.getElementById('main-wrapper').style.marginLeft = '0';
+        }
+
+        if (isDemo || !tryClerkInit()) {
+            enterDemoMode();
+        }
+        if (!isDemo) {
+            setTimeout(function() {
+                if (typeof Clerk !== 'undefined') tryClerkInit();
+            }, 3000);
+        }
+    });
+
+    // Handle resize between mobile/desktop
+    window.addEventListener('resize', function() {
+        var main = document.getElementById('main-wrapper');
+        var sb = document.getElementById('sidebar');
+        if (window.innerWidth < 768) {
+            main.style.marginLeft = '0';
+            sb.classList.remove('mobile-open');
+            document.getElementById('sidebar-backdrop').classList.remove('active');
+        } else {
+            sb.classList.remove('mobile-open');
+            document.getElementById('sidebar-backdrop').classList.remove('active');
+            applySidebarState();
+        }
+    });
+
+})();
+</script>
 </body>
 </html>
