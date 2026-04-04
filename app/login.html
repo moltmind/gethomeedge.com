@@ -42,14 +42,42 @@
         ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 3px; }
 
         /* ============================================================
-           NUCLEAR CLERK DARK OVERRIDES
-           Target every possible element Clerk renders.
+           NUCLEAR CLERK DARK OVERRIDES v2
+           Scorched-earth: force dark on EVERY element Clerk renders.
            ============================================================ */
-        /* Root and card */
-        [data-clerk-component] { color-scheme: dark !important; }
-        .cl-rootBox { width: 100% !important; max-width: 100% !important; }
-        .cl-card, .cl-signIn-root, .cl-signUp-root, .cl-component {
+
+        /* Force dark color scheme on everything */
+        [data-clerk-component],
+        [data-clerk-component] * { color-scheme: dark !important; }
+
+        /* Kill ALL backgrounds inside Clerk -- nuclear wildcard */
+        [data-clerk-component] div,
+        [data-clerk-component] form,
+        [data-clerk-component] section,
+        [data-clerk-component] header,
+        [data-clerk-component] footer,
+        [data-clerk-component] main,
+        [data-clerk-component] nav,
+        [data-clerk-component] aside,
+        [data-clerk-component] article {
             background: transparent !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        /* Root and card */
+        .cl-rootBox { width: 100% !important; max-width: 100% !important; }
+        .cl-card, .cl-signIn-root, .cl-signUp-root, .cl-component,
+        [data-clerk-component] [class*="card"],
+        [data-clerk-component] [class*="Card"],
+        [data-clerk-component] [class*="root"],
+        [data-clerk-component] [class*="Root"],
+        [data-clerk-component] [class*="main"],
+        [data-clerk-component] [class*="Main"],
+        [data-clerk-component] [class*="content"],
+        [data-clerk-component] [class*="Content"] {
+            background: transparent !important;
+            background-color: transparent !important;
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
@@ -58,23 +86,40 @@
         .cl-main { padding: 0 !important; }
 
         /* Hide Clerk's own header (we have ours) */
-        .cl-headerTitle, .cl-headerSubtitle { display: none !important; }
+        .cl-headerTitle, .cl-headerSubtitle,
+        [data-clerk-component] [class*="headerTitle"],
+        [data-clerk-component] [class*="headerSubtitle"] { display: none !important; }
 
-        /* WILDCARD: force all text inside Clerk to be light */
+        /* Hide dev mode badge */
+        [data-clerk-component] [class*="dev"],
+        [data-clerk-component] [class*="Dev"],
+        [data-clerk-component] [class*="badge"],
+        [data-clerk-component] [class*="Badge"],
+        [data-clerk-component] [class*="tagline"],
+        [data-clerk-component] [data-mode="development"] {
+            display: none !important;
+        }
+
+        /* Force all text inside Clerk to be light */
         [data-clerk-component] *:not(button):not([class*="Primary"]):not([class*="social"]) {
             color: #e2e8f0 !important;
         }
 
         /* Labels */
         .cl-formFieldLabel,
-        .cl-formFieldLabel * { color: #cbd5e1 !important; font-weight: 500 !important; }
+        .cl-formFieldLabel *,
+        [data-clerk-component] label,
+        [data-clerk-component] label * { color: #cbd5e1 !important; font-weight: 500 !important; }
 
         /* Inputs */
         .cl-formFieldInput,
         .cl-formFieldInput *,
         .cl-otpCodeFieldInput,
-        [data-clerk-component] input {
+        [data-clerk-component] input,
+        [data-clerk-component] [class*="input"],
+        [data-clerk-component] [class*="Input"] {
             background: #0A1128 !important;
+            background-color: #0A1128 !important;
             border: 1px solid rgba(255,255,255,0.12) !important;
             color: #ffffff !important;
             border-radius: 10px !important;
@@ -89,7 +134,8 @@
         /* Primary button */
         .cl-formButtonPrimary,
         [data-clerk-component] button[data-localization-key*="continue"],
-        [data-clerk-component] button[data-localization-key*="signIn"] {
+        [data-clerk-component] button[data-localization-key*="signIn"],
+        [data-clerk-component] [class*="formButtonPrimary"] {
             background: linear-gradient(135deg, #D4AF37, #F8E9A1) !important;
             color: #040711 !important;
             font-weight: 700 !important;
@@ -101,25 +147,49 @@
         /* Social / OAuth buttons */
         .cl-socialButtonsBlockButton,
         .cl-socialButtonsIconButton,
-        [data-clerk-component] button[class*="socialButton"] {
+        [data-clerk-component] button[class*="socialButton"],
+        [data-clerk-component] button[class*="Social"],
+        [data-clerk-component] button[class*="social"],
+        [data-clerk-component] [class*="socialButtons"] button {
             background: #0A1128 !important;
+            background-color: #0A1128 !important;
             border: 1px solid rgba(255,255,255,0.12) !important;
             border-radius: 10px !important;
         }
         .cl-socialButtonsBlockButton *,
-        .cl-socialButtonsBlockButtonText { color: #ffffff !important; }
+        .cl-socialButtonsBlockButtonText,
+        [data-clerk-component] [class*="socialButton"] span,
+        [data-clerk-component] [class*="Social"] span { color: #ffffff !important; }
 
         /* Dividers */
-        .cl-dividerLine { background: rgba(255,255,255,0.08) !important; }
-        .cl-dividerText { color: #475569 !important; }
+        .cl-dividerLine,
+        [data-clerk-component] [class*="divider"] hr,
+        [data-clerk-component] [class*="Divider"] hr,
+        [data-clerk-component] [class*="dividerLine"] { background: rgba(255,255,255,0.08) !important; }
+        .cl-dividerText,
+        [data-clerk-component] [class*="dividerText"] { color: #475569 !important; }
 
         /* Links */
         .cl-footerActionLink,
-        .cl-formResendCodeLink { color: #00F2FE !important; }
+        .cl-formResendCodeLink,
+        [data-clerk-component] a[class*="link"],
+        [data-clerk-component] a[class*="Link"] { color: #00F2FE !important; }
 
         /* Footer (powered by Clerk etc) */
-        .cl-footer { color: #334155 !important; }
-        .cl-footer * { color: #334155 !important; }
+        .cl-footer,
+        [data-clerk-component] [class*="footer"],
+        [data-clerk-component] [class*="Footer"] { color: #334155 !important; }
+        .cl-footer *,
+        [data-clerk-component] [class*="footer"] *,
+        [data-clerk-component] [class*="Footer"] * { color: #334155 !important; }
+
+        /* "Secured by Clerk" branding -- dim it */
+        [data-clerk-component] [class*="powered"],
+        [data-clerk-component] [class*="Powered"],
+        [data-clerk-component] [class*="secured"],
+        [data-clerk-component] [class*="Secured"] {
+            opacity: 0.3 !important;
+        }
 
         /* Identity preview (shows email with edit button) */
         .cl-identityPreview * { color: #e2e8f0 !important; }
