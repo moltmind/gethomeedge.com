@@ -524,7 +524,88 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
     </section>
 
 
-    <!-- Video section removed -- will add back when new demo video is ready -->
+    <!-- ========== VIDEO SHOWCASE ========== -->
+    <section class="py-20 md:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-navy-900 via-navy-800/50 to-navy-900"></div>
+        <div class="max-w-5xl mx-auto px-6 md:px-12 relative z-10 reveal">
+            <div class="text-center mb-12">
+                <h2 class="text-sm font-bold tracking-widest text-gold-base uppercase mb-4">See It In Action</h2>
+                <h3 class="text-3xl md:text-5xl font-serif font-semibold mb-4">Real Tools. Real Results.</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto">Watch how HomeEdge works for real estate agents. Every tool is branded to you and ready to use.</p>
+            </div>
+
+            <!-- Video Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="switchVideo('cma')" id="tab-cma" class="video-tab active px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-white">
+                    <i class="ph-bold ph-chart-bar mr-1.5"></i> CMA Generator
+                </button>
+                <button onclick="switchVideo('net')" id="tab-net" class="video-tab px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-slate-400">
+                    <i class="ph-bold ph-calculator mr-1.5"></i> Net Proceeds
+                </button>
+                <button onclick="switchVideo('dash')" id="tab-dash" class="video-tab px-5 py-2.5 rounded-full text-sm font-semibold transition-all border border-white/10 bg-white/5 hover:border-cyan-glow/40 hover:bg-cyan-glow/10 text-slate-400">
+                    <i class="ph-bold ph-layout mr-1.5"></i> Agent Dashboard
+                </button>
+            </div>
+
+            <!-- Video Player -->
+            <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,242,254,0.08)] bg-navy-800">
+                <video id="video-cma" class="w-full block" autoplay muted loop playsinline>
+                    <source src="HomeEdge-CMA-Final.mp4" type="video/mp4">
+                </video>
+                <video id="video-net" class="w-full hidden" muted loop playsinline>
+                    <source src="HomeEdge-NetProceeds-Final.mp4" type="video/mp4">
+                </video>
+                <video id="video-dash" class="w-full hidden" muted loop playsinline>
+                    <source src="HomeEdge-Dashboard-Final.mp4" type="video/mp4">
+                </video>
+
+                <!-- Mute/Unmute toggle -->
+                <button onclick="toggleMute()" id="mute-btn" class="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-black/80 transition-all">
+                    <i id="mute-icon" class="ph-bold ph-speaker-x text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-center text-xs text-slate-500 mt-4"><i class="ph-bold ph-speaker-high mr-1"></i> Click the sound button to hear the voiceover</p>
+        </div>
+    </section>
+
+    <script>
+    function switchVideo(id) {
+        ['cma', 'net', 'dash'].forEach(v => {
+            const vid = document.getElementById('video-' + v);
+            const tab = document.getElementById('tab-' + v);
+            if (v === id) {
+                vid.classList.remove('hidden');
+                vid.classList.add('block');
+                vid.currentTime = 0;
+                vid.play();
+                tab.classList.add('active');
+                tab.classList.remove('text-slate-400');
+                tab.classList.add('text-white');
+                tab.style.borderColor = 'rgba(0,242,254,0.4)';
+                tab.style.background = 'rgba(0,242,254,0.1)';
+            } else {
+                vid.classList.add('hidden');
+                vid.classList.remove('block');
+                vid.pause();
+                tab.classList.remove('active');
+                tab.classList.remove('text-white');
+                tab.classList.add('text-slate-400');
+                tab.style.borderColor = '';
+                tab.style.background = '';
+            }
+        });
+    }
+    function toggleMute() {
+        const videos = ['video-cma', 'video-net', 'video-dash'];
+        const icon = document.getElementById('mute-icon');
+        const isMuted = document.getElementById('video-cma').muted;
+        videos.forEach(id => { document.getElementById(id).muted = !isMuted; });
+        icon.className = isMuted ? 'ph-bold ph-speaker-high text-lg' : 'ph-bold ph-speaker-x text-lg';
+    }
+    // Initialize first tab
+    switchVideo('cma');
+    </script>
 
 
     <!-- ========== PROBLEM SECTION ========== -->

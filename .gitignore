@@ -10,7 +10,12 @@ keys.rtf
 
 # Backend (deployed separately via Wrangler)
 worker.js
+wrangler.toml
 .wrangler/
+
+# Node
+node_modules/
+package-lock.json
 
 # Personal / sensitive
 *.docx
@@ -20,6 +25,10 @@ family photo.jpg
 Jim_Geracie_Referral_Email.txt
 HPS_Product_Architecture.jsx
 leads/
+
+# Large media files (deployed separately)
+HomeEdge-Tool-Showcase-16x9.mp4
+HomeEdge-Tool-Showcase-9x16.mp4
 
 # AI tooling
 .aidesigner/*

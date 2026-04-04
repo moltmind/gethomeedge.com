@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | HomeEdge</title>
+    <meta name="description" content="Configure your HomeEdge branding, logo, and colors.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: {
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    }
+                }
+            }
+        }
+    </script>
+    <script defer crossorigin="anonymous" src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+    <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_aG9uZXN0LXBlbmd1aW4tNi5jbGVyay5hY2NvdW50cy5kZXYk" src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
+    <style>
+        body { background: #040711; color: #fff; }
+        .text-gradient-brand { background: linear-gradient(135deg, #00F2FE, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glass-card { background: linear-gradient(180deg, rgba(20,30,62,0.6), rgba(10,17,40,0.4)); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        input[type="text"], input[type="url"], input[type="tel"], input[type="color"] {
+            background: #0A1128; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 10px; padding: 10px 14px; width: 100%; font-size: 14px; outline: none; transition: border-color 0.2s;
+        }
+        input:focus { border-color: #00F2FE; box-shadow: 0 0 0 3px rgba(0,242,254,0.1); }
+        input::placeholder { color: #475569; }
+        input[type="color"] { height: 44px; padding: 4px; cursor: pointer; }
+        .logo-preview { width: 80px; height: 80px; border-radius: 12px; background: #0A1128; border: 2px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .logo-preview img { width: 100%; height: 100%; object-fit: contain; }
+    </style>
+</head>
+<body class="font-sans min-h-screen">
+
+    <!-- Top nav -->
+    <header class="sticky top-0 z-30 bg-navy-900/80 backdrop-blur-xl border-b border-white/5">
+        <div class="flex items-center justify-between px-4 sm:px-6 h-14 max-w-3xl mx-auto">
+            <div class="flex items-center gap-3">
+                <a href="/app/dashboard.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
+                    <i class="ph ph-arrow-left"></i> Dashboard
+                </a>
+            </div>
+            <span class="font-serif text-lg font-bold text-gradient-brand">HomeEdge</span>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- Page title -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-white flex items-center gap-3">
+                <i class="ph ph-gear text-cyan-glow"></i> Settings
+            </h1>
+            <p class="text-gray-400 text-sm mt-1">Customize your branding across all HomeEdge tools</p>
+        </div>
+
+        <!-- Loading state -->
+        <div id="loading" class="text-center py-16">
+            <div class="flex justify-center gap-1.5 mb-3">
+                <div class="w-2 h-2 rounded-full bg-cyan-glow/60 animate-bounce" style="animation-delay:0s"></div>
+                <div class="w-2 h-2 rounded-full bg-cyan-glow/60 animate-bounce" style="animation-delay:0.15s"></div>
+                <div class="w-2 h-2 rounded-full bg-cyan-glow/60 animate-bounce" style="animation-delay:0.3s"></div>
+            </div>
+            <p class="text-xs text-gray-500">Loading your settings...</p>
+        </div>
+
+        <!-- Settings form (hidden until loaded) -->
+        <div id="settings-form" class="hidden space-y-6">
+
+            <!-- Your Brand -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                    <i class="ph ph-paint-brush text-cyan-glow"></i> Your Brand
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6">
+                    <div class="space-y-4">
+                        <!-- Business Name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Business Name</label>
+                            <input type="text" id="brand-name" placeholder="e.g. Jane Smith Real Estate" maxlength="200">
+                        </div>
+
+                        <!-- Logo URL -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Logo URL</label>
+                            <input type="url" id="brand-logo" placeholder="https://example.com/your-logo.png" maxlength="500">
+                            <p class="text-[11px] text-gray-600 mt-1">Paste a link to your logo (PNG with transparent background works best)</p>
+                        </div>
+                    </div>
+
+                    <!-- Logo preview -->
+                    <div class="flex flex-col items-center gap-2">
+                        <label class="text-xs text-gray-500">Preview</label>
+                        <div class="logo-preview" id="logo-preview">
+                            <i class="ph ph-image text-gray-600 text-2xl" id="logo-placeholder"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colors -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                    <i class="ph ph-palette text-cyan-glow"></i> Brand Colors
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Primary Color</label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" id="brand-primary" value="#00F2FE" class="!w-14 !p-1 flex-shrink-0">
+                            <input type="text" id="brand-primary-hex" value="#00F2FE" maxlength="20" class="font-mono text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Accent Color</label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" id="brand-accent" value="#D4AF37" class="!w-14 !p-1 flex-shrink-0">
+                            <input type="text" id="brand-accent-hex" value="#D4AF37" maxlength="20" class="font-mono text-sm">
+                        </div>
+                    </div>
+                </div>
+                <!-- Color preview -->
+                <div class="mt-4 p-4 rounded-xl border border-white/5" id="color-preview" style="background: linear-gradient(135deg, #00F2FE20, #D4AF3720);">
+                    <p class="text-sm font-medium" id="color-preview-text" style="color: #00F2FE;">Your branding preview</p>
+                    <p class="text-xs mt-1" style="color: #94A3B8;">This is how your colors will look across tools</p>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                    <i class="ph ph-phone text-cyan-glow"></i> Contact Info
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Phone Number</label>
+                        <input type="tel" id="brand-phone" placeholder="(555) 123-4567" maxlength="20">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Website</label>
+                        <input type="url" id="brand-website" placeholder="https://youragentsite.com" maxlength="200">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save button -->
+            <div class="flex items-center gap-4">
+                <button id="save-btn" onclick="saveBranding()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-gold-base to-gold-light text-navy-900 font-bold text-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+                    <i class="ph ph-floppy-disk text-lg"></i> Save Changes
+                </button>
+                <span id="save-status" class="text-sm text-gray-500 hidden"></span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    const WORKER_URL = "https://homeedge-chat.moltmind.workers.dev";
+    var _sessionToken = null;
+
+    // Sync color picker <-> hex input
+    document.getElementById('brand-primary').addEventListener('input', function(e) {
+        document.getElementById('brand-primary-hex').value = e.target.value;
+        updateColorPreview();
+    });
+    document.getElementById('brand-primary-hex').addEventListener('input', function(e) {
+        if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
+            document.getElementById('brand-primary').value = e.target.value;
+            updateColorPreview();
+        }
+    });
+    document.getElementById('brand-accent').addEventListener('input', function(e) {
+        document.getElementById('brand-accent-hex').value = e.target.value;
+        updateColorPreview();
+    });
+    document.getElementById('brand-accent-hex').addEventListener('input', function(e) {
+        if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
+            document.getElementById('brand-accent').value = e.target.value;
+            updateColorPreview();
+        }
+    });
+
+    // Logo preview
+    document.getElementById('brand-logo').addEventListener('input', function(e) {
+        var url = e.target.value.trim();
+        var preview = document.getElementById('logo-preview');
+        var placeholder = document.getElementById('logo-placeholder');
+        if (url) {
+            var img = new Image();
+            img.onload = function() {
+                preview.innerHTML = '';
+                preview.appendChild(img);
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+            };
+            img.onerror = function() {
+                preview.innerHTML = '<i class="ph ph-warning text-red-400 text-xl"></i>';
+            };
+            img.src = url;
+        } else {
+            preview.innerHTML = '<i class="ph ph-image text-gray-600 text-2xl"></i>';
+        }
+    });
+
+    function updateColorPreview() {
+        var primary = document.getElementById('brand-primary').value;
+        var accent = document.getElementById('brand-accent').value;
+        document.getElementById('color-preview').style.background = 'linear-gradient(135deg, ' + primary + '20, ' + accent + '20)';
+        document.getElementById('color-preview-text').style.color = primary;
+    }
+
+    async function getToken() {
+        if (!Clerk || !Clerk.session) return null;
+        try {
+            return await Clerk.session.getToken();
+        } catch { return null; }
+    }
+
+    async function loadBranding() {
+        var token = await getToken();
+        if (!token) return;
+        _sessionToken = token;
+
+        try {
+            var res = await fetch(WORKER_URL + "/branding", {
+                method: "GET",
+                headers: { Authorization: "Bearer " + token },
+            });
+            var data = await res.json();
+            if (data.businessName) document.getElementById('brand-name').value = data.businessName;
+            if (data.logoUrl) {
+                document.getElementById('brand-logo').value = data.logoUrl;
+                document.getElementById('brand-logo').dispatchEvent(new Event('input'));
+            }
+            if (data.primaryColor) {
+                document.getElementById('brand-primary').value = data.primaryColor;
+                document.getElementById('brand-primary-hex').value = data.primaryColor;
+            }
+            if (data.accentColor) {
+                document.getElementById('brand-accent').value = data.accentColor;
+                document.getElementById('brand-accent-hex').value = data.accentColor;
+            }
+            if (data.phone) document.getElementById('brand-phone').value = data.phone;
+            if (data.website) document.getElementById('brand-website').value = data.website;
+            updateColorPreview();
+        } catch (err) {
+            console.log("Failed to load branding:", err);
+        }
+    }
+
+    window.saveBranding = async function() {
+        var btn = document.getElementById('save-btn');
+        var status = document.getElementById('save-status');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> Saving...';
+        status.classList.add('hidden');
+
+        var token = await getToken();
+        if (!token) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="ph ph-floppy-disk text-lg"></i> Save Changes';
+            status.textContent = 'Session expired. Please refresh.';
+            status.classList.remove('hidden');
+            status.className = 'text-sm text-red-400';
+            return;
+        }
+
+        var branding = {
+            businessName: document.getElementById('brand-name').value.trim(),
+            logoUrl: document.getElementById('brand-logo').value.trim(),
+            primaryColor: document.getElementById('brand-primary').value,
+            accentColor: document.getElementById('brand-accent').value,
+            phone: document.getElementById('brand-phone').value.trim(),
+            website: document.getElementById('brand-website').value.trim(),
+        };
+
+        try {
+            var res = await fetch(WORKER_URL + "/branding", {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(branding),
+            });
+            var data = await res.json();
+            if (data.success) {
+                status.textContent = 'Saved successfully';
+                status.className = 'text-sm text-emerald-400';
+            } else {
+                status.textContent = 'Save failed: ' + (data.error || 'unknown error');
+                status.className = 'text-sm text-red-400';
+            }
+        } catch (err) {
+            status.textContent = 'Network error. Try again.';
+            status.className = 'text-sm text-red-400';
+        }
+
+        status.classList.remove('hidden');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ph ph-floppy-disk text-lg"></i> Save Changes';
+    };
+
+    // Init
+    window.addEventListener('load', function() {
+        function tryInit() {
+            if (typeof Clerk === 'undefined') return false;
+            try {
+                Clerk.load({
+                    ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined,
+                    appearance: {
+                        variables: {
+                            colorBackground: '#0A1128',
+                            colorText: '#FFFFFF',
+                            colorPrimary: '#00F2FE',
+                            fontFamily: 'Inter, sans-serif',
+                        }
+                    }
+                }).then(function() {
+                    if (!Clerk.user) {
+                        window.location.href = '/app/login.html';
+                        return;
+                    }
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('settings-form').classList.remove('hidden');
+                    loadBranding();
+                }).catch(function(err) {
+                    console.warn('Clerk error:', err);
+                    document.getElementById('loading').innerHTML = '<p class="text-red-400 text-sm">Failed to load. <a href="/app/login.html" class="text-cyan-glow underline">Sign in again</a></p>';
+                });
+                return true;
+            } catch(e) { return false; }
+        }
+
+        if (!tryInit()) {
+            setTimeout(tryInit, 2000);
+            setTimeout(tryInit, 5000);
+        }
+    });
+    </script>
+</body>
+</html>

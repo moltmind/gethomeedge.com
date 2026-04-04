@@ -26,6 +26,10 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- Clerk Auth -->
+    <script defer crossorigin="anonymous" src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+    <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_aG9uZXN0LXBlbmd1aW4tNi5jbGVyay5hY2NvdW50cy5kZXYk" src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
+
     <!-- Tailwind Config -->
     <script>
         tailwind.config = {
@@ -434,8 +438,11 @@
 
     <script>
     const STORAGE_KEY = 'homeedge_leads';
+    const WORKER_URL = 'https://homeedge-chat.moltmind.workers.dev';
     let currentFilter = 'All';
     let searchTerm = '';
+    let _isAuthenticated = false;
+    let _leadsCache = [];
 
     const DEMO_LEADS = [
       {id:'d1',name:'Jennifer Walsh',phone:'(555) 234-5678',email:'jennifer@email.com',address:'742 Oakwood Dr',city:'Springfield',state:'IL',value:'$385,000',source:'AI Chatbot',status:'New',notes:'Interested in selling, wants spring listing',date:'2026-03-28'},
@@ -446,17 +453,88 @@
       {id:'d6',name:'James O\'Brien',phone:'(555) 789-0123',email:'james.ob@email.com',address:'334 Cedar Ln',city:'Sherman',state:'IL',value:'$320,000',source:'AI Chatbot',status:'New',notes:'Asked about market conditions',date:'2026-03-18'}
     ];
 
+    async function getClerkToken() {
+      try {
+        if (typeof Clerk !== 'undefined' && Clerk.session) {
+          return await Clerk.session.getToken();
+        }
+      } catch(e) {}
+      return null;
+    }
+
     function getLeads() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_LEADS));
-        return [...DEMO_LEADS];
-      }
-      try { return JSON.parse(raw); } catch(e) { return []; }
+      // Synchronous read from cache (renders instantly)
+      return [..._leadsCache];
     }
 
     function saveLeads(leads) {
+      _leadsCache = leads;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+      // Async save to server (fire and forget)
+      if (_isAuthenticated) {
+        getClerkToken().then(function(token) {
+          if (!token) return;
+          fetch(WORKER_URL + '/leads', {
+            method: 'POST',
+            headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'bulk', leads: leads }),
+          }).catch(function(err) { console.log('Lead sync error:', err); });
+        });
+      }
+    }
+
+    async function loadLeadsFromServer() {
+      var token = await getClerkToken();
+      if (!token) return false;
+      try {
+        var res = await fetch(WORKER_URL + '/leads', {
+          method: 'GET',
+          headers: { Authorization: 'Bearer ' + token },
+        });
+        var data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          _leadsCache = data;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          return true;
+        }
+        // Server empty -- check if localStorage has data to migrate
+        var local = localStorage.getItem(STORAGE_KEY);
+        if (local) {
+          var localLeads = JSON.parse(local);
+          if (localLeads.length > 0) {
+            _leadsCache = localLeads;
+            // Migrate localStorage data to server
+            await fetch(WORKER_URL + '/leads', {
+              method: 'POST',
+              headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'bulk', leads: localLeads }),
+            });
+            return true;
+          }
+        }
+        // Both empty -- seed with demo data
+        _leadsCache = [...DEMO_LEADS];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_LEADS));
+        await fetch(WORKER_URL + '/leads', {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'bulk', leads: DEMO_LEADS }),
+        });
+        return true;
+      } catch(err) {
+        console.log('Server load failed, using localStorage:', err);
+        return false;
+      }
+    }
+
+    function initLeadsFromLocal() {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        _leadsCache = [...DEMO_LEADS];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_LEADS));
+      } else {
+        try { _leadsCache = JSON.parse(raw); } catch(e) { _leadsCache = []; }
+      }
     }
 
     function genId() {
@@ -638,8 +716,36 @@
       if (e.target === document.getElementById('modalOverlay')) closeModal();
     });
 
+    // Load from localStorage first (instant render)
+    initLeadsFromLocal();
     updateCounts();
     renderLeads();
+
+    // Then try Clerk auth and load from server
+    function tryClerkCRM() {
+      if (typeof Clerk === 'undefined') return false;
+      try {
+        Clerk.load({
+          ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined,
+        }).then(function() {
+          if (Clerk.user) {
+            _isAuthenticated = true;
+            loadLeadsFromServer().then(function(loaded) {
+              if (loaded) {
+                updateCounts();
+                renderLeads();
+              }
+            });
+          }
+        }).catch(function(err) { console.log('Clerk CRM init:', err); });
+        return true;
+      } catch(e) { return false; }
+    }
+
+    if (!tryClerkCRM()) {
+      setTimeout(tryClerkCRM, 2000);
+      setTimeout(tryClerkCRM, 5000);
+    }
     </script>
 
 </body>

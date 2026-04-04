@@ -682,6 +682,25 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                 var user = Clerk.user;
                 var tier = (user.publicMetadata && user.publicMetadata.subscription_tier) || 'starter';
 
+                // Display saved branding
+                var brandName = user.publicMetadata && user.publicMetadata.brand_name;
+                if (brandName) {
+                    document.getElementById('brand-name').textContent = brandName;
+                }
+                var brandLogo = user.publicMetadata && user.publicMetadata.brand_logo;
+                if (brandLogo) {
+                    var logoContainer = document.querySelector('.glass-card .w-11');
+                    if (logoContainer) {
+                        logoContainer.innerHTML = '<img src="' + brandLogo + '" alt="Logo" class="w-full h-full object-contain rounded-lg">';
+                        logoContainer.classList.remove('border-dashed', 'border-white/10');
+                        var logoCaption = logoContainer.nextElementSibling;
+                        if (logoCaption) {
+                            var subtext = logoCaption.querySelector('.text-xs');
+                            if (subtext) subtext.textContent = 'Branding active';
+                        }
+                    }
+                }
+
                 // Mount Clerk UserButton in sidebar
                 var userBtn = document.getElementById('sb-user-btn');
                 userBtn.innerHTML = '';
