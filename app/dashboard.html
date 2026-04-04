@@ -70,6 +70,11 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         #sidebar.collapsed .sb-section-head i.sb-arrow { display: none; }
         #sidebar.collapsed .sb-fav-item { justify-content: center; padding-left: 0; padding-right: 0; }
         #sidebar.collapsed .sb-fav-item .sb-fav-star { display: none; }
+        /* Hide star buttons on mobile -- they intercept taps */
+        @media (max-width: 767px) {
+            .sb-fav-star, .sb-nav-item button[title="Toggle favorite"] { display: none !important; }
+            .sb-nav-item { padding-top: 8px !important; padding-bottom: 8px !important; font-size: 14px !important; }
+        }
         /* Mobile overlay */
         #sidebar-backdrop { display: none; }
         @media (max-width: 767px) {
@@ -340,6 +345,14 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                 </div>
             </div>
         </section>
+
+        <!-- All Tools Grid (primary navigation, especially on mobile) -->
+        <section class="mt-8" id="tools-grid-section">
+            <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <i class="ph ph-sparkle text-cyan-glow"></i> Your Tools
+            </h2>
+            <div id="tools-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+        </section>
     </main>
 </div>
 
@@ -432,7 +445,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
             a.innerHTML =
                 '<i class="ph ' + tool.icon + ' text-base text-gray-500 group-hover:text-cyan-glow" style="min-width:18px;"></i>' +
                 '<span class="sb-label truncate text-xs">' + tool.name + '</span>' +
-                '<button onclick="event.preventDefault();event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="sb-fav-star ml-auto w-5 h-5 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all" title="Remove from favorites">' +
+                '<button onclick="event.preventDefault();event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="sb-fav-star ml-auto w-5 h-5 rounded hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all" title="Remove from favorites">' +
                     '<i class="ph-fill ph-star text-gold-base text-[10px]"></i>' +
                 '</button>';
             list.appendChild(a);
@@ -456,7 +469,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                 lockOrStar = '<i class="ph ph-lock-simple text-gray-600 text-[10px] ml-auto sb-label"></i>';
             } else {
                 var starIcon = isFav ? 'ph-fill ph-star text-gold-base' : 'ph ph-star text-gray-600 hover:text-gold-base';
-                lockOrStar = '<button onclick="event.preventDefault();event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="sb-label ml-auto w-5 h-5 rounded flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all" title="Toggle favorite"><i class="' + starIcon + ' text-[10px]"></i></button>';
+                lockOrStar = '<button onclick="event.preventDefault();event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="sb-label ml-auto w-5 h-5 rounded hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all" title="Toggle favorite"><i class="' + starIcon + ' text-[10px]"></i></button>';
             }
             a.innerHTML =
                 '<i class="ph ' + tool.icon + ' text-base ' + (isLocked ? 'text-gray-600' : 'text-gray-500 group-hover:text-cyan-glow') + '" style="min-width:18px;"></i>' +
@@ -529,6 +542,12 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         } else {
             sb.classList.add('mobile-open');
             bd.classList.add('active');
+            // Auto-expand all sections on mobile so tools are immediately tappable
+            if (window.innerWidth < 768) {
+                ['generators', 'calculators', 'dashboards'].forEach(function(s) {
+                    openSectionNow(s);
+                });
+            }
         }
     };
 
@@ -651,6 +670,37 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         }
 
         renderSidebar();
+        renderToolsGrid();
+    }
+
+    // ==========================================
+    // TOOLS GRID (main content -- works on all devices)
+    // ==========================================
+    function renderToolsGrid() {
+        var grid = document.getElementById('tools-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        ALL_TOOLS.forEach(function(tool) {
+            var isLocked = _unlockedTools.indexOf(tool.id) === -1;
+            var card = document.createElement('a');
+            card.href = isLocked ? '#' : '/tools/' + tool.id + '.html';
+            if (isLocked) card.onclick = function(e) { e.preventDefault(); showUpgradeHint(); };
+            card.className = 'glass-card rounded-xl p-4 flex flex-col gap-2 transition-all ' +
+                (isLocked ? 'opacity-40 cursor-not-allowed' : 'hover:border-cyan-glow/30 cursor-pointer');
+            card.style.textDecoration = 'none';
+
+            var catIcons = { generators: 'text-cyan-glow', calculators: 'text-gold-base', dashboards: 'text-emerald-400' };
+            var iconColor = isLocked ? 'text-gray-600' : (catIcons[tool.cat] || 'text-cyan-glow');
+            card.innerHTML =
+                '<div class="flex items-center justify-between">' +
+                    '<i class="ph ' + tool.icon + ' text-xl ' + iconColor + '"></i>' +
+                    (isLocked ? '<i class="ph ph-lock-simple text-gray-600 text-xs"></i>' : '') +
+                '</div>' +
+                '<p class="text-sm font-medium text-white leading-tight">' + tool.name + '</p>' +
+                '<p class="text-[10px] text-gray-500 leading-snug">' + tool.desc + '</p>';
+            grid.appendChild(card);
+        });
     }
 
     // ==========================================
