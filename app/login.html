@@ -110,18 +110,74 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
             color: transparent;
         }
 
-        /* Clerk component overrides for dark theme */
-        .cl-rootBox {
-            width: 100%;
-        }
-        .cl-card {
+        /* Force Clerk dark theme on ALL elements */
+        .cl-rootBox { width: 100% !important; }
+        .cl-card, .cl-signIn-root, .cl-signUp-root {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
+            padding: 0 !important;
         }
-        .cl-headerTitle, .cl-headerSubtitle {
-            display: none !important;
+        .cl-headerTitle, .cl-headerSubtitle { display: none !important; }
+
+        /* All text white */
+        .cl-formFieldLabel, .cl-formFieldLabel__identifier,
+        .cl-formFieldLabel__password, .cl-formFieldLabel__emailAddress,
+        .cl-formFieldLabel__firstName, .cl-formFieldLabel__lastName,
+        .cl-internal-1dae4xp, .cl-internal-b9v6p6,
+        [class*="cl-formField"] label,
+        [class*="cl-"] p, [class*="cl-"] span, [class*="cl-"] div {
+            color: #e2e8f0 !important;
         }
+
+        /* Inputs dark with white text */
+        .cl-formFieldInput, input[class*="cl-"],
+        .cl-formFieldInput__identifier, .cl-formFieldInput__password,
+        .cl-formFieldInput__emailAddress, .cl-otpCodeFieldInput {
+            background: #141E3E !important;
+            border-color: rgba(255,255,255,0.1) !important;
+            color: #ffffff !important;
+        }
+        .cl-formFieldInput:focus, input[class*="cl-"]:focus {
+            border-color: #00F2FE !important;
+            box-shadow: 0 0 0 2px rgba(0,242,254,0.15) !important;
+        }
+
+        /* Primary button gold */
+        .cl-formButtonPrimary, button[class*="cl-formButtonPrimary"] {
+            background: linear-gradient(135deg, #D4AF37, #F8E9A1) !important;
+            color: #040711 !important;
+            font-weight: 700 !important;
+            border: none !important;
+        }
+
+        /* Social/OAuth buttons */
+        .cl-socialButtonsBlockButton, .cl-socialButtonsIconButton,
+        button[class*="cl-socialButtons"] {
+            background: #141E3E !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: #ffffff !important;
+        }
+        .cl-socialButtonsBlockButtonText { color: #ffffff !important; }
+
+        /* Divider */
+        .cl-dividerLine { background: rgba(255,255,255,0.1) !important; }
+        .cl-dividerText { color: #64748b !important; }
+
+        /* Links */
+        .cl-footerActionLink, a[class*="cl-footerAction"],
+        .cl-formResendCodeLink { color: #00F2FE !important; }
+
+        /* Footer / powered by */
+        .cl-footer, .cl-footerAction { color: #64748b !important; }
+        .cl-internal-b9v6p6 { color: #475569 !important; }
+
+        /* Error text */
+        .cl-formFieldErrorText { color: #f87171 !important; }
+
+        /* Remove extra spacing */
+        .cl-main { padding: 0 !important; }
+        .cl-form { gap: 0.75rem !important; }
 
         /* Ambient glow behind the card */
         .ambient-glow {
