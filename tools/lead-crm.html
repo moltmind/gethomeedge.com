@@ -1,502 +1,646 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seller Lead CRM | HomeEdge</title>
-<style>
-:root {
-  --bg-dark: #0A1929;
-  --bg-card: #132F4C;
-  --bg-input: #0E2240;
-  --accent-cyan: #00E5FF;
-  --accent-gold: #FFD54F;
-  --text-primary: #FFFFFF;
-  --text-secondary: #B0BEC5;
-  --border: #1A3A5C;
-  --success: #4ADE80;
-  --error: #EF5350;
-  --warning: #FFD54F;
-  --accent-blue: #1565C0;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:var(--bg-dark);color:var(--text-primary);
-  font-family:system-ui,-apple-system,sans-serif;
-  min-height:100vh;line-height:1.6;
-}
-header{
-  text-align:center;padding:32px 20px 28px;
-  background:linear-gradient(180deg,#050E1A,#132F4C);
-  border-bottom:2px solid var(--accent-cyan);
-}
-.brand{color:var(--accent-gold);text-transform:uppercase;letter-spacing:2px;font-size:.85rem;font-weight:600;margin-bottom:8px;}
-header h1{
-  font-size:2rem;font-weight:800;
-  background:linear-gradient(135deg,#00E5FF,#80F0FF);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;margin-bottom:6px;
-}
-header .subtitle{color:var(--text-secondary);font-size:1rem;}
-.container{max-width:1100px;margin:0 auto;padding:24px 20px 40px;}
-.card{
-  background:var(--bg-card);border:1px solid var(--border);
-  border-radius:14px;padding:28px;margin-bottom:24px;
-}
-.card-title{font-size:1.15rem;font-weight:700;margin-bottom:18px;color:var(--accent-gold);}
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Lead CRM | HomeEdge</title>
+    <meta name="description" content="Track and manage your seller leads with an intuitive CRM built for real estate agents by HomeEdge.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
 
-/* TOP BAR */
-.top-bar{display:flex;gap:14px;margin-bottom:24px;align-items:stretch;}
-.search-input{
-  flex:1;padding:14px 18px;border-radius:10px;border:1px solid var(--border);
-  background:var(--bg-input);color:var(--text-primary);font-size:.95rem;
-  outline:none;transition:border-color .2s;
-}
-.search-input:focus{border-color:var(--accent-cyan);}
-.search-input::placeholder{color:#5a7a9a;}
-.btn-add{
-  padding:14px 24px;border-radius:10px;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#00E5FF,#00B8D4);color:#0A1929;
-  font-weight:700;font-size:.9rem;white-space:nowrap;transition:opacity .2s;
-}
-.btn-add:hover{opacity:.88;}
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-/* PIPELINE STATS */
-.pipeline-row{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
-.pipe-card{
-  flex:1;min-width:100px;text-align:center;padding:16px 10px;border-radius:12px;cursor:pointer;
-  background:var(--bg-card);border:2px solid var(--border);transition:all .2s;
-}
-.pipe-card:hover,.pipe-card.active{border-color:var(--accent-cyan);background:rgba(0,229,255,.06);}
-.pipe-count{font-size:1.6rem;font-weight:800;line-height:1.1;}
-.pipe-label{font-size:.75rem;font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px;}
-.pipe-card[data-status="New"] .pipe-count{color:var(--accent-cyan);}
-.pipe-card[data-status="Contacted"] .pipe-count{color:var(--accent-gold);}
-.pipe-card[data-status="Appointment"] .pipe-count{color:var(--accent-blue);}
-.pipe-card[data-status="Listed"] .pipe-count{color:#4ADE80;}
-.pipe-card[data-status="Sold"] .pipe-count{color:#4ADE80;}
-.pipe-card[data-status="All"] .pipe-count{color:var(--text-primary);}
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-/* LEAD CARDS */
-.lead-list{display:flex;flex-direction:column;gap:12px;}
-.lead-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:12px;
-  padding:20px 24px;display:flex;align-items:center;gap:18px;cursor:pointer;
-  transition:border-color .2s,background .2s;flex-wrap:wrap;
-}
-.lead-card:hover{border-color:var(--accent-cyan);background:rgba(0,229,255,.03);}
-.lead-status{
-  display:inline-block;padding:4px 12px;border-radius:16px;font-size:.72rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;
-}
-.lead-status.New{background:rgba(0,229,255,.15);color:var(--accent-cyan);border:1px solid var(--accent-cyan);}
-.lead-status.Contacted{background:rgba(255,213,79,.12);color:var(--accent-gold);border:1px solid var(--accent-gold);}
-.lead-status.Appointment{background:rgba(21,101,192,.2);color:#64B5F6;border:1px solid var(--accent-blue);}
-.lead-status.Listed{background:rgba(74,222,128,.12);color:var(--success);border:1px solid var(--success);}
-.lead-status.Sold{background:rgba(74,222,128,.25);color:#4ADE80;border:1px solid #4ADE80;}
-.lead-main{flex:1;min-width:180px;}
-.lead-name{font-weight:700;font-size:1rem;}
-.lead-address{color:var(--text-secondary);font-size:.82rem;}
-.lead-contact-line{color:#78909C;font-size:.75rem;margin-top:2px;}
-.lead-meta{display:flex;gap:18px;align-items:center;flex-wrap:wrap;}
-.lead-value{color:var(--accent-cyan);font-weight:700;font-size:.95rem;}
-.lead-source{
-  padding:3px 10px;border-radius:10px;font-size:.7rem;font-weight:600;
-  background:rgba(176,190,197,.1);color:var(--text-secondary);border:1px solid rgba(176,190,197,.2);
-}
-.lead-date{color:#78909C;font-size:.75rem;white-space:nowrap;}
-.lead-actions{display:flex;gap:8px;}
-.btn-icon{
-  width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
-  background:var(--bg-input);color:var(--text-secondary);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:.85rem;
-  transition:all .2s;
-}
-.btn-icon:hover{border-color:var(--accent-cyan);color:var(--accent-cyan);}
-.btn-icon.delete:hover{border-color:var(--error);color:var(--error);}
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-/* MODAL / FORM */
-.modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(5,14,26,.85);
-  z-index:100;align-items:center;justify-content:center;padding:20px;
-}
-.modal-overlay.open{display:flex;}
-.modal{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
-  padding:32px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
-}
-.modal h2{
-  font-size:1.2rem;font-weight:700;margin-bottom:20px;
-  color:var(--accent-gold);
-}
-.form-group{margin-bottom:16px;}
-.form-group label{display:block;font-size:.82rem;color:var(--text-secondary);margin-bottom:6px;font-weight:600;}
-.form-group input,.form-group select,.form-group textarea{
-  width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);
-  background:var(--bg-input);color:var(--text-primary);font-size:.9rem;
-  font-family:inherit;outline:none;transition:border-color .2s;
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent-cyan);}
-.form-group textarea{resize:vertical;min-height:70px;}
-.form-group select{cursor:pointer;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.form-actions{display:flex;gap:12px;margin-top:22px;}
-.btn-save{
-  padding:12px 28px;border-radius:8px;border:none;cursor:pointer;
-  background:var(--accent-cyan);color:#0A1929;font-weight:700;font-size:.9rem;
-  transition:opacity .2s;
-}
-.btn-save:hover{opacity:.88;}
-.btn-cancel{
-  padding:12px 28px;border-radius:8px;border:1px solid var(--border);
-  background:transparent;color:var(--text-secondary);cursor:pointer;
-  font-weight:600;font-size:.9rem;transition:all .2s;
-}
-.btn-cancel:hover{border-color:var(--text-secondary);}
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            900: '#040711',
+                            800: '#0A1128',
+                            700: '#141E3E',
+                            600: '#1D2A54',
+                        },
+                        cyan: {
+                            glow: '#00F2FE',
+                            deep: '#4FACFE',
+                        },
+                        gold: {
+                            light: '#F8E9A1',
+                            base: '#D4AF37',
+                            dark: '#A6821A',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
+                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+                        },
+                        'reveal-up': {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
 
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary);font-size:.95rem;}
+    <style>
+        body {
+            background-color: #040711;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-footer{
-  text-align:center;padding:28px 20px;color:var(--text-secondary);font-size:.85rem;
-  border-top:1px solid var(--border);margin-top:20px;
-}
-footer a{color:var(--accent-gold);text-decoration:none;}
-footer a:hover{text-decoration:underline;}
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
 
-@media(max-width:768px){
-  .pipeline-row{gap:8px;}
-  .pipe-card{min-width:60px;padding:12px 6px;}
-  .pipe-count{font-size:1.2rem;}
-  .lead-card{padding:16px;}
-  .lead-meta{gap:10px;}
-  .form-row{grid-template-columns:1fr;}
-}
-@media(max-width:480px){
-  .container{padding:16px 12px 32px;}
-  header{padding:24px 16px 20px;}
-  header h1{font-size:1.5rem;}
-  .top-bar{flex-direction:column;}
-  .modal{padding:24px 18px;}
-}
-</style>
+        .glass-panel {
+            background: rgba(10, 17, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #00F2FE, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .btn-gold {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+        .btn-gold:hover::before {
+            left: 100%;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-input {
+            background: rgba(4, 7, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.08), 0 0 20px rgba(0, 242, 254, 0.05);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        select.form-input {
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2300F2FE'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        select.form-input option {
+            background: #0A1128;
+            color: #ffffff;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* Pipeline card colors */
+        .pipe-card { transition: all 0.3s ease; cursor: pointer; }
+        .pipe-card:hover, .pipe-card.active { border-color: rgba(0, 242, 254, 0.5); background: rgba(0, 242, 254, 0.05); }
+
+        /* Status badge colors */
+        .status-new { background: rgba(0, 242, 254, 0.12); color: #00F2FE; border: 1px solid rgba(0, 242, 254, 0.4); }
+        .status-contacted { background: rgba(212, 175, 55, 0.12); color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.4); }
+        .status-appointment { background: rgba(79, 172, 254, 0.12); color: #4FACFE; border: 1px solid rgba(79, 172, 254, 0.4); }
+        .status-listed { background: rgba(74, 222, 128, 0.12); color: #4ADE80; border: 1px solid rgba(74, 222, 128, 0.4); }
+        .status-sold { background: rgba(74, 222, 128, 0.25); color: #4ADE80; border: 1px solid rgba(74, 222, 128, 0.6); }
+
+        /* Lead card hover */
+        .lead-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .lead-card:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 7, 17, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+    </style>
 </head>
-<body>
-<header>
-  <div class="brand">HomeEdge</div>
-  <h1>Seller Lead CRM</h1>
-  <p class="subtitle">Track and manage your seller leads</p>
-</header>
+<body class="font-sans min-h-screen flex flex-col">
 
-<div class="container">
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <input type="text" class="search-input" id="searchInput" placeholder="Search leads by name, address, or notes...">
-    <button class="btn-add" id="btnAddNew">+ Add New Lead</button>
-  </div>
-
-  <!-- PIPELINE STATS -->
-  <div class="pipeline-row" id="pipelineRow">
-    <div class="pipe-card active" data-status="All" onclick="filterByStatus('All',this)">
-      <div class="pipe-count" id="countAll">0</div>
-      <div class="pipe-label">All</div>
-    </div>
-    <div class="pipe-card" data-status="New" onclick="filterByStatus('New',this)">
-      <div class="pipe-count" id="countNew">0</div>
-      <div class="pipe-label">New</div>
-    </div>
-    <div class="pipe-card" data-status="Contacted" onclick="filterByStatus('Contacted',this)">
-      <div class="pipe-count" id="countContacted">0</div>
-      <div class="pipe-label">Contacted</div>
-    </div>
-    <div class="pipe-card" data-status="Appointment" onclick="filterByStatus('Appointment',this)">
-      <div class="pipe-count" id="countAppointment">0</div>
-      <div class="pipe-label">Appointment</div>
-    </div>
-    <div class="pipe-card" data-status="Listed" onclick="filterByStatus('Listed',this)">
-      <div class="pipe-count" id="countListed">0</div>
-      <div class="pipe-label">Listed</div>
-    </div>
-    <div class="pipe-card" data-status="Sold" onclick="filterByStatus('Sold',this)">
-      <div class="pipe-count" id="countSold">0</div>
-      <div class="pipe-label">Sold</div>
-    </div>
-  </div>
-
-  <!-- LEADS LIST -->
-  <div id="leadList" class="lead-list"></div>
-</div>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <h2 id="modalTitle">Add New Lead</h2>
-    <form id="leadForm" onsubmit="saveLead(event)">
-      <input type="hidden" id="leadId">
-      <div class="form-group">
-        <label>Name *</label>
-        <input type="text" id="fName" required placeholder="Full name">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" id="fPhone" placeholder="(555) 000-0000">
+    <!-- Fixed Glass Nav -->
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
         </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="fEmail" placeholder="email@example.com">
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-8 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-address-book text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Seller Lead CRM
+            </h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">
+                Track and manage your seller leads through every stage
+            </p>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Property Address</label>
-        <input type="text" id="fAddress" placeholder="Street address">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>City</label>
-          <input type="text" id="fCity" placeholder="City">
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-6 pb-20">
+
+        <!-- Top Bar: Search + Add -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6 reveal" id="topBar">
+            <div class="flex-1 relative">
+                <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-white/30 text-lg"></i>
+                <input type="text" id="searchInput" class="form-input pl-12" placeholder="Search leads by name, address, or notes...">
+            </div>
+            <button id="btnAddNew" class="btn-gold py-3 px-6 rounded-xl font-bold text-sm tracking-wide
+                       bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark
+                       text-navy-900 border border-gold-base/30
+                       hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5
+                       active:translate-y-0 transition-all duration-300 flex items-center gap-2 whitespace-nowrap">
+                <i class="ph ph-plus-circle text-lg"></i>
+                Add New Lead
+            </button>
         </div>
-        <div class="form-group">
-          <label>State</label>
-          <input type="text" id="fState" placeholder="State">
+
+        <!-- Pipeline Stats -->
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-8 reveal" id="pipelineRow">
+            <div class="pipe-card glass-card rounded-xl p-4 text-center active" data-status="All" onclick="filterByStatus('All',this)">
+                <div class="text-2xl font-extrabold text-white" id="countAll">0</div>
+                <div class="text-xs font-semibold text-white/50 uppercase tracking-wide mt-1">All</div>
+            </div>
+            <div class="pipe-card glass-card rounded-xl p-4 text-center" data-status="New" onclick="filterByStatus('New',this)">
+                <div class="text-2xl font-extrabold text-cyan-glow" id="countNew">0</div>
+                <div class="text-xs font-semibold text-white/50 uppercase tracking-wide mt-1">New</div>
+            </div>
+            <div class="pipe-card glass-card rounded-xl p-4 text-center" data-status="Contacted" onclick="filterByStatus('Contacted',this)">
+                <div class="text-2xl font-extrabold text-gold-base" id="countContacted">0</div>
+                <div class="text-xs font-semibold text-white/50 uppercase tracking-wide mt-1">Contacted</div>
+            </div>
+            <div class="pipe-card glass-card rounded-xl p-4 text-center" data-status="Appointment" onclick="filterByStatus('Appointment',this)">
+                <div class="text-2xl font-extrabold text-cyan-deep" id="countAppointment">0</div>
+                <div class="text-xs font-semibold text-white/50 uppercase tracking-wide mt-1">Appt</div>
+            </div>
+            <div class="pipe-card glass-card rounded-xl p-4 text-center" data-status="Listed" onclick="filterByStatus('Listed',this)">
+                <div class="text-2xl font-extrabold text-green-400" id="countListed">0</div>
+                <div class="text-xs font-semibold text-white/50 uppercase tracking-wide mt-1">Listed</div>
+            </div>
+            <div class="pipe-card glass-card rounded-xl p-4 text-center" data-status="Sold" onclick="filterByStatus('Sold',this)">
+                <div class="text-2xl font-extrabold text-green-400" id="countSold">0</div>
+                <div class="text-xs font-semibold text-white/50 uppercase tracking-wide mt-1">Sold</div>
+            </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Est. Home Value</label>
-        <input type="text" id="fValue" placeholder="$000,000">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Source</label>
-          <select id="fSource">
-            <option value="AI Chatbot">AI Chatbot</option>
-            <option value="Calculator">Calculator</option>
-            <option value="Website">Website</option>
-            <option value="Open House">Open House</option>
-            <option value="Referral">Referral</option>
-            <option value="Facebook">Facebook</option>
-            <option value="Other">Other</option>
-          </select>
+
+        <!-- Leads List -->
+        <div id="leadList" class="flex flex-col gap-3 reveal" style="opacity:1;transform:none;"></div>
+
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="glass-card rounded-2xl p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-user-plus text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-lg font-semibold text-white" id="modalTitle">Add New Lead</h2>
+            </div>
+            <form id="leadForm" onsubmit="saveLead(event)">
+                <input type="hidden" id="leadId">
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-white/50 mb-2">Name <span class="text-cyan-glow">*</span></label>
+                    <input type="text" id="fName" class="form-input" required placeholder="Full name">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Phone</label>
+                        <input type="tel" id="fPhone" class="form-input" placeholder="(555) 000-0000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Email</label>
+                        <input type="email" id="fEmail" class="form-input" placeholder="email@example.com">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-white/50 mb-2">Property Address</label>
+                    <input type="text" id="fAddress" class="form-input" placeholder="Street address">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">City</label>
+                        <input type="text" id="fCity" class="form-input" placeholder="City">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">State</label>
+                        <input type="text" id="fState" class="form-input" placeholder="State">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-white/50 mb-2">Est. Home Value</label>
+                    <input type="text" id="fValue" class="form-input" placeholder="$000,000">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Source</label>
+                        <select id="fSource" class="form-input">
+                            <option value="AI Chatbot">AI Chatbot</option>
+                            <option value="Calculator">Calculator</option>
+                            <option value="Website">Website</option>
+                            <option value="Open House">Open House</option>
+                            <option value="Referral">Referral</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Status</label>
+                        <select id="fStatus" class="form-input">
+                            <option value="New">New</option>
+                            <option value="Contacted">Contacted</option>
+                            <option value="Appointment">Appointment</option>
+                            <option value="Listed">Listed</option>
+                            <option value="Sold">Sold</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-white/50 mb-2">Notes</label>
+                    <textarea id="fNotes" class="form-input" placeholder="Any notes about this lead..."></textarea>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="submit" class="btn-gold flex-1 py-3 px-6 rounded-xl font-bold text-sm tracking-wide
+                               bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark
+                               text-navy-900 border border-gold-base/30
+                               hover:shadow-[0_0_30px_rgba(212,175,55,0.25)]
+                               transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="ph ph-floppy-disk text-lg"></i>
+                        Save Lead
+                    </button>
+                    <button type="button" onclick="closeModal()"
+                        class="py-3 px-6 rounded-xl font-semibold text-sm border border-white/10 text-white/50 hover:text-white/70 hover:border-white/20 transition-all duration-300">
+                        Cancel
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-          <label>Status</label>
-          <select id="fStatus">
-            <option value="New">New</option>
-            <option value="Contacted">Contacted</option>
-            <option value="Appointment">Appointment</option>
-            <option value="Listed">Listed</option>
-            <option value="Sold">Sold</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Notes</label>
-        <textarea id="fNotes" placeholder="Any notes about this lead..."></textarea>
-      </div>
-      <div class="form-actions">
-        <button type="submit" class="btn-save">Save Lead</button>
-        <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<footer>Powered by <a href="https://gethomeedge.com">HomeEdge</a> | <a href="https://gethomeedge.com">gethomeedge.com</a></footer>
-
-<script>
-const STORAGE_KEY = 'homeedge_leads';
-let currentFilter = 'All';
-let searchTerm = '';
-
-const DEMO_LEADS = [
-  {id:'d1',name:'Jennifer Walsh',phone:'(555) 234-5678',email:'jennifer@email.com',address:'742 Oakwood Dr',city:'Springfield',state:'IL',value:'$385,000',source:'AI Chatbot',status:'New',notes:'Interested in selling, wants spring listing',date:'2026-03-28'},
-  {id:'d2',name:'Robert Chen',phone:'(555) 345-6789',email:'robert.c@email.com',address:'1201 Elm St',city:'Springfield',state:'IL',value:'$299,000',source:'Calculator',status:'Contacted',notes:'Used net proceeds calculator, followed up',date:'2026-03-25'},
-  {id:'d3',name:'Maria Santos',phone:'(555) 456-7890',email:'maria.s@email.com',address:'556 Maple Ave',city:'Rochester',state:'IL',value:'$425,000',source:'Open House',status:'Appointment',notes:'Appointment set for April 2',date:'2026-03-22'},
-  {id:'d4',name:'David Kim',phone:'(555) 567-8901',email:'david.k@email.com',address:'89 Pine Ct',city:'Chatham',state:'IL',value:'$275,000',source:'Website',status:'Contacted',notes:'Downloaded market report',date:'2026-03-20'},
-  {id:'d5',name:'Amanda Lewis',phone:'(555) 678-9012',email:'amanda.l@email.com',address:'2100 River Rd',city:'Springfield',state:'IL',value:'$510,000',source:'Referral',status:'Listed',notes:'Listed March 15, showing activity strong',date:'2026-03-15'},
-  {id:'d6',name:'James O\'Brien',phone:'(555) 789-0123',email:'james.ob@email.com',address:'334 Cedar Ln',city:'Sherman',state:'IL',value:'$320,000',source:'AI Chatbot',status:'New',notes:'Asked about market conditions',date:'2026-03-18'}
-];
-
-function getLeads() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_LEADS));
-    return [...DEMO_LEADS];
-  }
-  try { return JSON.parse(raw); } catch(e) { return []; }
-}
-
-function saveLeads(leads) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
-}
-
-function genId() {
-  return 'l' + Date.now() + Math.random().toString(36).substr(2,5);
-}
-
-function updateCounts() {
-  const leads = getLeads();
-  document.getElementById('countAll').textContent = leads.length;
-  ['New','Contacted','Appointment','Listed','Sold'].forEach(s => {
-    document.getElementById('count'+s).textContent = leads.filter(l => l.status === s).length;
-  });
-}
-
-function filterByStatus(status, el) {
-  currentFilter = status;
-  document.querySelectorAll('.pipe-card').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
-  renderLeads();
-}
-
-function renderLeads() {
-  const leads = getLeads();
-  const list = document.getElementById('leadList');
-  let filtered = leads;
-
-  if (currentFilter !== 'All') {
-    filtered = filtered.filter(l => l.status === currentFilter);
-  }
-
-  if (searchTerm) {
-    const q = searchTerm.toLowerCase();
-    filtered = filtered.filter(l =>
-      (l.name||'').toLowerCase().includes(q) ||
-      (l.address||'').toLowerCase().includes(q) ||
-      (l.city||'').toLowerCase().includes(q) ||
-      (l.notes||'').toLowerCase().includes(q)
-    );
-  }
-
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty-state">No leads found. Click "+ Add New Lead" to get started.</div>';
-    return;
-  }
-
-  list.innerHTML = filtered.map(l => `
-    <div class="lead-card" onclick="editLead('${l.id}')">
-      <span class="lead-status ${l.status}">${l.status}</span>
-      <div class="lead-main">
-        <div class="lead-name">${esc(l.name)}</div>
-        <div class="lead-address">${esc(l.address)}${l.city ? ', '+esc(l.city) : ''}${l.state ? ' '+esc(l.state) : ''}</div>
-        <div class="lead-contact-line">${esc(l.phone||'')}${l.phone && l.email ? ' &middot; ' : ''}${esc(l.email||'')}</div>
-      </div>
-      <div class="lead-meta">
-        <span class="lead-value">${esc(l.value||'')}</span>
-        <span class="lead-source">${esc(l.source||'')}</span>
-        <span class="lead-date">${esc(l.date||'')}</span>
-      </div>
-      <div class="lead-actions" onclick="event.stopPropagation()">
-        <button class="btn-icon" title="Edit" onclick="editLead('${l.id}')">&#9998;</button>
-        <button class="btn-icon delete" title="Delete" onclick="deleteLead('${l.id}')">&#10005;</button>
-      </div>
     </div>
-  `).join('');
-}
 
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
 
-function openModal(title) {
-  document.getElementById('modalTitle').textContent = title || 'Add New Lead';
-  document.getElementById('modalOverlay').classList.add('open');
-}
+    <script>
+    const STORAGE_KEY = 'homeedge_leads';
+    let currentFilter = 'All';
+    let searchTerm = '';
 
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.getElementById('leadForm').reset();
-  document.getElementById('leadId').value = '';
-}
+    const DEMO_LEADS = [
+      {id:'d1',name:'Jennifer Walsh',phone:'(555) 234-5678',email:'jennifer@email.com',address:'742 Oakwood Dr',city:'Springfield',state:'IL',value:'$385,000',source:'AI Chatbot',status:'New',notes:'Interested in selling, wants spring listing',date:'2026-03-28'},
+      {id:'d2',name:'Robert Chen',phone:'(555) 345-6789',email:'robert.c@email.com',address:'1201 Elm St',city:'Springfield',state:'IL',value:'$299,000',source:'Calculator',status:'Contacted',notes:'Used net proceeds calculator, followed up',date:'2026-03-25'},
+      {id:'d3',name:'Maria Santos',phone:'(555) 456-7890',email:'maria.s@email.com',address:'556 Maple Ave',city:'Rochester',state:'IL',value:'$425,000',source:'Open House',status:'Appointment',notes:'Appointment set for April 2',date:'2026-03-22'},
+      {id:'d4',name:'David Kim',phone:'(555) 567-8901',email:'david.k@email.com',address:'89 Pine Ct',city:'Chatham',state:'IL',value:'$275,000',source:'Website',status:'Contacted',notes:'Downloaded market report',date:'2026-03-20'},
+      {id:'d5',name:'Amanda Lewis',phone:'(555) 678-9012',email:'amanda.l@email.com',address:'2100 River Rd',city:'Springfield',state:'IL',value:'$510,000',source:'Referral',status:'Listed',notes:'Listed March 15, showing activity strong',date:'2026-03-15'},
+      {id:'d6',name:'James O\'Brien',phone:'(555) 789-0123',email:'james.ob@email.com',address:'334 Cedar Ln',city:'Sherman',state:'IL',value:'$320,000',source:'AI Chatbot',status:'New',notes:'Asked about market conditions',date:'2026-03-18'}
+    ];
 
-function editLead(id) {
-  const leads = getLeads();
-  const lead = leads.find(l => l.id === id);
-  if (!lead) return;
-  document.getElementById('leadId').value = lead.id;
-  document.getElementById('fName').value = lead.name || '';
-  document.getElementById('fPhone').value = lead.phone || '';
-  document.getElementById('fEmail').value = lead.email || '';
-  document.getElementById('fAddress').value = lead.address || '';
-  document.getElementById('fCity').value = lead.city || '';
-  document.getElementById('fState').value = lead.state || '';
-  document.getElementById('fValue').value = lead.value || '';
-  document.getElementById('fSource').value = lead.source || 'AI Chatbot';
-  document.getElementById('fStatus').value = lead.status || 'New';
-  document.getElementById('fNotes').value = lead.notes || '';
-  openModal('Edit Lead');
-}
-
-function saveLead(e) {
-  e.preventDefault();
-  const leads = getLeads();
-  const id = document.getElementById('leadId').value;
-  const data = {
-    name: document.getElementById('fName').value.trim(),
-    phone: document.getElementById('fPhone').value.trim(),
-    email: document.getElementById('fEmail').value.trim(),
-    address: document.getElementById('fAddress').value.trim(),
-    city: document.getElementById('fCity').value.trim(),
-    state: document.getElementById('fState').value.trim(),
-    value: document.getElementById('fValue').value.trim(),
-    source: document.getElementById('fSource').value,
-    status: document.getElementById('fStatus').value,
-    notes: document.getElementById('fNotes').value.trim()
-  };
-
-  if (id) {
-    const idx = leads.findIndex(l => l.id === id);
-    if (idx !== -1) {
-      leads[idx] = { ...leads[idx], ...data };
+    function getLeads() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_LEADS));
+        return [...DEMO_LEADS];
+      }
+      try { return JSON.parse(raw); } catch(e) { return []; }
     }
-  } else {
-    data.id = genId();
-    data.date = new Date().toISOString().split('T')[0];
-    leads.unshift(data);
-  }
 
-  saveLeads(leads);
-  closeModal();
-  updateCounts();
-  renderLeads();
-}
+    function saveLeads(leads) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+    }
 
-function deleteLead(id) {
-  if (!confirm('Delete this lead? This cannot be undone.')) return;
-  let leads = getLeads();
-  leads = leads.filter(l => l.id !== id);
-  saveLeads(leads);
-  updateCounts();
-  renderLeads();
-}
+    function genId() {
+      return 'l' + Date.now() + Math.random().toString(36).substr(2,5);
+    }
 
-// INIT
-document.getElementById('btnAddNew').addEventListener('click', () => {
-  document.getElementById('leadId').value = '';
-  document.getElementById('leadForm').reset();
-  openModal('Add New Lead');
-});
+    function updateCounts() {
+      const leads = getLeads();
+      document.getElementById('countAll').textContent = leads.length;
+      ['New','Contacted','Appointment','Listed','Sold'].forEach(s => {
+        document.getElementById('count'+s).textContent = leads.filter(l => l.status === s).length;
+      });
+    }
 
-document.getElementById('searchInput').addEventListener('input', (e) => {
-  searchTerm = e.target.value;
-  renderLeads();
-});
+    function filterByStatus(status, el) {
+      currentFilter = status;
+      document.querySelectorAll('.pipe-card').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderLeads();
+    }
 
-document.getElementById('modalOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-});
+    function getStatusClass(status) {
+      const map = { 'New': 'status-new', 'Contacted': 'status-contacted', 'Appointment': 'status-appointment', 'Listed': 'status-listed', 'Sold': 'status-sold' };
+      return map[status] || 'status-new';
+    }
 
-updateCounts();
-renderLeads();
-</script>
+    function renderLeads() {
+      const leads = getLeads();
+      const list = document.getElementById('leadList');
+      let filtered = leads;
+
+      if (currentFilter !== 'All') {
+        filtered = filtered.filter(l => l.status === currentFilter);
+      }
+
+      if (searchTerm) {
+        const q = searchTerm.toLowerCase();
+        filtered = filtered.filter(l =>
+          (l.name||'').toLowerCase().includes(q) ||
+          (l.address||'').toLowerCase().includes(q) ||
+          (l.city||'').toLowerCase().includes(q) ||
+          (l.notes||'').toLowerCase().includes(q)
+        );
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="glass-card rounded-2xl p-12 text-center"><i class="ph ph-address-book text-4xl text-white/20 mb-3"></i><p class="text-white/40">No leads found. Click "Add New Lead" to get started.</p></div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(l => `
+        <div class="lead-card glass-card rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4" onclick="editLead('${l.id}')">
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${getStatusClass(l.status)}">${esc(l.status)}</span>
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-white text-sm">${esc(l.name)}</div>
+            <div class="text-white/40 text-xs mt-0.5">${esc(l.address)}${l.city ? ', '+esc(l.city) : ''}${l.state ? ' '+esc(l.state) : ''}</div>
+            <div class="text-white/30 text-xs mt-0.5">${esc(l.phone||'')}${l.phone && l.email ? ' / ' : ''}${esc(l.email||'')}</div>
+          </div>
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="text-cyan-glow font-bold text-sm">${esc(l.value||'')}</span>
+            <span class="text-xs text-white/30 px-2 py-1 rounded-lg border border-white/5 bg-white/[0.02]">${esc(l.source||'')}</span>
+            <span class="text-white/25 text-xs whitespace-nowrap">${esc(l.date||'')}</span>
+          </div>
+          <div class="flex gap-2" onclick="event.stopPropagation()">
+            <button class="w-8 h-8 rounded-lg border border-white/10 bg-white/[0.02] text-white/40 hover:text-cyan-glow hover:border-cyan-glow/30 transition-all flex items-center justify-center" title="Edit" onclick="editLead('${l.id}')">
+              <i class="ph ph-pencil-simple text-sm"></i>
+            </button>
+            <button class="w-8 h-8 rounded-lg border border-white/10 bg-white/[0.02] text-white/40 hover:text-red-400 hover:border-red-400/30 transition-all flex items-center justify-center" title="Delete" onclick="deleteLead('${l.id}')">
+              <i class="ph ph-trash text-sm"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function esc(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function openModal(title) {
+      document.getElementById('modalTitle').textContent = title || 'Add New Lead';
+      document.getElementById('modalOverlay').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.getElementById('leadForm').reset();
+      document.getElementById('leadId').value = '';
+    }
+
+    function editLead(id) {
+      const leads = getLeads();
+      const lead = leads.find(l => l.id === id);
+      if (!lead) return;
+      document.getElementById('leadId').value = lead.id;
+      document.getElementById('fName').value = lead.name || '';
+      document.getElementById('fPhone').value = lead.phone || '';
+      document.getElementById('fEmail').value = lead.email || '';
+      document.getElementById('fAddress').value = lead.address || '';
+      document.getElementById('fCity').value = lead.city || '';
+      document.getElementById('fState').value = lead.state || '';
+      document.getElementById('fValue').value = lead.value || '';
+      document.getElementById('fSource').value = lead.source || 'AI Chatbot';
+      document.getElementById('fStatus').value = lead.status || 'New';
+      document.getElementById('fNotes').value = lead.notes || '';
+      openModal('Edit Lead');
+    }
+
+    function saveLead(e) {
+      e.preventDefault();
+      const leads = getLeads();
+      const id = document.getElementById('leadId').value;
+      const data = {
+        name: document.getElementById('fName').value.trim(),
+        phone: document.getElementById('fPhone').value.trim(),
+        email: document.getElementById('fEmail').value.trim(),
+        address: document.getElementById('fAddress').value.trim(),
+        city: document.getElementById('fCity').value.trim(),
+        state: document.getElementById('fState').value.trim(),
+        value: document.getElementById('fValue').value.trim(),
+        source: document.getElementById('fSource').value,
+        status: document.getElementById('fStatus').value,
+        notes: document.getElementById('fNotes').value.trim()
+      };
+
+      if (id) {
+        const idx = leads.findIndex(l => l.id === id);
+        if (idx !== -1) {
+          leads[idx] = { ...leads[idx], ...data };
+        }
+      } else {
+        data.id = genId();
+        data.date = new Date().toISOString().split('T')[0];
+        leads.unshift(data);
+      }
+
+      saveLeads(leads);
+      closeModal();
+      updateCounts();
+      renderLeads();
+    }
+
+    function deleteLead(id) {
+      if (!confirm('Delete this lead? This cannot be undone.')) return;
+      let leads = getLeads();
+      leads = leads.filter(l => l.id !== id);
+      saveLeads(leads);
+      updateCounts();
+      renderLeads();
+    }
+
+    // Scroll reveal observer
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // INIT
+    document.getElementById('btnAddNew').addEventListener('click', () => {
+      document.getElementById('leadId').value = '';
+      document.getElementById('leadForm').reset();
+      openModal('Add New Lead');
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      renderLeads();
+    });
+
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    });
+
+    updateCounts();
+    renderLeads();
+    </script>
+
 </body>
 </html>

@@ -1,403 +1,357 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listing Portfolio | HomeEdge</title>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Portfolio | HomeEdge</title>
+    <meta name="description" content="Showcase your track record with a beautiful listing portfolio. Built for real estate agents by HomeEdge.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
 
-  body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #0A1929;
-    color: #FFFFFF;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  .container {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 24px 16px 48px;
-  }
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  /* ---- Header ---- */
-  header {
-    text-align: center;
-    background: linear-gradient(180deg, #050E1A 0%, #132F4C 100%);
-    border-bottom: 2px solid #00E5FF;
-    padding: 32px 16px 28px;
-    margin-bottom: 36px;
-  }
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  .brand {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #FFD54F;
-    margin-bottom: 8px;
-  }
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            900: '#040711',
+                            800: '#0A1128',
+                            700: '#141E3E',
+                            600: '#1D2A54',
+                        },
+                        cyan: {
+                            glow: '#00F2FE',
+                            deep: '#4FACFE',
+                        },
+                        gold: {
+                            light: '#F8E9A1',
+                            base: '#D4AF37',
+                            dark: '#A6821A',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
+                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+                        },
+                        'reveal-up': {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
 
-  h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #00E5FF 0%, #80F0FF 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    <style>
+        body {
+            background-color: #040711;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-  .subtitle {
-    font-size: 16px;
-    color: #B0BEC5;
-  }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
 
-  /* ---- Stats Bar ---- */
-  .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 28px;
-  }
+        .glass-panel {
+            background: rgba(10, 17, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-  .stat-card {
-    background: #132F4C;
-    border: 1px solid #1A3A5C;
-    border-radius: 12px;
-    padding: 18px 14px;
-    text-align: center;
-  }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-  .stat-value {
-    font-size: 28px;
-    font-weight: 800;
-    color: #FFFFFF;
-    line-height: 1.2;
-  }
+        .glass-card:hover {
+            border-color: rgba(0, 242, 254, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.4);
+        }
 
-  .stat-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #8899AA;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-  }
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #00F2FE, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
 
-  .stat-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    margin-left: 4px;
-  }
+        .text-gradient-cyan {
+            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
 
-  .badge-cyan { background: rgba(0,229,255,0.15); color: #00E5FF; }
-  .badge-green { background: rgba(74,222,128,0.15); color: #4ADE80; }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-  /* ---- Filter Tabs ---- */
-  .filter-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
 
-  .tab-btn {
-    padding: 8px 18px;
-    border: 1px solid #1A3A5C;
-    border-radius: 24px;
-    background: transparent;
-    color: #B0BEC5;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-  }
+        /* Filter tab styles */
+        .filter-tab {
+            transition: all 0.3s ease;
+        }
+        .filter-tab.active {
+            background: linear-gradient(90deg, #4FACFE, #00F2FE);
+            border-color: transparent;
+            color: #040711;
+        }
+        .filter-tab:not(.active):hover {
+            border-color: rgba(0, 242, 254, 0.4);
+            color: #ffffff;
+        }
 
-  .tab-btn:hover {
-    border-color: #00E5FF;
-    color: #FFFFFF;
-  }
+        /* Photo placeholder gradients */
+        .photo-grad-1 { background: linear-gradient(135deg, #141E3E, #1D2A54); }
+        .photo-grad-2 { background: linear-gradient(135deg, #1D2A54, #141E3E); }
+        .photo-grad-3 { background: linear-gradient(135deg, #0A1128, #1D2A54); }
+        .photo-grad-4 { background: linear-gradient(135deg, #141E3E, #0A1128); }
 
-  .tab-btn.active {
-    background: #00E5FF;
-    border-color: #00E5FF;
-    color: #0A1929;
-  }
+        /* Status badge variants */
+        .badge-active { background: rgba(0, 242, 254, 0.9); color: #040711; }
+        .badge-pending { background: rgba(212, 175, 55, 0.9); color: #040711; }
+        .badge-sold { background: rgba(74, 222, 128, 0.9); color: #040711; }
 
-  /* ---- Listing Grid ---- */
-  .listing-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .listing-card {
-    background: #132F4C;
-    border: 1px solid #1A3A5C;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .listing-card:hover {
-    border-color: rgba(0,229,255,0.4);
-    transform: translateY(-2px);
-  }
-
-  /* Photo placeholder */
-  .listing-photo {
-    height: 180px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .listing-photo svg {
-    width: 48px;
-    height: 48px;
-    opacity: 0.3;
-  }
-
-  .photo-gradient-1 { background: linear-gradient(135deg, #1A3A5C, #0E2240); }
-  .photo-gradient-2 { background: linear-gradient(135deg, #1B3044, #132F4C); }
-  .photo-gradient-3 { background: linear-gradient(135deg, #0E2240, #1A3A5C); }
-  .photo-gradient-4 { background: linear-gradient(135deg, #132F4C, #1B3044); }
-
-  .status-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .status-active {
-    background: rgba(0,229,255,0.9);
-    color: #0A1929;
-  }
-
-  .status-pending {
-    background: rgba(255,213,79,0.9);
-    color: #0A1929;
-  }
-
-  .status-sold {
-    background: rgba(74,222,128,0.9);
-    color: #0A1929;
-  }
-
-  /* Card body */
-  .listing-body {
-    padding: 16px 18px 18px;
-  }
-
-  .listing-address {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #FFFFFF;
-    margin-bottom: 2px;
-  }
-
-  .listing-city {
-    font-size: 14px;
-    color: #B0BEC5;
-    margin-bottom: 10px;
-  }
-
-  .listing-price {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: #00E5FF;
-    margin-bottom: 12px;
-  }
-
-  .listing-specs {
-    display: flex;
-    gap: 0;
-    font-size: 13px;
-    color: #B0BEC5;
-    margin-bottom: 10px;
-  }
-
-  .spec {
-    padding: 0 10px;
-    border-right: 1px solid #1A3A5C;
-  }
-
-  .spec:first-child { padding-left: 0; }
-  .spec:last-child { border-right: none; padding-right: 0; }
-
-  .listing-meta {
-    font-size: 12px;
-    color: #607D8B;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  /* ---- Footer ---- */
-  footer {
-    text-align: center;
-    padding: 32px 16px;
-    font-size: 13px;
-    color: #B0BEC5;
-  }
-
-  footer span { color: #00E5FF; }
-  footer a { color: #FFD54F; text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-
-  /* ---- Responsive ---- */
-  @media (max-width: 480px) {
-    .container { padding: 16px 12px 36px; }
-    header { padding: 24px 12px 20px; }
-    .stats-bar {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .listing-grid {
-      grid-template-columns: 1fr;
-    }
-    .stat-value { font-size: 22px; }
-  }
-</style>
+        /* Stat card - no hover transform */
+        .stat-card-no-hover {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+    </style>
 </head>
-<body>
+<body class="font-sans min-h-screen flex flex-col">
 
-<div style="text-align:center;padding:8px;background:rgba(255,213,79,0.1);border-bottom:1px solid rgba(255,213,79,0.2);font-size:0.8rem;color:#FFD54F;">DEMO PREVIEW -- This shows what your listing portfolio will look like</div>
-
-<header>
-  <div class="brand">HomeEdge</div>
-  <h1>Listing Portfolio</h1>
-  <p class="subtitle">Showcase your track record</p>
-</header>
-
-<div class="container">
-
-  <!-- Stats Bar -->
-  <div class="stats-bar">
-    <div class="stat-card">
-      <div class="stat-value">8</div>
-      <div class="stat-label">Total Listings</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">2 <span class="stat-badge badge-cyan">Active</span></div>
-      <div class="stat-label">Active</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">5 <span class="stat-badge badge-green">Sold</span></div>
-      <div class="stat-label">Sold</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">24</div>
-      <div class="stat-label">Avg Days on Market</div>
-    </div>
-  </div>
-
-  <!-- Filter Tabs -->
-  <div class="filter-tabs">
-    <button class="tab-btn active" data-filter="all" onclick="filterListings('all', this)">All (8)</button>
-    <button class="tab-btn" data-filter="Active" onclick="filterListings('Active', this)">Active (2)</button>
-    <button class="tab-btn" data-filter="Pending" onclick="filterListings('Pending', this)">Pending (1)</button>
-    <button class="tab-btn" data-filter="Sold" onclick="filterListings('Sold', this)">Sold (5)</button>
-  </div>
-
-  <!-- Listing Grid -->
-  <div class="listing-grid" id="listingGrid"></div>
-
-</div>
-
-<footer>Powered by <span>HomeEdge</span> | <a href="https://gethomeedge.com">gethomeedge.com</a></footer>
-
-<script>
-  const houseSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>`;
-
-  const listings = [
-    { address: '742 Oakwood Dr', city: 'Springfield, IL', price: 385000, beds: 4, baths: 2.5, sqft: 2200, status: 'Sold', dom: 18, date: 'Jan 12, 2026' },
-    { address: '1201 Elm Street', city: 'Springfield, IL', price: 299000, beds: 3, baths: 2, sqft: 1650, status: 'Sold', dom: 22, date: 'Feb 3, 2026' },
-    { address: '556 Maple Ave', city: 'Rochester, IL', price: 425000, beds: 4, baths: 3, sqft: 2800, status: 'Active', dom: 8, date: 'Mar 20, 2026' },
-    { address: '89 Pine Court', city: 'Chatham, IL', price: 275000, beds: 3, baths: 1.5, sqft: 1400, status: 'Sold', dom: 31, date: 'Dec 8, 2025' },
-    { address: '2100 River Rd', city: 'Springfield, IL', price: 510000, beds: 5, baths: 3.5, sqft: 3200, status: 'Sold', dom: 14, date: 'Feb 18, 2026' },
-    { address: '334 Cedar Ln', city: 'Sherman, IL', price: 320000, beds: 3, baths: 2, sqft: 1800, status: 'Active', dom: 5, date: 'Mar 25, 2026' },
-    { address: '678 Birch Way', city: 'Rochester, IL', price: 345000, beds: 4, baths: 2, sqft: 2100, status: 'Pending', dom: 19, date: 'Mar 10, 2026' },
-    { address: '1450 Walnut Blvd', city: 'Springfield, IL', price: 265000, beds: 2, baths: 1, sqft: 1200, status: 'Sold', dom: 28, date: 'Jan 28, 2026' }
-  ];
-
-  const gradients = ['photo-gradient-1', 'photo-gradient-2', 'photo-gradient-3', 'photo-gradient-4'];
-
-  function formatPrice(n) {
-    return '$' + n.toLocaleString('en-US');
-  }
-
-  function formatBaths(b) {
-    return b % 1 === 0 ? b.toFixed(0) : b.toFixed(1);
-  }
-
-  function getStatusClass(status) {
-    if (status === 'Active') return 'status-active';
-    if (status === 'Pending') return 'status-pending';
-    return 'status-sold';
-  }
-
-  function renderListings(filter) {
-    const grid = document.getElementById('listingGrid');
-    grid.innerHTML = '';
-
-    const filtered = filter === 'all' ? listings : listings.filter(l => l.status === filter);
-
-    filtered.forEach((l, i) => {
-      const card = document.createElement('div');
-      card.className = 'listing-card';
-      card.innerHTML = `
-        <div class="listing-photo ${gradients[i % gradients.length]}">
-          ${houseSVG}
-          <div class="status-badge ${getStatusClass(l.status)}">${l.status}</div>
+    <!-- Fixed Glass Nav -->
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
         </div>
-        <div class="listing-body">
-          <div class="listing-address">${l.address}</div>
-          <div class="listing-city">${l.city}</div>
-          <div class="listing-price">${formatPrice(l.price)}</div>
-          <div class="listing-specs">
-            <span class="spec">${l.beds} bd</span>
-            <span class="spec">${formatBaths(l.baths)} ba</span>
-            <span class="spec">${l.sqft.toLocaleString()} sqft</span>
-          </div>
-          <div class="listing-meta">
-            <span>${l.dom} days on market</span>
-            <span>${l.date}</span>
-          </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-8 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-images text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Listing Portfolio
+            </h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">
+                Showcase your track record
+            </p>
         </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
+    </section>
 
-  function filterListings(filter, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderListings(filter);
-  }
+    <!-- Demo Banner -->
+    <div class="max-w-5xl mx-auto px-6 mb-6">
+        <div class="rounded-xl border border-gold-base/30 bg-gold-base/5 px-5 py-3 text-center text-gold-base text-sm font-semibold tracking-wide">
+            DEMO PREVIEW -- This shows what your listing portfolio will look like
+        </div>
+    </div>
 
-  // Initial render
-  renderListings('all');
-</script>
+    <!-- Main Content -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-6 pb-20">
+
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 reveal">
+            <div class="stat-card-no-hover rounded-2xl p-5 text-center">
+                <div class="text-3xl font-extrabold text-white">8</div>
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mt-1">Total Listings</div>
+            </div>
+            <div class="stat-card-no-hover rounded-2xl p-5 text-center">
+                <div class="text-3xl font-extrabold text-white">2 <span class="text-xs font-bold px-1.5 py-0.5 rounded-full bg-cyan-glow/15 text-cyan-glow ml-1 align-middle">Active</span></div>
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mt-1">Active</div>
+            </div>
+            <div class="stat-card-no-hover rounded-2xl p-5 text-center">
+                <div class="text-3xl font-extrabold text-white">5 <span class="text-xs font-bold px-1.5 py-0.5 rounded-full bg-green-400/15 text-green-400 ml-1 align-middle">Sold</span></div>
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mt-1">Sold</div>
+            </div>
+            <div class="stat-card-no-hover rounded-2xl p-5 text-center">
+                <div class="text-3xl font-extrabold text-white">24</div>
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mt-1">Avg Days on Market</div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8 reveal">
+            <button class="filter-tab active px-5 py-2 rounded-full text-sm font-semibold border border-white/10 text-white/50" data-filter="all" onclick="filterListings('all', this)">All (8)</button>
+            <button class="filter-tab px-5 py-2 rounded-full text-sm font-semibold border border-white/10 text-white/50" data-filter="Active" onclick="filterListings('Active', this)">Active (2)</button>
+            <button class="filter-tab px-5 py-2 rounded-full text-sm font-semibold border border-white/10 text-white/50" data-filter="Pending" onclick="filterListings('Pending', this)">Pending (1)</button>
+            <button class="filter-tab px-5 py-2 rounded-full text-sm font-semibold border border-white/10 text-white/50" data-filter="Sold" onclick="filterListings('Sold', this)">Sold (5)</button>
+        </div>
+
+        <!-- Listing Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 reveal" id="listingGrid"></div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
+
+    <script>
+    const listings = [
+        { address: '742 Oakwood Dr', city: 'Springfield, IL', price: 385000, beds: 4, baths: 2.5, sqft: 2200, status: 'Sold', dom: 18, date: 'Jan 12, 2026' },
+        { address: '1201 Elm Street', city: 'Springfield, IL', price: 299000, beds: 3, baths: 2, sqft: 1650, status: 'Sold', dom: 22, date: 'Feb 3, 2026' },
+        { address: '556 Maple Ave', city: 'Rochester, IL', price: 425000, beds: 4, baths: 3, sqft: 2800, status: 'Active', dom: 8, date: 'Mar 20, 2026' },
+        { address: '89 Pine Court', city: 'Chatham, IL', price: 275000, beds: 3, baths: 1.5, sqft: 1400, status: 'Sold', dom: 31, date: 'Dec 8, 2025' },
+        { address: '2100 River Rd', city: 'Springfield, IL', price: 510000, beds: 5, baths: 3.5, sqft: 3200, status: 'Sold', dom: 14, date: 'Feb 18, 2026' },
+        { address: '334 Cedar Ln', city: 'Sherman, IL', price: 320000, beds: 3, baths: 2, sqft: 1800, status: 'Active', dom: 5, date: 'Mar 25, 2026' },
+        { address: '678 Birch Way', city: 'Rochester, IL', price: 345000, beds: 4, baths: 2, sqft: 2100, status: 'Pending', dom: 19, date: 'Mar 10, 2026' },
+        { address: '1450 Walnut Blvd', city: 'Springfield, IL', price: 265000, beds: 2, baths: 1, sqft: 1200, status: 'Sold', dom: 28, date: 'Jan 28, 2026' }
+    ];
+
+    const gradients = ['photo-grad-1', 'photo-grad-2', 'photo-grad-3', 'photo-grad-4'];
+
+    function formatPrice(n) {
+        return '$' + n.toLocaleString('en-US');
+    }
+
+    function formatBaths(b) {
+        return b % 1 === 0 ? b.toFixed(0) : b.toFixed(1);
+    }
+
+    function getBadgeClass(status) {
+        if (status === 'Active') return 'badge-active';
+        if (status === 'Pending') return 'badge-pending';
+        return 'badge-sold';
+    }
+
+    function renderListings(filter) {
+        const grid = document.getElementById('listingGrid');
+        grid.innerHTML = '';
+
+        const filtered = filter === 'all' ? listings : listings.filter(l => l.status === filter);
+
+        filtered.forEach((l, i) => {
+            const card = document.createElement('div');
+            card.className = 'glass-card rounded-2xl overflow-hidden';
+            card.innerHTML = `
+                <div class="h-44 ${gradients[i % gradients.length]} relative flex items-center justify-center">
+                    <i class="ph ph-house text-5xl text-white/10"></i>
+                    <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${getBadgeClass(l.status)}">${l.status}</span>
+                </div>
+                <div class="p-5">
+                    <div class="font-bold text-white text-base mb-0.5">${l.address}</div>
+                    <div class="text-white/40 text-sm mb-3">${l.city}</div>
+                    <div class="text-xl font-extrabold text-cyan-glow mb-3">${formatPrice(l.price)}</div>
+                    <div class="flex items-center text-sm text-white/40 mb-3">
+                        <span class="pr-3 border-r border-white/10">${l.beds} bd</span>
+                        <span class="px-3 border-r border-white/10">${formatBaths(l.baths)} ba</span>
+                        <span class="pl-3">${l.sqft.toLocaleString()} sqft</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-white/25">
+                        <span>${l.dom} days on market</span>
+                        <span>${l.date}</span>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function filterListings(filter, btn) {
+        document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderListings(filter);
+    }
+
+    // Scroll reveal observer
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Initial render
+    renderListings('all');
+    </script>
 
 </body>
 </html>

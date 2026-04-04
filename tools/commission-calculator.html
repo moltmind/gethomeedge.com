@@ -1,575 +1,440 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Commission Value Calculator | HomeEdge</title>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commission Value Calculator | HomeEdge</title>
+    <meta name="description" content="Show sellers exactly why you are worth it. Calculate the true value an agent brings versus selling FSBO.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #0A1929;
-    color: #fff;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  .container {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 24px 16px 48px;
-  }
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  /* ---- Header ---- */
-  header { text-align: center; margin-bottom: 36px; }
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  .brand {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #00E5FF;
-    margin-bottom: 8px;
-  }
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
+                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
+                    },
+                    animation: {
+                        'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        'reveal-up': {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
 
-  h1 {
-    font-size: clamp(24px, 5vw, 36px);
-    font-weight: 800;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #00E5FF 0%, #FFD54F 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    <style>
+        body { background-color: #040711; color: #ffffff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
 
-  .subtitle {
-    font-size: 16px;
-    color: #8899AA;
-  }
+        .glass-panel {
+            background: rgba(10, 17, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-  /* ---- Cards ---- */
-  .card {
-    background: #132F4C;
-    border-radius: 12px;
-    padding: 28px 24px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(0,229,255,0.1);
-  }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-  .card-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #FFD54F;
-    margin-bottom: 20px;
-  }
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #00F2FE, #D4AF37);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; color: transparent;
+        }
 
-  /* ---- Form fields ---- */
-  .field {
-    margin-bottom: 18px;
-  }
+        .btn-gold { position: relative; z-index: 1; overflow: hidden; }
+        .btn-gold::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease; z-index: -1;
+        }
+        .btn-gold:hover::before { left: 100%; }
 
-  .field:last-child { margin-bottom: 0; }
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #8899AA;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+        .form-input {
+            background: rgba(4, 7, 17, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px; padding: 14px 16px; color: #ffffff;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; width: 100%;
+            outline: none; transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus {
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.08), 0 0 20px rgba(0, 242, 254, 0.05);
+        }
+        .form-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+        .form-input.has-prefix { padding-left: 32px; }
+        .form-input.has-suffix { padding-right: 40px; }
 
-  .input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
 
-  .input-wrap .prefix,
-  .input-wrap .suffix {
-    position: absolute;
-    font-size: 15px;
-    font-weight: 600;
-    color: #8899AA;
-    pointer-events: none;
-  }
-
-  .input-wrap .prefix { left: 14px; }
-  .input-wrap .suffix { right: 14px; }
-
-  input[type="text"],
-  input[type="number"] {
-    width: 100%;
-    background: #0A1929;
-    border: 1px solid rgba(0,229,255,0.25);
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 16px;
-    font-family: inherit;
-    color: #fff;
-    transition: border-color 0.2s;
-  }
-
-  input:focus {
-    outline: none;
-    border-color: #00E5FF;
-    box-shadow: 0 0 0 3px rgba(0,229,255,0.15);
-  }
-
-  .has-prefix input { padding-left: 30px; }
-  .has-suffix input { padding-right: 30px; }
-
-  .field-hint {
-    font-size: 12px;
-    color: #667788;
-    margin-top: 4px;
-  }
-
-  /* ---- Results ---- */
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .result-row:last-of-type { border-bottom: none; }
-
-  .result-label {
-    font-size: 14px;
-    color: #AAB8C8;
-  }
-
-  .result-value {
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .result-value.negative { color: #FF6B6B; }
-
-  .result-row.highlight {
-    background: rgba(0,229,255,0.06);
-    border-radius: 10px;
-    padding: 18px 16px;
-    margin: 12px -16px 0;
-    border-bottom: none;
-  }
-
-  .result-row.highlight .result-label {
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .result-row.highlight .result-value {
-    font-size: 24px;
-    color: #4ADE80;
-  }
-
-  .roi-row {
-    text-align: center;
-    margin-top: 16px;
-  }
-
-  .roi-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #00E5FF 0%, #FFD54F 100%);
-    color: #0A1929;
-    font-size: 20px;
-    font-weight: 800;
-    padding: 8px 28px;
-    border-radius: 50px;
-  }
-
-  .roi-label {
-    font-size: 12px;
-    color: #8899AA;
-    margin-top: 6px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* ---- Bar Chart ---- */
-  .chart-section { margin-top: 8px; }
-
-  .chart-bar-group {
-    margin-bottom: 14px;
-  }
-
-  .chart-label {
-    font-size: 13px;
-    color: #8899AA;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .chart-track {
-    height: 32px;
-    background: #0A1929;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .chart-fill {
-    height: 100%;
-    border-radius: 8px;
-    min-width: 2px;
-    transition: width 0.4s ease;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #0A1929;
-  }
-
-  .chart-fill.commission { background: linear-gradient(90deg, #FFD54F, #FFA726); }
-  .chart-fill.value { background: linear-gradient(90deg, #4ADE80, #00E5FF); }
-
-  /* ---- Copy Button ---- */
-  .copy-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%);
-    color: #0A1929;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    font-family: inherit;
-  }
-
-  .copy-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(0,229,255,0.3);
-  }
-
-  .copy-btn:active { transform: translateY(0); }
-
-  .copy-btn.copied {
-    background: #4ADE80;
-  }
-
-  .copy-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* ---- Footer ---- */
-  .data-note {
-    text-align: center;
-    font-size: 12px;
-    color: #556677;
-    margin-bottom: 24px;
-    padding: 0 12px;
-    line-height: 1.7;
-  }
-
-  footer {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    color: #445566;
-    letter-spacing: 1px;
-  }
-
-  footer span { color: #00E5FF; }
-
-  /* ---- Responsive ---- */
-  @media (max-width: 480px) {
-    .container { padding: 16px 12px 36px; }
-    .card { padding: 20px 16px; }
-    .result-row.highlight .result-value { font-size: 20px; }
-    .roi-badge { font-size: 18px; padding: 6px 22px; }
-  }
-</style>
+        .chart-fill {
+            height: 100%; border-radius: 8px; min-width: 2px;
+            transition: width 0.4s ease;
+        }
+    </style>
 </head>
-<body>
-<div class="container">
+<body class="font-sans min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header>
-    <div class="brand">HomeEdge</div>
-    <h1>Commission Value Calculator</h1>
-    <p class="subtitle">Show sellers exactly why you're worth it</p>
-  </header>
-
-  <!-- Inputs -->
-  <div class="card">
-    <div class="card-title">Sale Details</div>
-
-    <div class="field">
-      <label for="salePrice">Home Sale Price</label>
-      <div class="input-wrap has-prefix">
-        <span class="prefix">$</span>
-        <input type="text" id="salePrice" value="500,000" inputmode="numeric">
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="commRate">Your Commission Rate</label>
-      <div class="input-wrap has-suffix">
-        <input type="number" id="commRate" value="2.5" min="0" max="10" step="0.1">
-        <span class="suffix">%</span>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="domWithout">Est. Days on Market WITHOUT Agent</label>
-      <div class="input-wrap">
-        <input type="number" id="domWithout" value="90" min="0" step="1">
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="domWith">Est. Days on Market WITH Agent</label>
-      <div class="input-wrap">
-        <input type="number" id="domWith" value="30" min="0" step="1">
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="fsboDiscount">FSBO Avg Sale Price Discount</label>
-      <div class="input-wrap has-suffix">
-        <input type="number" id="fsboDiscount" value="5.5" min="0" max="50" step="0.1">
-        <span class="suffix">%</span>
-      </div>
-      <div class="field-hint">NAR data: FSBO homes sell for ~5.5% less on average</div>
-    </div>
-
-    <div class="field">
-      <label for="carryingCost">Monthly Carrying Costs</label>
-      <div class="input-wrap has-prefix">
-        <span class="prefix">$</span>
-        <input type="text" id="carryingCost" value="2,000" inputmode="numeric">
-      </div>
-      <div class="field-hint">Mortgage, insurance, taxes, utilities</div>
-    </div>
-  </div>
-
-  <!-- Results -->
-  <div class="card" id="resultsCard">
-    <div class="card-title">Your Value Breakdown</div>
-
-    <div class="result-row">
-      <span class="result-label">Your Commission</span>
-      <span class="result-value" id="rCommission">$12,500</span>
-    </div>
-
-    <div class="result-row">
-      <span class="result-label">FSBO Price Loss</span>
-      <span class="result-value negative" id="rFsboLoss">$27,500</span>
-    </div>
-
-    <div class="result-row">
-      <span class="result-label">Extra Carrying Costs Without Agent</span>
-      <span class="result-value negative" id="rCarrying">$4,000</span>
-    </div>
-
-    <div class="result-row">
-      <span class="result-label">Total Cost of NOT Using an Agent</span>
-      <span class="result-value negative" id="rTotalCost">$31,500</span>
-    </div>
-
-    <div class="result-row highlight">
-      <span class="result-label">NET BENEFIT of Using You</span>
-      <span class="result-value" id="rNetBenefit">$19,000</span>
-    </div>
-
-    <div class="roi-row">
-      <div class="roi-badge" id="rROI">152% ROI</div>
-      <div class="roi-label">Return on Investment</div>
-    </div>
-  </div>
-
-  <!-- Chart -->
-  <div class="card">
-    <div class="card-title">Commission vs. Value Delivered</div>
-    <div class="chart-section">
-      <div class="chart-bar-group">
-        <div class="chart-label">
-          <span>Your Commission</span>
-          <span id="chartCommLabel">$12,500</span>
+    <!-- Fixed Glass Nav -->
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
         </div>
-        <div class="chart-track">
-          <div class="chart-fill commission" id="chartCommBar"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-currency-dollar text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Commission Value Calculator
+            </h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">
+                Show sellers exactly why you are worth it
+            </p>
         </div>
-      </div>
-      <div class="chart-bar-group">
-        <div class="chart-label">
-          <span>Value Delivered (Savings to Seller)</span>
-          <span id="chartValLabel">$31,500</span>
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+
+        <!-- Input Card -->
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal" id="formCard">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-house text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Sale Details</h2>
+            </div>
+
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-white/50 mb-2">Home Sale Price</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 text-sm pointer-events-none">$</span>
+                        <input type="text" id="salePrice" class="form-input has-prefix" value="500,000" inputmode="numeric">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-white/50 mb-2">Your Commission Rate</label>
+                    <div class="relative">
+                        <input type="number" id="commRate" class="form-input has-suffix" value="2.5" min="0" max="10" step="0.1">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 text-sm pointer-events-none">%</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Est. Days on Market WITHOUT Agent</label>
+                        <input type="number" id="domWithout" class="form-input" value="90" min="0" step="1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Est. Days on Market WITH Agent</label>
+                        <input type="number" id="domWith" class="form-input" value="30" min="0" step="1">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-white/50 mb-2">FSBO Avg Sale Price Discount</label>
+                    <div class="relative">
+                        <input type="number" id="fsboDiscount" class="form-input has-suffix" value="5.5" min="0" max="50" step="0.1">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 text-sm pointer-events-none">%</span>
+                    </div>
+                    <p class="text-xs text-white/25 mt-2">NAR data: FSBO homes sell for about 5.5% less on average</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-white/50 mb-2">Monthly Carrying Costs</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 text-sm pointer-events-none">$</span>
+                        <input type="text" id="carryingCost" class="form-input has-prefix" value="2,000" inputmode="numeric">
+                    </div>
+                    <p class="text-xs text-white/25 mt-2">Mortgage, insurance, taxes, utilities</p>
+                </div>
+            </div>
         </div>
-        <div class="chart-track">
-          <div class="chart-fill value" id="chartValBar"></div>
+
+        <!-- Results Card -->
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal" id="resultsCard">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-chart-line-up text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Your Value Breakdown</h2>
+            </div>
+
+            <div class="space-y-0">
+                <div class="flex justify-between items-center py-3 border-b border-white/5">
+                    <span class="text-sm text-white/60">Your Commission</span>
+                    <span class="text-sm font-semibold text-white" id="rCommission">$12,500</span>
+                </div>
+                <div class="flex justify-between items-center py-3 border-b border-white/5">
+                    <span class="text-sm text-white/60">FSBO Price Loss</span>
+                    <span class="text-sm font-semibold text-red-400" id="rFsboLoss">$27,500</span>
+                </div>
+                <div class="flex justify-between items-center py-3 border-b border-white/5">
+                    <span class="text-sm text-white/60">Extra Carrying Costs Without Agent</span>
+                    <span class="text-sm font-semibold text-red-400" id="rCarrying">$4,000</span>
+                </div>
+                <div class="flex justify-between items-center py-3 border-b border-white/5">
+                    <span class="text-sm text-white/60">Total Cost of NOT Using an Agent</span>
+                    <span class="text-sm font-semibold text-red-400" id="rTotalCost">$31,500</span>
+                </div>
+                <div class="flex justify-between items-center py-4 px-4 mt-3 rounded-xl bg-cyan-glow/5 border border-cyan-glow/10">
+                    <span class="text-base font-bold text-white">NET BENEFIT of Using You</span>
+                    <span class="text-xl font-extrabold text-green-400" id="rNetBenefit">$19,000</span>
+                </div>
+            </div>
+
+            <!-- ROI Badge -->
+            <div class="text-center mt-6">
+                <div class="inline-block px-8 py-3 rounded-full text-xl font-extrabold text-navy-900 bg-gradient-to-r from-cyan-glow to-gold-base" id="rROI">152% ROI</div>
+                <p class="text-xs text-white/30 mt-2 uppercase tracking-widest">Return on Investment</p>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Copy Button -->
-  <button class="copy-btn" id="copyBtn" onclick="copySummary()">
-    <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="9" y="9" width="13" height="13" rx="2"/>
-      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-    </svg>
-    Copy Summary to Clipboard
-  </button>
+        <!-- Chart Card -->
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-chart-bar-horizontal text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Commission vs. Value Delivered</h2>
+            </div>
 
-  <!-- Data note -->
-  <p class="data-note">
-    Data based on NAR research showing FSBO homes sell for an average of 5.5% less than agent-assisted sales.
-  </p>
+            <div class="space-y-5">
+                <div>
+                    <div class="flex justify-between text-xs text-white/40 mb-2">
+                        <span>Your Commission</span>
+                        <span id="chartCommLabel">$12,500</span>
+                    </div>
+                    <div class="h-8 bg-navy-900 rounded-lg overflow-hidden">
+                        <div class="chart-fill bg-gradient-to-r from-gold-base to-gold-light" id="chartCommBar"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs text-white/40 mb-2">
+                        <span>Value Delivered (Savings to Seller)</span>
+                        <span id="chartValLabel">$31,500</span>
+                    </div>
+                    <div class="h-8 bg-navy-900 rounded-lg overflow-hidden">
+                        <div class="chart-fill bg-gradient-to-r from-green-400 to-cyan-glow" id="chartValBar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!-- Footer -->
-  <footer>Powered by <span>HomeEdge</span></footer>
+        <!-- Copy Button -->
+        <div class="reveal">
+            <button id="copyBtn" onclick="copySummary()"
+                class="btn-gold w-full py-4 px-8 rounded-xl font-bold text-base tracking-wide
+                       bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark
+                       text-navy-900 border border-gold-base/30
+                       hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5
+                       active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-3">
+                <i class="ph ph-copy text-xl" id="copyIcon"></i>
+                <span id="copyText">Copy Summary to Clipboard</span>
+            </button>
+        </div>
 
-</div>
+        <!-- Data note -->
+        <p class="text-center text-xs text-white/20 mt-6 px-4">
+            Data based on NAR research showing FSBO homes sell for an average of 5.5% less than agent-assisted sales.
+        </p>
+    </main>
 
-<script>
-  // --- Helpers ---
-  function parseNum(str) {
-    return parseFloat(String(str).replace(/[^0-9.\-]/g, '')) || 0;
-  }
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
 
-  function fmt(n) {
-    return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  }
+    <script>
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-  function fmtDollar(n) {
-    return '$' + fmt(Math.round(n));
-  }
+    // --- Helpers ---
+    function parseNum(str) {
+        return parseFloat(String(str).replace(/[^0-9.\-]/g, '')) || 0;
+    }
+    function fmt(n) {
+        return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+    function fmtDollar(n) {
+        return '$' + fmt(Math.round(n));
+    }
 
-  // --- Currency input formatting ---
-  function bindCurrencyInput(el) {
-    el.addEventListener('input', function () {
-      var raw = this.value.replace(/[^0-9]/g, '');
-      if (raw === '') { this.value = ''; return; }
-      this.value = parseInt(raw, 10).toLocaleString('en-US');
-    });
-  }
+    // --- Currency input formatting ---
+    function bindCurrencyInput(el) {
+        el.addEventListener('input', function () {
+            var raw = this.value.replace(/[^0-9]/g, '');
+            if (raw === '') { this.value = ''; return; }
+            this.value = parseInt(raw, 10).toLocaleString('en-US');
+        });
+    }
 
-  var salePriceEl = document.getElementById('salePrice');
-  var carryingCostEl = document.getElementById('carryingCost');
-  bindCurrencyInput(salePriceEl);
-  bindCurrencyInput(carryingCostEl);
+    var salePriceEl = document.getElementById('salePrice');
+    var carryingCostEl = document.getElementById('carryingCost');
+    bindCurrencyInput(salePriceEl);
+    bindCurrencyInput(carryingCostEl);
 
-  // --- Calculation ---
-  function calculate() {
-    var salePrice    = parseNum(salePriceEl.value);
-    var commRate     = parseFloat(document.getElementById('commRate').value) || 0;
-    var domWithout   = parseFloat(document.getElementById('domWithout').value) || 0;
-    var domWith      = parseFloat(document.getElementById('domWith').value) || 0;
-    var fsboDiscount = parseFloat(document.getElementById('fsboDiscount').value) || 0;
-    var carryingCost = parseNum(carryingCostEl.value);
+    // --- Calculation ---
+    function calculate() {
+        var salePrice    = parseNum(salePriceEl.value);
+        var commRate     = parseFloat(document.getElementById('commRate').value) || 0;
+        var domWithout   = parseFloat(document.getElementById('domWithout').value) || 0;
+        var domWith      = parseFloat(document.getElementById('domWith').value) || 0;
+        var fsboDiscount = parseFloat(document.getElementById('fsboDiscount').value) || 0;
+        var carryingCost = parseNum(carryingCostEl.value);
 
-    var commission     = salePrice * (commRate / 100);
-    var fsboLoss       = salePrice * (fsboDiscount / 100);
-    var extraDays      = Math.max(domWithout - domWith, 0);
-    var extraCarrying  = (extraDays * carryingCost) / 30;
-    var totalCost      = fsboLoss + extraCarrying;
-    var netBenefit     = totalCost - commission;
-    var roi            = commission > 0 ? (netBenefit / commission) * 100 : 0;
+        var commission     = salePrice * (commRate / 100);
+        var fsboLoss       = salePrice * (fsboDiscount / 100);
+        var extraDays      = Math.max(domWithout - domWith, 0);
+        var extraCarrying  = (extraDays * carryingCost) / 30;
+        var totalCost      = fsboLoss + extraCarrying;
+        var netBenefit     = totalCost - commission;
+        var roi            = commission > 0 ? (netBenefit / commission) * 100 : 0;
 
-    // Update result text
-    document.getElementById('rCommission').textContent  = fmtDollar(commission);
-    document.getElementById('rFsboLoss').textContent    = fmtDollar(fsboLoss);
-    document.getElementById('rCarrying').textContent     = fmtDollar(extraCarrying);
-    document.getElementById('rTotalCost').textContent    = fmtDollar(totalCost);
+        document.getElementById('rCommission').textContent  = fmtDollar(commission);
+        document.getElementById('rFsboLoss').textContent    = fmtDollar(fsboLoss);
+        document.getElementById('rCarrying').textContent     = fmtDollar(extraCarrying);
+        document.getElementById('rTotalCost').textContent    = fmtDollar(totalCost);
 
-    var benefitEl = document.getElementById('rNetBenefit');
-    benefitEl.textContent = fmtDollar(netBenefit);
-    benefitEl.style.color = netBenefit >= 0 ? '#4ADE80' : '#FF6B6B';
+        var benefitEl = document.getElementById('rNetBenefit');
+        benefitEl.textContent = fmtDollar(netBenefit);
+        benefitEl.className = 'text-xl font-extrabold ' + (netBenefit >= 0 ? 'text-green-400' : 'text-red-400');
 
-    var roiEl = document.getElementById('rROI');
-    roiEl.textContent = Math.round(roi) + '% ROI';
-    roiEl.style.background = roi >= 0
-      ? 'linear-gradient(135deg, #00E5FF 0%, #FFD54F 100%)'
-      : 'linear-gradient(135deg, #FF6B6B 0%, #FF4444 100%)';
+        var roiEl = document.getElementById('rROI');
+        roiEl.textContent = Math.round(roi) + '% ROI';
+        if (roi < 0) {
+            roiEl.className = 'inline-block px-8 py-3 rounded-full text-xl font-extrabold text-white bg-gradient-to-r from-red-500 to-red-400';
+        } else {
+            roiEl.className = 'inline-block px-8 py-3 rounded-full text-xl font-extrabold text-navy-900 bg-gradient-to-r from-cyan-glow to-gold-base';
+        }
 
-    // Update chart
-    var maxVal = Math.max(commission, totalCost, 1);
-    var commPct = (commission / maxVal) * 100;
-    var valPct  = (totalCost / maxVal) * 100;
+        // Update chart
+        var maxVal = Math.max(commission, totalCost, 1);
+        var commPct = (commission / maxVal) * 100;
+        var valPct  = (totalCost / maxVal) * 100;
 
-    document.getElementById('chartCommBar').style.width = commPct + '%';
-    document.getElementById('chartValBar').style.width  = valPct + '%';
-    document.getElementById('chartCommLabel').textContent = fmtDollar(commission);
-    document.getElementById('chartValLabel').textContent  = fmtDollar(totalCost);
+        document.getElementById('chartCommBar').style.width = commPct + '%';
+        document.getElementById('chartValBar').style.width  = valPct + '%';
+        document.getElementById('chartCommLabel').textContent = fmtDollar(commission);
+        document.getElementById('chartValLabel').textContent  = fmtDollar(totalCost);
 
-    // Store for copy
-    window._calcData = {
-      salePrice: salePrice,
-      commRate: commRate,
-      commission: commission,
-      fsboDiscount: fsboDiscount,
-      fsboLoss: fsboLoss,
-      extraCarrying: extraCarrying,
-      totalCost: totalCost,
-      netBenefit: netBenefit,
-      roi: roi
-    };
-  }
+        // Store for copy
+        window._calcData = {
+            salePrice: salePrice, commRate: commRate, commission: commission,
+            fsboDiscount: fsboDiscount, fsboLoss: fsboLoss,
+            extraCarrying: extraCarrying, totalCost: totalCost,
+            netBenefit: netBenefit, roi: roi
+        };
+    }
 
-  // --- Copy Summary ---
-  function copySummary() {
-    var d = window._calcData;
-    var text =
-      'Based on a home sale price of ' + fmtDollar(d.salePrice) + ':\n' +
-      '- My commission (' + d.commRate + '%): ' + fmtDollar(d.commission) + '\n' +
-      '- Estimated FSBO price loss (' + d.fsboDiscount + '%): ' + fmtDollar(d.fsboLoss) + '\n' +
-      '- Additional carrying costs without an agent: ' + fmtDollar(d.extraCarrying) + '\n' +
-      '- Total cost of NOT using a professional agent: ' + fmtDollar(d.totalCost) + '\n' +
-      '- Your net benefit of working with me: ' + fmtDollar(d.netBenefit) + '\n' +
-      '- Return on your investment: ' + Math.round(d.roi) + '%';
+    // --- Copy Summary ---
+    function copySummary() {
+        var d = window._calcData;
+        var text =
+            'Based on a home sale price of ' + fmtDollar(d.salePrice) + ':\n' +
+            '- My commission (' + d.commRate + '%): ' + fmtDollar(d.commission) + '\n' +
+            '- Estimated FSBO price loss (' + d.fsboDiscount + '%): ' + fmtDollar(d.fsboLoss) + '\n' +
+            '- Additional carrying costs without an agent: ' + fmtDollar(d.extraCarrying) + '\n' +
+            '- Total cost of NOT using a professional agent: ' + fmtDollar(d.totalCost) + '\n' +
+            '- Your net benefit of working with me: ' + fmtDollar(d.netBenefit) + '\n' +
+            '- Return on your investment: ' + Math.round(d.roi) + '%';
 
-    var btn = document.getElementById('copyBtn');
+        var btn = document.getElementById('copyBtn');
+        var icon = document.getElementById('copyIcon');
+        var textEl = document.getElementById('copyText');
 
-    navigator.clipboard.writeText(text).then(function () {
-      btn.classList.add('copied');
-      btn.innerHTML =
-        '<svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
-        '<polyline points="20 6 9 17 4 12"/>' +
-        '</svg> Copied!';
-      setTimeout(function () {
-        btn.classList.remove('copied');
-        btn.innerHTML =
-          '<svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
-          '<rect x="9" y="9" width="13" height="13" rx="2"/>' +
-          '<path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>' +
-          '</svg> Copy Summary to Clipboard';
-      }, 2000);
-    });
-  }
+        navigator.clipboard.writeText(text).then(function () {
+            btn.classList.remove('from-gold-dark', 'via-gold-base', 'to-gold-dark', 'text-navy-900', 'border-gold-base/30');
+            btn.classList.add('from-green-600', 'via-green-500', 'to-green-600', 'text-white', 'border-green-500/30');
+            icon.className = 'ph ph-check text-xl';
+            textEl.textContent = 'Copied!';
+            setTimeout(function () {
+                btn.classList.remove('from-green-600', 'via-green-500', 'to-green-600', 'text-white', 'border-green-500/30');
+                btn.classList.add('from-gold-dark', 'via-gold-base', 'to-gold-dark', 'text-navy-900', 'border-gold-base/30');
+                icon.className = 'ph ph-copy text-xl';
+                textEl.textContent = 'Copy Summary to Clipboard';
+            }, 2000);
+        });
+    }
 
-  // --- Bind real-time updates ---
-  var inputs = document.querySelectorAll('input');
-  for (var i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener('input', calculate);
-  }
+    // --- Bind real-time updates ---
+    var inputs = document.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', calculate);
+    }
 
-  // Initial calc
-  calculate();
-</script>
+    calculate();
+    </script>
 </body>
 </html>

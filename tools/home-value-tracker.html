@@ -1,1044 +1,777 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Value Tracker</title>
+    <title>Home Value Tracker | HomeEdge</title>
+    <meta name="description" content="Track your home's value over time with appreciation estimates, equity breakdown, and future projections. Built for real estate agents by HomeEdge.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            900: '#040711',
+                            800: '#0A1128',
+                            700: '#141E3E',
+                            600: '#1D2A54',
+                        },
+                        cyan: {
+                            glow: '#00F2FE',
+                            deep: '#4FACFE',
+                        },
+                        gold: {
+                            light: '#F8E9A1',
+                            base: '#D4AF37',
+                            dark: '#A6821A',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
+                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'bounce-dot': 'bounce-dot 1.4s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+                        },
+                        'reveal-up': {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'bounce-dot': {
+                            '0%, 60%, 100%': { transform: 'translateY(0)', opacity: '0.4' },
+                            '30%': { transform: 'translateY(-12px)', opacity: '1' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-dark: #0A1929;
-            --bg-card: #132F4C;
-            --accent-cyan: #00E5FF;
-            --accent-blue: #1565C0;
-            --accent-gold: #FFD54F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0BEC5;
-            --border-color: #1A3A52;
-            --success-green: #4CAF50;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
+            background-color: #040711;
+            color: #ffffff;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
+
+        .glass-panel {
+            background: rgba(10, 17, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
-            border-bottom: 2px solid var(--accent-cyan);
-            padding: 30px 0;
-            margin-bottom: 40px;
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #00F2FE, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
         }
 
-        .header-left h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            font-family: Georgia, serif;
-            letter-spacing: -0.5px;
+        .btn-gold {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+        .btn-gold:hover::before {
+            left: 100%;
         }
 
-        .header-left p {
-            color: var(--text-secondary);
-            font-size: 14px;
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .agent-info {
-            text-align: right;
-        }
-
-        .agent-name {
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--accent-cyan);
-        }
-
-        .agent-details {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .updated-badge {
-            display: inline-block;
-            background-color: var(--accent-gold);
-            color: var(--bg-dark);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-top: 8px;
-        }
-
-        /* Input Form */
-        .form-section {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-
-        .form-title {
-            font-family: Georgia, serif;
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="month"],
-        select {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]::placeholder,
-        input[type="number"]::placeholder {
-            color: var(--text-secondary);
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        input[type="month"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--accent-cyan);
-            background-color: rgba(0, 229, 255, 0.05);
-            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
-        }
-
-        select {
-            cursor: pointer;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 600;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-blue);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #0D47A1;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(21, 101, 192, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(0, 229, 255, 0.1);
-        }
-
-        /* Results Section */
-        .results-section {
-            display: none;
-        }
-
-        .results-section.active {
-            display: block;
-        }
-
-        /* Hero Value */
-        .hero-value {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
-            border: 2px solid var(--accent-cyan);
+        .form-input {
+            background: rgba(4, 7, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 40px;
-            text-align: center;
+            padding: 14px 16px;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .hero-label {
-            font-size: 14px;
-            color: var(--accent-cyan);
-            font-weight: 600;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .form-input:focus {
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.08), 0 0 20px rgba(0, 242, 254, 0.05);
         }
 
-        .hero-number {
-            font-size: 56px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            margin-bottom: 8px;
-            font-family: Georgia, serif;
+        .form-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+
+        /* Fix date/month input for dark theme */
+        input[type="month"].form-input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
         }
 
-        .hero-subtext {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
+        .dot-delay-1 { animation-delay: 0s; }
+        .dot-delay-2 { animation-delay: 0.2s; }
+        .dot-delay-3 { animation-delay: 0.4s; }
 
-        /* Key Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
 
-        .stat-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 229, 255, 0.1);
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            margin-bottom: 4px;
-            font-family: Georgia, serif;
-        }
-
-        .stat-change {
-            font-size: 12px;
-            color: var(--success-green);
-        }
-
-        /* Chart Section */
-        .chart-section {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-
-        .chart-title {
-            font-family: Georgia, serif;
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-        }
-
+        /* Chart canvas */
         #valueChart {
             width: 100%;
             height: 300px;
             display: block;
         }
 
-        /* Scenario Cards */
-        .scenarios-section {
-            margin-bottom: 40px;
-        }
-
-        .scenarios-title {
-            font-family: Georgia, serif;
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-        }
-
-        .scenarios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .scenario-card {
-            background-color: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .scenario-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-4px);
-        }
-
-        .scenario-card.selected {
-            border-color: var(--accent-cyan);
-            background-color: rgba(0, 229, 255, 0.08);
-        }
-
-        .scenario-rate {
-            display: inline-block;
-            background-color: var(--accent-blue);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .scenario-name {
-            font-family: Georgia, serif;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .scenario-timeframe {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-        }
-
-        .scenario-timepoint {
-            background-color: rgba(0, 229, 255, 0.08);
-            padding: 12px;
-            border-radius: 6px;
-        }
-
-        .timepoint-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .timepoint-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            margin-top: 4px;
-        }
-
-        /* Equity Breakdown */
-        .equity-section {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-
-        .equity-title {
-            font-family: Georgia, serif;
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-        }
-
-        .equity-bar-container {
-            margin-bottom: 20px;
-        }
-
+        /* Equity bar */
         .equity-bar {
             display: flex;
             height: 40px;
-            border-radius: 6px;
+            border-radius: 12px;
             overflow: hidden;
             margin-bottom: 12px;
         }
-
         .equity-owned {
-            background-color: var(--accent-cyan);
+            background: linear-gradient(90deg, #4FACFE, #00F2FE);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--bg-dark);
+            color: #040711;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 0.8rem;
         }
-
         .equity-owed {
-            background-color: var(--border-color);
+            background: rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 700;
-            font-size: 12px;
+            font-size: 0.8rem;
         }
 
-        .equity-legend {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        /* Scenario cards */
+        .scenario-card {
+            transition: all 0.3s ease;
+            cursor: default;
         }
-
-        .equity-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .equity-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-        }
-
-        .equity-color.owned {
-            background-color: var(--accent-cyan);
-        }
-
-        .equity-color.owed {
-            background-color: var(--border-color);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, var(--accent-blue), #0D47A1);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 40px;
-            border: 1px solid var(--accent-cyan);
-        }
-
-        .cta-title {
-            font-family: Georgia, serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .cta-text {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .cta-contact {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--accent-gold);
-            margin-bottom: 20px;
-        }
-
-        .btn-cta {
-            background-color: var(--accent-gold);
-            color: var(--bg-dark);
-            padding: 14px 32px;
-            font-weight: 700;
-        }
-
-        .btn-cta:hover {
-            background-color: #FBC02D;
-            transform: scale(1.05);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .agent-info {
-                text-align: center;
-            }
-
-            .hero-number {
-                font-size: 42px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .scenarios-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .scenario-timeframe {
-                grid-template-columns: 1fr;
-            }
-
-            .equity-legend {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Loading and Error States */
-        .error-message {
-            background-color: rgba(244, 67, 54, 0.1);
-            border: 1px solid #F44336;
-            color: #FF9800;
-            padding: 16px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .results-section.active {
-            animation: fadeIn 0.4s ease-out;
+        .scenario-card.selected {
+            border-color: rgba(0, 242, 254, 0.3) !important;
+            background: rgba(0, 242, 254, 0.05);
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="header-left">
-                    <h1>Home Value Tracker</h1>
-                    <p>Discover your home's potential</p>
-                </div>
-                <div class="agent-info">
-                    <div class="agent-name">Your Agent</div>
-                    <div class="agent-details">Your Brokerage</div>
-                    <div class="agent-details">(555) 000-0000</div>
-                    <div class="updated-badge">Updated Monthly</div>
-                </div>
-            </div>
+<body class="font-sans min-h-screen flex flex-col">
+
+    <!-- Fixed Glass Nav -->
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
         </div>
-    </header>
+    </nav>
 
-    <div class="container">
-        <!-- Input Form -->
-        <div class="form-section">
-            <h2 class="form-title">Your Home Details</h2>
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
 
-            <div id="errorMessage" class="error-message"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-house-line text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Home Value Tracker
+            </h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">
+                Discover your home's potential with appreciation estimates and projections
+            </p>
+        </div>
+    </section>
 
-            <form id="homeForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="address">Street Address</label>
-                        <input type="text" id="address" placeholder="123 Main Street" required>
+    <!-- Main Content -->
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+
+        <!-- Form Card -->
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal" id="formCard">
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-house text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Home Details</h2>
+            </div>
+
+            <form id="homeForm" onsubmit="return false;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            Street Address <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="text" id="address" class="form-input" placeholder="123 Main Street" required>
                     </div>
-                    <div class="form-group">
-                        <label for="zipcode">ZIP Code</label>
-                        <input type="text" id="zipcode" placeholder="12345" required>
+
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            ZIP Code <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="text" id="zipcode" class="form-input" placeholder="12345" required>
                     </div>
-                    <div class="form-group">
-                        <label for="purchasePrice">Purchase Price</label>
-                        <input type="number" id="purchasePrice" placeholder="350000" required>
+
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            Purchase Price <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="number" id="purchasePrice" class="form-input" placeholder="350000" required>
                     </div>
-                    <div class="form-group">
-                        <label for="purchaseDate">Purchase Date</label>
-                        <input type="month" id="purchaseDate" required>
+
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            Purchase Date <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="month" id="purchaseDate" class="form-input" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            Square Footage <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="number" id="squareFeet" class="form-input" placeholder="2500" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            Bedrooms <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="number" id="bedrooms" class="form-input" placeholder="3" min="1" required>
+                    </div>
+
+                    <div class="md:col-span-2 md:max-w-[calc(50%-10px)]">
+                        <label class="block text-sm font-medium text-white/50 mb-2">
+                            Bathrooms <span class="text-cyan-glow">*</span>
+                        </label>
+                        <input type="number" id="bathrooms" class="form-input" placeholder="2" min="1" step="0.5" required>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="squareFeet">Square Footage</label>
-                        <input type="number" id="squareFeet" placeholder="2500" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bedrooms">Bedrooms</label>
-                        <input type="number" id="bedrooms" min="1" placeholder="3" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bathrooms">Bathrooms</label>
-                        <input type="number" id="bathrooms" min="1" step="0.5" placeholder="2" required>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button type="submit" class="btn-primary">Calculate Home Value</button>
-                    <button type="reset" class="btn-secondary">Clear</button>
+                <!-- Generate Button -->
+                <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                    <button type="button" id="calcBtn" onclick="calculateHomeValue()"
+                        class="btn-gold flex-1 py-4 px-8 rounded-xl font-bold text-base tracking-wide
+                               bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark
+                               text-navy-900 border border-gold-base/30
+                               hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5
+                               active:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none
+                               transition-all duration-300 flex items-center justify-center gap-3">
+                        <i class="ph ph-sparkle text-xl"></i>
+                        Calculate Home Value
+                    </button>
+                    <button type="reset" onclick="clearForm()"
+                        class="py-4 px-8 rounded-xl font-bold text-sm tracking-wide
+                               bg-transparent text-white/50 border border-white/10
+                               hover:border-white/30 hover:text-white/70
+                               transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="ph ph-eraser text-base"></i>
+                        Clear
+                    </button>
                 </div>
             </form>
         </div>
 
+        <!-- Error State -->
+        <div class="hidden" id="errorMsg">
+            <div class="rounded-xl border border-red-500/30 bg-red-500/10 p-5 mb-6 flex items-start gap-4">
+                <i class="ph ph-warning-circle text-2xl text-red-400 mt-0.5 flex-shrink-0"></i>
+                <div>
+                    <p class="text-red-400 font-medium text-sm" id="errorText">Please fill in all fields.</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Results Section -->
-        <div id="resultsSection" class="results-section">
-            <!-- Hero Value -->
-            <div class="hero-value">
-                <div class="hero-label">Estimated Current Value</div>
-                <div class="hero-number" id="currentValue">$0</div>
-                <div class="hero-subtext" id="currentValueContext">Based on national average appreciation rates</div>
+        <div class="hidden" id="resultsSection">
+
+            <!-- Hero Value Card -->
+            <div class="glass-card rounded-2xl p-10 mb-8 text-center border-cyan-glow/20">
+                <p class="text-sm font-semibold text-cyan-glow uppercase tracking-widest mb-3">Estimated Current Value</p>
+                <p class="font-serif text-5xl md:text-6xl font-bold text-gold-base mb-3" id="currentValue">$0</p>
+                <p class="text-white/40 text-sm" id="currentValueContext">Based on national average appreciation rates</p>
             </div>
 
-            <!-- Key Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Appreciation</div>
-                    <div class="stat-value" id="statAppreciation">$0</div>
-                    <div class="stat-change" id="statAppreciationPct">+0%</div>
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="glass-card rounded-xl p-5 text-center">
+                    <p class="text-xs font-semibold text-white/40 uppercase tracking-wide mb-2">Total Appreciation</p>
+                    <p class="font-serif text-xl font-bold text-cyan-glow" id="statAppreciation">$0</p>
+                    <p class="text-xs text-green-400 mt-1" id="statAppreciationPct">+0%</p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Monthly Equity Gain</div>
-                    <div class="stat-value" id="statMonthlyEquity">$0</div>
-                    <div class="stat-change">At average appreciation</div>
+                <div class="glass-card rounded-xl p-5 text-center">
+                    <p class="text-xs font-semibold text-white/40 uppercase tracking-wide mb-2">Monthly Equity Gain</p>
+                    <p class="font-serif text-xl font-bold text-cyan-glow" id="statMonthlyEquity">$0</p>
+                    <p class="text-xs text-white/30 mt-1">At average appreciation</p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Equity Position</div>
-                    <div class="stat-value" id="statEquity">$0</div>
-                    <div class="stat-change" id="statEquityPct">0% of value</div>
+                <div class="glass-card rounded-xl p-5 text-center">
+                    <p class="text-xs font-semibold text-white/40 uppercase tracking-wide mb-2">Equity Position</p>
+                    <p class="font-serif text-xl font-bold text-cyan-glow" id="statEquity">$0</p>
+                    <p class="text-xs text-white/30 mt-1" id="statEquityPct">0% of value</p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Years Owned</div>
-                    <div class="stat-value" id="statYearsOwned">0</div>
-                    <div class="stat-change" id="statMonthsOwned">0 months</div>
+                <div class="glass-card rounded-xl p-5 text-center">
+                    <p class="text-xs font-semibold text-white/40 uppercase tracking-wide mb-2">Years Owned</p>
+                    <p class="font-serif text-xl font-bold text-cyan-glow" id="statYearsOwned">0</p>
+                    <p class="text-xs text-white/30 mt-1" id="statMonthsOwned">0 months</p>
                 </div>
             </div>
 
-            <!-- Value Growth Chart -->
-            <div class="chart-section">
-                <h3 class="chart-title">Value Growth Over Time</h3>
+            <!-- Chart Section -->
+            <div class="glass-card rounded-2xl p-8 mb-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                        <i class="ph ph-chart-line text-lg text-cyan-glow"></i>
+                    </div>
+                    <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Value Growth Over Time</h2>
+                </div>
                 <canvas id="valueChart"></canvas>
             </div>
 
             <!-- Scenario Cards -->
-            <div class="scenarios-section">
-                <h3 class="scenarios-title">Future Value Projections</h3>
-                <div class="scenarios-grid" id="scenariosGrid">
-                    <!-- Populated by JS -->
+            <div class="mb-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                        <i class="ph ph-lightning text-lg text-gold-base"></i>
+                    </div>
+                    <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Future Value Projections</h2>
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="scenariosGrid"></div>
             </div>
 
             <!-- Equity Breakdown -->
-            <div class="equity-section">
-                <h3 class="equity-title">Equity Breakdown</h3>
-                <div class="equity-bar-container">
-                    <div class="equity-bar" id="equityBar">
-                        <!-- Populated by JS -->
+            <div class="glass-card rounded-2xl p-8 mb-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                        <i class="ph ph-bank text-lg text-cyan-glow"></i>
                     </div>
+                    <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Equity Breakdown</h2>
                 </div>
-                <div class="equity-legend">
-                    <div class="equity-item">
-                        <div class="equity-color owned"></div>
+
+                <div class="equity-bar" id="equityBar"></div>
+
+                <div class="grid grid-cols-2 gap-6 mt-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-4 h-4 rounded bg-gradient-to-r from-cyan-deep to-cyan-glow flex-shrink-0"></div>
                         <div>
-                            <div class="stat-label">Your Equity</div>
-                            <div class="stat-value" id="equityValue">$0</div>
+                            <p class="text-xs text-white/40 uppercase font-semibold">Your Equity</p>
+                            <p class="font-serif text-lg font-bold text-cyan-glow" id="equityValue">$0</p>
                         </div>
                     </div>
-                    <div class="equity-item">
-                        <div class="equity-color owed"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-4 h-4 rounded bg-white/10 flex-shrink-0"></div>
                         <div>
-                            <div class="stat-label">Estimated Mortgage</div>
-                            <div class="stat-value" id="mortgageValue">$0</div>
+                            <p class="text-xs text-white/40 uppercase font-semibold">Estimated Mortgage</p>
+                            <p class="font-serif text-lg font-bold text-white/60" id="mortgageValue">$0</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- CTA -->
-            <div class="cta-section">
-                <h2 class="cta-title">Ready to explore your home's potential?</h2>
-                <p class="cta-text">Get a comprehensive market analysis from a local real estate expert</p>
-                <div class="cta-contact">Contact Your Agent at (555) 000-0000</div>
-                <button class="btn-cta">Schedule a Consultation</button>
+            <div class="glass-card rounded-2xl p-10 text-center border-gold-base/20">
+                <h2 class="font-serif text-2xl font-bold text-white mb-3">Ready to explore your home's potential?</h2>
+                <p class="text-white/50 mb-6">Get a comprehensive market analysis from a local real estate expert</p>
+                <button onclick="document.getElementById('formCard').scrollIntoView({behavior:'smooth',block:'start'})"
+                    class="btn-gold py-3 px-8 rounded-xl font-bold text-sm tracking-wide
+                           bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark
+                           text-navy-900 border border-gold-base/30
+                           hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5
+                           active:translate-y-0 transition-all duration-300 inline-flex items-center gap-2">
+                    <i class="ph ph-arrow-up text-base"></i>
+                    Run Another Calculation
+                </button>
             </div>
         </div>
-    </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
 
     <script>
-        // Constants
-        const APPRECIATION_RATES = {
-            conservative: 0.02,
-            average: 0.035,
-            hotMarket: 0.06
+    // Scroll reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Constants
+    const APPRECIATION_RATES = {
+        conservative: 0.02,
+        average: 0.035,
+        hotMarket: 0.06
+    };
+
+    const SCENARIOS = [
+        { name: 'Conservative Market', rate: APPRECIATION_RATES.conservative, label: '2% annually', key: 'conservative' },
+        { name: 'Average Market', rate: APPRECIATION_RATES.average, label: '3.5% annually', key: 'average' },
+        { name: 'Hot Market', rate: APPRECIATION_RATES.hotMarket, label: '6% annually', key: 'hotMarket' }
+    ];
+
+    let calculationData = null;
+
+    // Set default purchase date
+    const today = new Date();
+    const yearAgo = new Date(today.getFullYear() - 1, today.getMonth(), 1);
+    document.getElementById('purchaseDate').value = yearAgo.toISOString().substring(0, 7);
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(value);
+    }
+
+    function showError(message) {
+        document.getElementById('errorText').textContent = message;
+        document.getElementById('errorMsg').classList.remove('hidden');
+    }
+
+    function hideError() {
+        document.getElementById('errorMsg').classList.add('hidden');
+    }
+
+    function calculateHomeValue() {
+        hideError();
+
+        const address = document.getElementById('address').value.trim();
+        const zipcode = document.getElementById('zipcode').value.trim();
+        const purchasePrice = parseFloat(document.getElementById('purchasePrice').value);
+        const purchaseDate = document.getElementById('purchaseDate').value;
+        const squareFeet = parseFloat(document.getElementById('squareFeet').value);
+        const bedrooms = parseInt(document.getElementById('bedrooms').value);
+        const bathrooms = parseFloat(document.getElementById('bathrooms').value);
+
+        if (!address || !zipcode || !purchasePrice || !purchaseDate || !squareFeet || !bedrooms || !bathrooms) {
+            showError('Please fill in all fields');
+            return;
+        }
+
+        if (purchasePrice <= 0 || squareFeet <= 0 || bedrooms <= 0 || bathrooms <= 0) {
+            showError('All numeric values must be positive');
+            return;
+        }
+
+        const [year, month] = purchaseDate.split('-').map(Number);
+        const purchaseDateObj = new Date(year, month - 1, 1);
+
+        if (purchaseDateObj > today) {
+            showError('Purchase date cannot be in the future');
+            return;
+        }
+
+        const yearsOwned = (today - purchaseDateObj) / (1000 * 60 * 60 * 24 * 365.25);
+        const monthsOwned = Math.floor((today - purchaseDateObj) / (1000 * 60 * 60 * 24 * 30.44));
+
+        const currentValue = purchasePrice * Math.pow(1 + APPRECIATION_RATES.average, yearsOwned);
+        const totalAppreciation = currentValue - purchasePrice;
+        const appreciationPct = (totalAppreciation / purchasePrice) * 100;
+
+        const downPayment = purchasePrice * 0.2;
+        const initialMortgage = purchasePrice * 0.8;
+        const monthlyRate = 0.065 / 12;
+        const monthlyPayment = (initialMortgage * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -360));
+        const monthsPaid = monthsOwned;
+        const mortgageRemaining = Math.max(0, initialMortgage - (monthlyPayment * monthsPaid * 0.3));
+        const equity = Math.max(0, currentValue - mortgageRemaining);
+        const equityPct = (equity / currentValue) * 100;
+        const monthlyEquityGain = yearsOwned > 0 ? equity / monthsOwned : 0;
+
+        calculationData = {
+            address, zipcode, purchasePrice, purchaseDate, squareFeet,
+            bedrooms, bathrooms, purchaseDateObj, yearsOwned, monthsOwned,
+            currentValue, totalAppreciation, appreciationPct, downPayment,
+            initialMortgage, mortgageRemaining, equity, equityPct, monthlyEquityGain
         };
 
-        const SCENARIOS = [
-            { name: 'Conservative Market', rate: APPRECIATION_RATES.conservative, label: '2% annually', key: 'conservative' },
-            { name: 'Average Market', rate: APPRECIATION_RATES.average, label: '3.5% annually', key: 'average' },
-            { name: 'Hot Market', rate: APPRECIATION_RATES.hotMarket, label: '6% annually', key: 'hotMarket' }
-        ];
+        renderResults();
+    }
 
-        // State
-        let calculationData = null;
+    function renderResults() {
+        const data = calculationData;
 
-        // Form submission handler
-        document.getElementById('homeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculateHomeValue();
+        document.getElementById('currentValue').textContent = formatCurrency(data.currentValue);
+        document.getElementById('currentValueContext').textContent = `Based on ${data.yearsOwned.toFixed(1)} years of ownership at 3.5% average annual appreciation`;
+
+        document.getElementById('statAppreciation').textContent = formatCurrency(data.totalAppreciation);
+        document.getElementById('statAppreciationPct').textContent = `+${data.appreciationPct.toFixed(1)}%`;
+        document.getElementById('statMonthlyEquity').textContent = formatCurrency(data.monthlyEquityGain);
+        document.getElementById('statEquity').textContent = formatCurrency(data.equity);
+        document.getElementById('statEquityPct').textContent = `${data.equityPct.toFixed(1)}% of value`;
+        document.getElementById('statYearsOwned').textContent = Math.floor(data.yearsOwned);
+        document.getElementById('statMonthsOwned').textContent = `${data.monthsOwned} months`;
+
+        renderChart();
+        renderScenarios();
+        renderEquity();
+
+        document.getElementById('resultsSection').classList.remove('hidden');
+
+        setTimeout(() => {
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+
+    function renderChart() {
+        const canvas = document.getElementById('valueChart');
+        const ctx = canvas.getContext('2d');
+        const data = calculationData;
+
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 300;
+
+        const monthsToShow = (data.monthsOwned + 60);
+        const dataPoints = [];
+        for (let i = 0; i <= monthsToShow; i += 6) {
+            const yearsFromPurchase = i / 12;
+            const value = data.purchasePrice * Math.pow(1 + APPRECIATION_RATES.average, yearsFromPurchase);
+            dataPoints.push({ months: i, value });
+        }
+
+        const minValue = data.purchasePrice * 0.95;
+        const maxValue = dataPoints[dataPoints.length - 1].value * 1.05;
+        const valueRange = maxValue - minValue;
+
+        const padding = 50;
+        const chartWidth = canvas.width - (padding * 2);
+        const chartHeight = canvas.height - (padding * 2);
+
+        // Background
+        ctx.fillStyle = 'rgba(4, 7, 17, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = padding + (chartHeight / 5) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(canvas.width - padding, y);
+            ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding);
+        ctx.stroke();
+
+        // Gradient fill under line
+        const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
+        gradient.addColorStop(0, 'rgba(0, 242, 254, 0.15)');
+        gradient.addColorStop(1, 'rgba(0, 242, 254, 0)');
+
+        ctx.beginPath();
+        dataPoints.forEach((point, i) => {
+            const x = padding + (point.months / monthsToShow) * chartWidth;
+            const y = canvas.height - padding - ((point.value - minValue) / valueRange) * chartHeight;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        const lastX = padding + (dataPoints[dataPoints.length - 1].months / monthsToShow) * chartWidth;
+        ctx.lineTo(lastX, canvas.height - padding);
+        ctx.lineTo(padding, canvas.height - padding);
+        ctx.closePath();
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // Line
+        ctx.strokeStyle = '#00F2FE';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        dataPoints.forEach((point, i) => {
+            const x = padding + (point.months / monthsToShow) * chartWidth;
+            const y = canvas.height - padding - ((point.value - minValue) / valueRange) * chartHeight;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        // Points
+        ctx.fillStyle = '#D4AF37';
+        dataPoints.forEach((point) => {
+            const x = padding + (point.months / monthsToShow) * chartWidth;
+            const y = canvas.height - padding - ((point.value - minValue) / valueRange) * chartHeight;
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
         });
 
-        function calculateHomeValue() {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.classList.remove('show');
+        // Current value marker
+        const currentX = padding + (data.monthsOwned / monthsToShow) * chartWidth;
+        const currentY = canvas.height - padding - ((data.currentValue - minValue) / valueRange) * chartHeight;
+        ctx.fillStyle = '#4CAF50';
+        ctx.beginPath();
+        ctx.arc(currentX, currentY, 7, 0, Math.PI * 2);
+        ctx.fill();
 
-            // Get form values
-            const address = document.getElementById('address').value.trim();
-            const zipcode = document.getElementById('zipcode').value.trim();
-            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value);
-            const purchaseDate = document.getElementById('purchaseDate').value;
-            const squareFeet = parseFloat(document.getElementById('squareFeet').value);
-            const bedrooms = parseInt(document.getElementById('bedrooms').value);
-            const bathrooms = parseFloat(document.getElementById('bathrooms').value);
+        // Labels
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.font = '12px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Time', canvas.width / 2, canvas.height - 10);
+        ctx.textAlign = 'right';
+        ctx.fillText('Value', 40, canvas.height / 2);
+    }
 
-            // Validation
-            if (!address || !zipcode || !purchasePrice || !purchaseDate || !squareFeet || !bedrooms || !bathrooms) {
-                showError('Please fill in all fields');
-                return;
-            }
+    function renderScenarios() {
+        const data = calculationData;
+        const grid = document.getElementById('scenariosGrid');
+        grid.innerHTML = '';
 
-            if (purchasePrice <= 0 || squareFeet <= 0 || bedrooms <= 0 || bathrooms <= 0) {
-                showError('All numeric values must be positive');
-                return;
-            }
-
-            // Parse dates
-            const [year, month] = purchaseDate.split('-').map(Number);
-            const purchaseDateObj = new Date(year, month - 1, 1);
-            const today = new Date();
-
-            if (purchaseDateObj > today) {
-                showError('Purchase date cannot be in the future');
-                return;
-            }
-
-            // Calculate years owned
-            const yearsOwned = (today - purchaseDateObj) / (1000 * 60 * 60 * 24 * 365.25);
-            const monthsOwned = Math.floor((today - purchaseDateObj) / (1000 * 60 * 60 * 24 * 30.44));
-
-            // Calculate current value using average appreciation rate
-            const currentValue = purchasePrice * Math.pow(1 + APPRECIATION_RATES.average, yearsOwned);
-            const totalAppreciation = currentValue - purchasePrice;
-            const appreciationPct = (totalAppreciation / purchasePrice) * 100;
-
-            // Calculate equity (assume 80% mortgage, 20% down payment)
-            const downPayment = purchasePrice * 0.2;
-            const initialMortgage = purchasePrice * 0.8;
-            const monthlyRate = 0.065 / 12;
-            const monthlyPayment = (initialMortgage * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -360));
-            const monthsPaid = monthsOwned;
-            const mortgageRemaining = Math.max(0, initialMortgage - (monthlyPayment * monthsPaid * 0.3));
-            const equity = Math.max(0, currentValue - mortgageRemaining);
-            const equityPct = (equity / currentValue) * 100;
-
-            // Monthly equity gain
-            const monthlyEquityGain = yearsOwned > 0 ? equity / monthsOwned : 0;
-
-            // Store calculation data
-            calculationData = {
-                address,
-                zipcode,
-                purchasePrice,
-                purchaseDate,
-                squareFeet,
-                bedrooms,
-                bathrooms,
-                purchaseDateObj,
-                yearsOwned,
-                monthsOwned,
-                currentValue,
-                totalAppreciation,
-                appreciationPct,
-                downPayment,
-                initialMortgage,
-                mortgageRemaining,
-                equity,
-                equityPct,
-                monthlyEquityGain
+        SCENARIOS.forEach(scenario => {
+            const futureValues = {
+                year1: data.purchasePrice * Math.pow(1 + scenario.rate, data.yearsOwned + 1),
+                year3: data.purchasePrice * Math.pow(1 + scenario.rate, data.yearsOwned + 3),
+                year5: data.purchasePrice * Math.pow(1 + scenario.rate, data.yearsOwned + 5)
             };
 
-            // Render results
-            renderResults();
-        }
-
-        function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.textContent = message;
-            errorEl.classList.add('show');
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-
-        function renderResults() {
-            const data = calculationData;
-
-            // Update hero value
-            document.getElementById('currentValue').textContent = formatCurrency(data.currentValue);
-            document.getElementById('currentValueContext').textContent = `Based on ${data.yearsOwned.toFixed(1)} years of ownership at 3.5% average annual appreciation`;
-
-            // Update stats
-            document.getElementById('statAppreciation').textContent = formatCurrency(data.totalAppreciation);
-            document.getElementById('statAppreciationPct').textContent = `+${data.appreciationPct.toFixed(1)}%`;
-            document.getElementById('statMonthlyEquity').textContent = formatCurrency(data.monthlyEquityGain);
-            document.getElementById('statEquity').textContent = formatCurrency(data.equity);
-            document.getElementById('statEquityPct').textContent = `${data.equityPct.toFixed(1)}% of value`;
-            document.getElementById('statYearsOwned').textContent = Math.floor(data.yearsOwned);
-            document.getElementById('statMonthsOwned').textContent = `${data.monthsOwned} months`;
-
-            // Render chart
-            renderChart();
-
-            // Render scenarios
-            renderScenarios();
-
-            // Render equity breakdown
-            renderEquity();
-
-            // Show results
-            document.getElementById('resultsSection').classList.add('active');
-
-            // Scroll to results
-            setTimeout(() => {
-                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        function renderChart() {
-            const canvas = document.getElementById('valueChart');
-            const ctx = canvas.getContext('2d');
-            const data = calculationData;
-
-            // Set canvas size
-            canvas.width = canvas.offsetWidth;
-            canvas.height = 300;
-
-            // Generate data points from purchase to 5 years in future
-            const monthsToShow = (data.monthsOwned + 60);
-            const dataPoints = [];
-            for (let i = 0; i <= monthsToShow; i += 6) {
-                const yearsFromPurchase = i / 12;
-                const value = data.purchasePrice * Math.pow(1 + APPRECIATION_RATES.average, yearsFromPurchase);
-                dataPoints.push({ months: i, value });
-            }
-
-            const minValue = data.purchasePrice * 0.95;
-            const maxValue = dataPoints[dataPoints.length - 1].value * 1.05;
-            const valueRange = maxValue - minValue;
-
-            const padding = 50;
-            const chartWidth = canvas.width - (padding * 2);
-            const chartHeight = canvas.height - (padding * 2);
-
-            // Clear canvas
-            ctx.fillStyle = 'rgba(10, 25, 41, 0.5)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw grid
-            ctx.strokeStyle = 'rgba(26, 58, 82, 0.5)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + (chartHeight / 5) * i;
-                ctx.beginPath();
-                ctx.moveTo(padding, y);
-                ctx.lineTo(canvas.width - padding, y);
-                ctx.stroke();
-            }
-
-            // Draw axes
-            ctx.strokeStyle = 'rgba(181, 190, 197, 0.3)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(padding, padding);
-            ctx.lineTo(padding, canvas.height - padding);
-            ctx.lineTo(canvas.width - padding, canvas.height - padding);
-            ctx.stroke();
-
-            // Draw line chart
-            ctx.strokeStyle = '#00E5FF';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-
-            dataPoints.forEach((point, i) => {
-                const x = padding + (point.months / monthsToShow) * chartWidth;
-                const y = canvas.height - padding - ((point.value - minValue) / valueRange) * chartHeight;
-
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            });
-            ctx.stroke();
-
-            // Draw points on line
-            ctx.fillStyle = '#FFD54F';
-            dataPoints.forEach((point) => {
-                const x = padding + (point.months / monthsToShow) * chartWidth;
-                const y = canvas.height - padding - ((point.value - minValue) / valueRange) * chartHeight;
-                ctx.beginPath();
-                ctx.arc(x, y, 4, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
-            // Highlight current value
-            const currentX = padding + (data.monthsOwned / monthsToShow) * chartWidth;
-            const currentY = canvas.height - padding - ((data.currentValue - minValue) / valueRange) * chartHeight;
-            ctx.fillStyle = '#4CAF50';
-            ctx.beginPath();
-            ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Labels
-            ctx.fillStyle = 'rgba(176, 190, 197, 0.7)';
-            ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('Time', canvas.width / 2, canvas.height - 10);
-
-            ctx.textAlign = 'right';
-            ctx.fillText('Value', 30, canvas.height / 2);
-        }
-
-        function renderScenarios() {
-            const data = calculationData;
-            const grid = document.getElementById('scenariosGrid');
-            grid.innerHTML = '';
-
-            SCENARIOS.forEach(scenario => {
-                const futureValues = {
-                    year1: data.purchasePrice * Math.pow(1 + scenario.rate, data.yearsOwned + 1),
-                    year3: data.purchasePrice * Math.pow(1 + scenario.rate, data.yearsOwned + 3),
-                    year5: data.purchasePrice * Math.pow(1 + scenario.rate, data.yearsOwned + 5)
-                };
-
-                const card = document.createElement('div');
-                card.className = 'scenario-card';
-                if (scenario.key === 'average') card.classList.add('selected');
-
-                card.innerHTML = `
-                    <div class="scenario-rate">${scenario.label}</div>
-                    <div class="scenario-name">${scenario.name}</div>
-                    <div class="scenario-timeframe">
-                        <div class="scenario-timepoint">
-                            <div class="timepoint-label">1 Year</div>
-                            <div class="timepoint-value">${formatCurrency(futureValues.year1)}</div>
-                        </div>
-                        <div class="scenario-timepoint">
-                            <div class="timepoint-label">3 Years</div>
-                            <div class="timepoint-value">${formatCurrency(futureValues.year3)}</div>
-                        </div>
-                        <div class="scenario-timepoint">
-                            <div class="timepoint-label">5 Years</div>
-                            <div class="timepoint-value">${formatCurrency(futureValues.year5)}</div>
-                        </div>
+            const card = document.createElement('div');
+            card.className = 'glass-card scenario-card rounded-xl p-6 text-center' + (scenario.key === 'average' ? ' selected' : '');
+            card.innerHTML = `
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-glow/10 text-cyan-glow mb-3">${scenario.label}</span>
+                <h3 class="font-serif text-lg font-bold text-white mb-4">${scenario.name}</h3>
+                <div class="space-y-3">
+                    <div class="bg-navy-900/40 rounded-lg p-3">
+                        <p class="text-xs text-white/40">1 Year</p>
+                        <p class="font-serif text-lg font-bold text-gold-base">${formatCurrency(futureValues.year1)}</p>
                     </div>
-                `;
-
-                grid.appendChild(card);
-            });
-        }
-
-        function renderEquity() {
-            const data = calculationData;
-            const equityPct = Math.max(0, Math.min(100, data.equityPct));
-
-            const equityBar = document.getElementById('equityBar');
-            equityBar.innerHTML = `
-                <div class="equity-owned" style="width: ${equityPct}%">${equityPct.toFixed(0)}%</div>
-                <div class="equity-owed" style="width: ${100 - equityPct}%">${(100 - equityPct).toFixed(0)}%</div>
+                    <div class="bg-navy-900/40 rounded-lg p-3">
+                        <p class="text-xs text-white/40">3 Years</p>
+                        <p class="font-serif text-lg font-bold text-gold-base">${formatCurrency(futureValues.year3)}</p>
+                    </div>
+                    <div class="bg-navy-900/40 rounded-lg p-3">
+                        <p class="text-xs text-white/40">5 Years</p>
+                        <p class="font-serif text-lg font-bold text-gold-base">${formatCurrency(futureValues.year5)}</p>
+                    </div>
+                </div>
             `;
+            grid.appendChild(card);
+        });
+    }
 
-            document.getElementById('equityValue').textContent = formatCurrency(data.equity);
-            document.getElementById('mortgageValue').textContent = formatCurrency(data.mortgageRemaining);
+    function renderEquity() {
+        const data = calculationData;
+        const equityPct = Math.max(0, Math.min(100, data.equityPct));
+
+        const equityBar = document.getElementById('equityBar');
+        equityBar.innerHTML = `
+            <div class="equity-owned" style="width: ${equityPct}%">${equityPct.toFixed(0)}%</div>
+            <div class="equity-owed" style="width: ${100 - equityPct}%">${(100 - equityPct).toFixed(0)}%</div>
+        `;
+
+        document.getElementById('equityValue').textContent = formatCurrency(data.equity);
+        document.getElementById('mortgageValue').textContent = formatCurrency(data.mortgageRemaining);
+    }
+
+    function clearForm() {
+        document.getElementById('resultsSection').classList.add('hidden');
+        hideError();
+    }
+
+    // Enter key submits form
+    document.getElementById('homeForm').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            calculateHomeValue();
         }
-
-        // Initialize with default date values
-        const today = new Date();
-        const yearAgo = new Date(today.getFullYear() - 1, today.getMonth(), 1);
-        const defaultMonth = yearAgo.toISOString().substring(0, 7);
-        document.getElementById('purchaseDate').value = defaultMonth;
+    });
     </script>
-<div style="text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.8rem;color:#4A6178;margin-top:2rem;">Powered by <a href="https://gethomeedge.com" target="_blank" style="color:#FFD54F;text-decoration:none;font-weight:600;">HomeEdge</a></div>
+
 </body>
 </html>

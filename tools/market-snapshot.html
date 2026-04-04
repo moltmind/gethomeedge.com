@@ -1,806 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Market Snapshot Generator | HomeEdge</title>
+    <title>AI Market Snapshot | HomeEdge</title>
+    <meta name="description" content="Generate professional market reports in one click with AI. Built for real estate agents by HomeEdge.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']},colors:{navy:{900:'#040711',800:'#0A1128',700:'#141E3E',600:'#1D2A54'},cyan:{glow:'#00F2FE',deep:'#4FACFE'},gold:{light:'#F8E9A1',base:'#D4AF37',dark:'#A6821A'}},backgroundImage:{'gradient-radial':'radial-gradient(var(--tw-gradient-stops))','metallic-gold':'linear-gradient(135deg,#BF953F,#FCF6BA,#B38728,#FBF5B7,#AA771C)','cyan-glow':'linear-gradient(90deg,#4FACFE 0%,#00F2FE 100%)'},animation:{'bounce-dot':'bounce-dot 1.4s infinite'},keyframes:{'bounce-dot':{'0%,60%,100%':{transform:'translateY(0)',opacity:'0.4'},'30%':{transform:'translateY(-12px)',opacity:'1'}}}}}}</script>
     <style>
-        :root {
-            --bg-dark: #0A1929;
-            --bg-card: #132F4C;
-            --bg-input: #0E2240;
-            --accent-cyan: #00E5FF;
-            --accent-blue: #1565C0;
-            --accent-gold: #FFD54F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0BEC5;
-            --border: #1A3A5C;
-            --success: #66BB6A;
-            --error: #EF5350;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #050E1A 0%, var(--bg-card) 100%);
-            border-bottom: 2px solid var(--accent-cyan);
-            padding: 32px 24px;
-            text-align: center;
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .brand {
-            font-size: 0.85rem;
-            color: var(--accent-gold);
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), #80F0FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-        }
-
-        /* Main */
-        main {
-            flex: 1;
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 32px 20px 48px;
-        }
-
-        /* Form Card */
-        .form-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-            animation: fadeUp 0.5s ease-out 0.1s both;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-card h2 {
-            font-size: 1.15rem;
-            color: var(--accent-cyan);
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.3px;
-        }
-
-        .form-group label .required {
-            color: var(--accent-cyan);
-            margin-left: 2px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #4A6178;
-        }
-
-        .form-group select {
-            cursor: pointer;
-            -webkit-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23B0BEC5'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
-        }
-
-        .form-group select option {
-            background: var(--bg-card);
-            color: var(--text-primary);
-        }
-
-        /* Section Divider */
-        .section-divider {
-            grid-column: 1 / -1;
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 4px 0;
-        }
-
-        .section-label {
-            grid-column: 1 / -1;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--accent-gold);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        /* Submit Button */
-        .submit-row {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: center;
-            margin-top: 8px;
-        }
-
-        .btn-generate {
-            background: linear-gradient(135deg, var(--accent-cyan), #00B8D4);
-            color: #0A1929;
-            border: none;
-            border-radius: 12px;
-            padding: 16px 48px;
-            font-size: 1.05rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s;
-            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
-        }
-
-        .btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 28px rgba(0, 229, 255, 0.35);
-        }
-
-        .btn-generate:active {
-            transform: translateY(0);
-        }
-
-        .btn-generate:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Loading State */
-        .loading-container {
-            display: none;
-            text-align: center;
-            padding: 48px 24px;
-            animation: fadeUp 0.3s ease-out;
-        }
-
-        .loading-container.active {
-            display: block;
-        }
-
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .loading-dots span {
-            width: 12px;
-            height: 12px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite;
-        }
-
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-12px); opacity: 1; }
-        }
-
-        .loading-text {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .loading-subtext {
-            color: #4A6178;
-            font-size: 0.8rem;
-            margin-top: 6px;
-        }
-
-        /* Output Area */
-        .output-container {
-            display: none;
-            animation: fadeUp 0.5s ease-out;
-        }
-
-        .output-container.active {
-            display: block;
-        }
-
-        .output-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .output-header h2 {
-            font-size: 1.25rem;
-            color: var(--accent-cyan);
-        }
-
-        .output-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-action {
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            border-radius: 8px;
-            padding: 10px 20px;
-            color: var(--accent-cyan);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-action:hover {
-            background: rgba(0, 229, 255, 0.2);
-            border-color: var(--accent-cyan);
-        }
-
-        .btn-action.copied {
-            background: rgba(102, 187, 106, 0.15);
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        .btn-print {
-            background: rgba(255, 213, 79, 0.1);
-            border-color: rgba(255, 213, 79, 0.3);
-            color: var(--accent-gold);
-        }
-
-        .btn-print:hover {
-            background: rgba(255, 213, 79, 0.2);
-            border-color: var(--accent-gold);
-        }
-
-        .output-body {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            line-height: 1.8;
-        }
-
-        /* Markdown Rendered Content */
-        .output-body h1 {
-            font-size: 1.5rem;
-            color: var(--accent-cyan);
-            margin: 24px 0 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .output-body h1:first-child {
-            margin-top: 0;
-        }
-
-        .output-body h2 {
-            font-size: 1.25rem;
-            color: var(--accent-gold);
-            margin: 20px 0 10px;
-        }
-
-        .output-body h3 {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            margin: 16px 0 8px;
-        }
-
-        .output-body p {
-            margin: 8px 0;
-            color: var(--text-primary);
-        }
-
-        .output-body strong {
-            color: var(--accent-cyan);
-            font-weight: 700;
-        }
-
-        .output-body ul,
-        .output-body ol {
-            margin: 8px 0 8px 24px;
-        }
-
-        .output-body li {
-            margin: 4px 0;
-            color: var(--text-primary);
-        }
-
-        .output-body li strong {
-            color: var(--accent-gold);
-        }
-
-        .output-body hr {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 16px 0;
-        }
-
-        /* New Report Button */
-        .btn-new-report {
-            display: inline-block;
-            margin-top: 24px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 28px;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-new-report:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        /* Error State */
-        .error-message {
-            display: none;
-            background: rgba(239, 83, 80, 0.1);
-            border: 1px solid rgba(239, 83, 80, 0.3);
-            border-radius: 12px;
-            padding: 16px 20px;
-            color: var(--error);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            animation: fadeUp 0.3s ease-out;
-        }
-
-        .error-message.active {
-            display: block;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 24px 20px;
-            border-top: 1px solid var(--border);
-            font-size: 0.8rem;
-            color: #4A6178;
-        }
-
-        footer a {
-            color: var(--accent-gold);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                background: #fff;
-                color: #111;
-            }
-            header, footer, .form-card, .loading-container,
-            .error-message, .output-header, .btn-new-report {
-                display: none !important;
-            }
-            .output-container {
-                display: block !important;
-            }
-            .output-body {
-                background: #fff;
-                border: none;
-                padding: 0;
-                color: #111;
-            }
-            .output-body h1 { color: #111; border-bottom-color: #ccc; }
-            .output-body h2 { color: #333; }
-            .output-body h3 { color: #333; }
-            .output-body p, .output-body li { color: #111; }
-            .output-body strong { color: #111; }
-            .output-body li strong { color: #333; }
-            .output-body hr { border-top-color: #ccc; }
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            header { padding: 24px 16px; }
-            header h1 { font-size: 1.5rem; }
-            main { padding: 20px 16px 40px; }
-            .form-card { padding: 20px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .output-body { padding: 20px; }
-            .btn-generate { width: 100%; padding: 16px 24px; }
-            .output-actions { width: 100%; }
-            .btn-action { flex: 1; justify-content: center; }
-        }
+        body{background-color:#040711;color:#fff;overflow-x:hidden}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#040711}::-webkit-scrollbar-thumb{background:#141E3E;border-radius:4px}
+        .glass-panel{background:rgba(10,17,40,0.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.05)}
+        .glass-card{background:linear-gradient(180deg,rgba(20,30,62,0.6) 0%,rgba(10,17,40,0.4) 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px 0 rgba(0,0,0,0.3);transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+        .text-gradient-brand{background:linear-gradient(135deg,#00F2FE,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent}
+        .btn-gold{position:relative;z-index:1;overflow:hidden}.btn-gold::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s ease;z-index:-1}.btn-gold:hover::before{left:100%}
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}.reveal.visible{opacity:1;transform:translateY(0)}
+        .form-input{background:rgba(4,7,17,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:0.95rem;width:100%;outline:none;transition:border-color 0.3s,box-shadow 0.3s}
+        .form-input:focus{border-color:rgba(0,242,254,0.5);box-shadow:0 0 0 3px rgba(0,242,254,0.08),0 0 20px rgba(0,242,254,0.05)}.form-input::placeholder{color:rgba(255,255,255,0.25)}
+        select.form-input{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2300F2FE'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}select.form-input option{background:#0A1128;color:#fff}
+        .report-output h1{font-size:1.5rem;font-weight:700;color:#00F2FE;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);font-family:'Playfair Display',serif}.report-output h1:first-child{margin-top:0}
+        .report-output h2{font-size:1.25rem;font-weight:600;color:#D4AF37;margin:20px 0 10px}.report-output h3{font-size:1.1rem;font-weight:600;color:#fff;margin:16px 0 8px}
+        .report-output p{margin:8px 0;color:rgba(255,255,255,0.85);line-height:1.8}.report-output strong{color:#00F2FE;font-weight:700}
+        .report-output ul,.report-output ol{margin:8px 0 8px 24px}.report-output li{margin:4px 0;color:rgba(255,255,255,0.85);line-height:1.7}.report-output li strong{color:#D4AF37}
+        .report-output hr{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:16px 0}
+        .dot-delay-1{animation-delay:0s}.dot-delay-2{animation-delay:0.2s}.dot-delay-3{animation-delay:0.4s}
+        .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+        @media print{body{background:#fff;color:#111}.glass-panel,.glass-card{background:#fff;border:none;box-shadow:none;backdrop-filter:none}nav,footer,.reveal{display:none!important}#output{display:block!important}.report-output h1{color:#111;border-bottom-color:#ccc}.report-output h2{color:#333}.report-output p,.report-output li{color:#111}.report-output strong{color:#111}.report-output li strong{color:#333}}
     </style>
 </head>
-<body>
+<body class="font-sans min-h-screen flex flex-col">
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4"><div class="max-w-5xl mx-auto px-6 flex justify-between items-center"><a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;"><i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i><span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span></a><a href="/" style="text-decoration:none;"><span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span></a><a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;"><i class="ph ph-squares-four text-lg"></i><span class="hidden sm:inline">Dashboard</span></a></div></nav>
 
-<header>
-    <div class="brand">HomeEdge</div>
-    <h1>AI Market Snapshot Generator</h1>
-    <p>Professional market reports in one click</p>
-</header>
-
-<main>
-    <!-- Input Form -->
-    <div class="form-card" id="formCard">
-        <h2>Market Details</h2>
-        <form id="snapshotForm" class="form-grid" onsubmit="return false;">
-
-            <div class="form-group">
-                <label>City / Neighborhood <span class="required">*</span></label>
-                <input type="text" id="city" placeholder="e.g. Naperville, Downtown Austin" required>
-            </div>
-
-            <div class="form-group">
-                <label>State <span class="required">*</span></label>
-                <input type="text" id="state" placeholder="e.g. Illinois, TX" required>
-            </div>
-
-            <div class="form-group full-width">
-                <label>Property Type Focus</label>
-                <select id="propertyType">
-                    <option value="All">All Property Types</option>
-                    <option value="Residential">Residential</option>
-                    <option value="Condo">Condo / Townhome</option>
-                    <option value="Luxury">Luxury</option>
-                </select>
-            </div>
-
-            <hr class="section-divider">
-            <div class="section-label">Your Branding</div>
-
-            <div class="form-group">
-                <label>Agent Name</label>
-                <input type="text" id="agentName" placeholder="Your name">
-            </div>
-
-            <div class="form-group">
-                <label>Brokerage</label>
-                <input type="text" id="brokerage" placeholder="Your brokerage">
-            </div>
-
-            <div class="submit-row">
-                <button type="button" class="btn-generate" id="btnGenerate" onclick="generateSnapshot()">Generate Report</button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Loading -->
-    <div class="loading-container" id="loading">
-        <div class="loading-dots">
-            <span></span><span></span><span></span>
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div><div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6"><i class="ph ph-globe-hemisphere-west text-3xl text-cyan-glow"></i></div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">AI Market Snapshot</h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">Professional market reports in one click</p>
         </div>
-        <div class="loading-text">Generating your market snapshot...</div>
-        <div class="loading-subtext">Analyzing trends, pricing, and inventory data</div>
-    </div>
+    </section>
 
-    <!-- Error -->
-    <div class="error-message" id="errorMsg"></div>
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal" id="formCard">
+            <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center"><i class="ph ph-chart-line-up text-lg text-cyan-glow"></i></div><h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Market Details</h2></div>
+            <form id="snapshotForm" onsubmit="return false;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">City / Neighborhood <span class="text-cyan-glow">*</span></label><input type="text" id="city" class="form-input" placeholder="e.g. Naperville, Downtown Austin" required></div>
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">State <span class="text-cyan-glow">*</span></label><input type="text" id="state" class="form-input" placeholder="e.g. Illinois, TX" required></div>
+                    <div class="md:col-span-2 md:max-w-[calc(50%-10px)]"><label class="block text-sm font-medium text-white/50 mb-2">Property Type Focus</label><select id="propertyType" class="form-input"><option value="All">All Property Types</option><option value="Residential">Residential</option><option value="Condo">Condo / Townhome</option><option value="Luxury">Luxury</option></select></div>
+                </div>
+                <div class="border-t border-white/5 my-8"></div>
+                <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center"><i class="ph ph-user-circle text-lg text-gold-base"></i></div><h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Your Branding</h2></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">Agent Name</label><input type="text" id="agentName" class="form-input" placeholder="Your name"></div>
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">Brokerage</label><input type="text" id="brokerage" class="form-input" placeholder="Your brokerage"></div>
+                </div>
+                <div class="mt-10"><button type="button" id="btnGenerate" onclick="generateSnapshot()" class="btn-gold w-full py-4 px-8 rounded-xl font-bold text-base tracking-wide bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 flex items-center justify-center gap-3"><i class="ph ph-sparkle text-xl"></i> Generate Report</button></div>
+            </form>
+        </div>
 
-    <!-- Output -->
-    <div class="output-container" id="output">
-        <div class="output-header">
-            <h2>Your Market Snapshot</h2>
-            <div class="output-actions">
-                <button class="btn-action" id="btnCopy" onclick="copyReport()">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg>
-                    Copy
-                </button>
-                <button class="btn-action btn-print" onclick="printReport()">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="9" width="10" height="5" rx="1"/><path d="M4 9V2h8v7"/><path d="M1 6h14v6H1z"/></svg>
-                    Print
-                </button>
+        <div class="hidden" id="loading"><div class="glass-card rounded-2xl p-12 text-center"><div class="flex justify-center gap-3 mb-6"><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-1"></span><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-2"></span><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-3"></span></div><p class="text-white/70 text-base font-medium">Generating your market snapshot...</p><p class="text-white/30 text-sm mt-2">Analyzing trends, pricing, and inventory data</p></div></div>
+        <div class="hidden" id="errorMsg"><div class="rounded-xl border border-red-500/30 bg-red-500/10 p-5 mb-6 flex items-start gap-4"><i class="ph ph-warning-circle text-2xl text-red-400 mt-0.5 flex-shrink-0"></i><p class="text-red-400 font-medium text-sm" id="errorText">Something went wrong. Please try again.</p></div></div>
+
+        <div class="hidden" id="output">
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="flex items-center justify-between px-8 pt-8 pb-0 flex-wrap gap-4">
+                    <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center"><i class="ph ph-file-text text-lg text-cyan-glow"></i></div><h2 class="text-lg font-semibold text-white">Your Market Snapshot</h2></div>
+                    <div class="flex items-center gap-3">
+                        <button id="btnCopy" onclick="copyReport()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border border-cyan-glow/30 text-cyan-glow bg-cyan-glow/5 hover:bg-cyan-glow/15 hover:border-cyan-glow/50 transition-all duration-300"><i class="ph ph-copy text-base" id="copyIcon"></i><span id="copyText">Copy Report</span></button>
+                        <button onclick="window.print()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border border-gold-base/30 text-gold-base bg-gold-base/5 hover:bg-gold-base/15 hover:border-gold-base/50 transition-all duration-300"><i class="ph ph-printer text-base"></i><span class="hidden sm:inline">Print</span></button>
+                    </div>
+                </div>
+                <div class="px-8 py-8 report-output" id="outputBody"></div>
+                <div class="px-8 pb-8 flex items-center justify-center"><button onclick="resetForm()" class="btn-gold py-3 px-8 rounded-xl font-bold text-sm tracking-wide bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2"><i class="ph ph-plus text-base"></i> Generate Another</button></div>
             </div>
         </div>
-        <div class="output-body" id="outputBody"></div>
-        <div style="text-align:center;">
-            <button class="btn-new-report" onclick="resetForm()">Generate Another Report</button>
-        </div>
-    </div>
-</main>
+    </main>
+    <footer class="text-center py-8 border-t border-white/5"><p class="text-white/25 text-sm">Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a></p></footer>
 
-<footer>
-    Powered by <a href="https://gethomeedge.com" target="_blank">HomeEdge</a>
-</footer>
+    <script>
+    const WORKER_URL="https://homeedge-chat.moltmind.workers.dev/tool";let rawReportText="";
+    const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target);}});},{threshold:0.1});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
-<script>
-const WORKER_URL = "https://homeedge-chat.moltmind.workers.dev/tool";
+    function renderMarkdown(text){let html=text;html=html.replace(/^### (.+)$/gm,"<h3>$1</h3>");html=html.replace(/^## (.+)$/gm,"<h2>$1</h2>");html=html.replace(/^# (.+)$/gm,"<h1>$1</h1>");html=html.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");html=html.replace(/\*(.*?)\*/g,"<em>$1</em>");html=html.replace(/^---$/gm,"<hr>");html=html.replace(/^- (.+)$/gm,"<li>$1</li>");html=html.replace(/((?:<li>.*<\/li>\n?)+)/g,"<ul>$1</ul>");html=html.replace(/^\d+\.\s+(.+)$/gm,"<oli>$1</oli>");html=html.replace(/((?:<oli>.*<\/oli>\n?)+)/g,function(match){return "<ol>"+match.replace(/<\/?oli>/g,function(tag){return tag.replace("oli","li");})+"</ol>";});html=html.replace(/\n\n+/g,"</p><p>");html=html.replace(/\n/g,"<br>");html="<p>"+html+"</p>";html=html.replace(/<p>\s*<(h[123]|ul|ol|hr)/g,"<$1");html=html.replace(/<\/(h[123]|ul|ol)>\s*<\/p>/g,"</$1>");html=html.replace(/<p>\s*<hr>\s*<\/p>/g,"<hr>");html=html.replace(/<p>\s*<\/p>/g,"");html=html.replace(/<br>\s*<(h[123]|ul|ol|hr)/g,"<$1");html=html.replace(/<\/(h[123]|ul|ol)>\s*<br>/g,"</$1>");html=html.replace(/<p><br>/g,"<p>");return html;}
 
-function getFormData() {
-    return {
-        city: document.getElementById("city").value.trim(),
-        state: document.getElementById("state").value.trim(),
-        propertyType: document.getElementById("propertyType").value,
-        agentName: document.getElementById("agentName").value.trim(),
-        brokerage: document.getElementById("brokerage").value.trim()
-    };
-}
+    async function generateSnapshot(){const city=document.getElementById("city").value.trim();const state=document.getElementById("state").value.trim();if(!city){document.getElementById("city").focus();return;}if(!state){document.getElementById("state").focus();return;}
+    const propertyType=document.getElementById("propertyType").value;const agentName=document.getElementById("agentName").value.trim();const brokerage=document.getElementById("brokerage").value.trim();const market=city+", "+state;
+    let prompt="Generate a comprehensive market snapshot report for "+market+".";if(propertyType!=="All")prompt+=" Focus on the "+propertyType.toLowerCase()+" segment.";prompt+=" Include current median home prices, price trends, average days on market, inventory levels, buyer vs seller market analysis, and neighborhood highlights.";if(agentName){prompt+=" Prepared by "+agentName;if(brokerage)prompt+=" of "+brokerage;prompt+=".";}
+    const btn=document.getElementById("btnGenerate");const loading=document.getElementById("loading");const output=document.getElementById("output");const errorEl=document.getElementById("errorMsg");
+    btn.disabled=true;errorEl.classList.add("hidden");output.classList.add("hidden");loading.classList.remove("hidden");loading.scrollIntoView({behavior:"smooth",block:"center"});
+    try{const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}],toolType:"marketSnapshot",context:{market:market,agentName:agentName||"Agent",company:brokerage||""}})});if(!res.ok)throw new Error("Server responded with "+res.status);const result=await res.json();loading.classList.add("hidden");if(result.reply){rawReportText=result.reply;document.getElementById("outputBody").innerHTML=renderMarkdown(result.reply);output.classList.remove("hidden");output.scrollIntoView({behavior:"smooth",block:"start"});}else throw new Error("No response received");}catch(err){loading.classList.add("hidden");document.getElementById("errorText").textContent="Something went wrong. Please try again.";errorEl.classList.remove("hidden");errorEl.scrollIntoView({behavior:"smooth",block:"center"});}btn.disabled=false;}
 
-function buildPrompt(d) {
-    let market = d.city + ", " + d.state;
-    let prompt = "Generate a comprehensive market snapshot report for " + market + ".";
+    function copyReport(){const btn=document.getElementById("btnCopy");const icon=document.getElementById("copyIcon");const text=document.getElementById("copyText");navigator.clipboard.writeText(rawReportText).then(function(){btn.classList.remove("border-cyan-glow/30","text-cyan-glow","bg-cyan-glow/5");btn.classList.add("border-green-500/30","text-green-400","bg-green-500/10");icon.className="ph ph-check text-base";text.textContent="Copied!";setTimeout(function(){btn.classList.remove("border-green-500/30","text-green-400","bg-green-500/10");btn.classList.add("border-cyan-glow/30","text-cyan-glow","bg-cyan-glow/5");icon.className="ph ph-copy text-base";text.textContent="Copy Report";},2000);});}
 
-    if (d.propertyType !== "All") {
-        prompt += " Focus on the " + d.propertyType.toLowerCase() + " segment.";
-    }
-
-    prompt += " Include current median home prices, price trends, average days on market, inventory levels, buyer vs seller market analysis, and neighborhood highlights.";
-
-    if (d.agentName) {
-        prompt += " Prepared by " + d.agentName;
-        if (d.brokerage) prompt += " of " + d.brokerage;
-        prompt += ".";
-    }
-
-    return { prompt: prompt, market: market };
-}
-
-function renderMarkdown(text) {
-    var html = text;
-
-    // Headings: ###, ##, #
-    html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
-    html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
-    html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
-
-    // Bold
-    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-    // Italic
-    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-
-    // Horizontal rules
-    html = html.replace(/^---$/gm, "<hr>");
-
-    // Unordered lists
-    html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
-    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
-
-    // Ordered lists
-    html = html.replace(/^\d+\.\s+(.+)$/gm, "<oli>$1</oli>");
-    html = html.replace(/((?:<oli>.*<\/oli>\n?)+)/g, function(match) {
-        return "<ol>" + match.replace(/<\/?oli>/g, function(tag) {
-            return tag.replace("oli", "li");
-        }) + "</ol>";
-    });
-
-    // Paragraphs: double newlines
-    html = html.replace(/\n\n+/g, "</p><p>");
-
-    // Single newlines inside paragraphs
-    html = html.replace(/\n/g, "<br>");
-
-    // Wrap in paragraph tags
-    html = "<p>" + html + "</p>";
-
-    // Clean up empty paragraphs and bad nesting
-    html = html.replace(/<p>\s*<(h[123]|ul|ol|hr)/g, "<$1");
-    html = html.replace(/<\/(h[123]|ul|ol)>\s*<\/p>/g, "</$1>");
-    html = html.replace(/<p>\s*<hr>\s*<\/p>/g, "<hr>");
-    html = html.replace(/<p>\s*<\/p>/g, "");
-    html = html.replace(/<br>\s*<(h[123]|ul|ol|hr)/g, "<$1");
-    html = html.replace(/<\/(h[123]|ul|ol)>\s*<br>/g, "</$1>");
-    html = html.replace(/<p><br>/g, "<p>");
-
-    return html;
-}
-
-// Store raw text for clipboard
-var rawReportText = "";
-
-async function generateSnapshot() {
-    var data = getFormData();
-
-    // Validate required fields
-    if (!data.city) {
-        document.getElementById("city").focus();
-        return;
-    }
-    if (!data.state) {
-        document.getElementById("state").focus();
-        return;
-    }
-
-    var built = buildPrompt(data);
-    var btn = document.getElementById("btnGenerate");
-    var formCard = document.getElementById("formCard");
-    var loading = document.getElementById("loading");
-    var output = document.getElementById("output");
-    var errorMsg = document.getElementById("errorMsg");
-
-    // Reset states
-    btn.disabled = true;
-    errorMsg.classList.remove("active");
-    output.classList.remove("active");
-    loading.classList.add("active");
-
-    // Scroll to loading
-    loading.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    try {
-        var res = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                messages: [{ role: "user", content: built.prompt }],
-                toolType: "marketSnapshot",
-                context: {
-                    market: built.market,
-                    agentName: data.agentName || "Agent",
-                    company: data.brokerage || ""
-                }
-            })
-        });
-
-        if (!res.ok) {
-            throw new Error("Server responded with " + res.status);
-        }
-
-        var result = await res.json();
-        loading.classList.remove("active");
-
-        if (result.reply) {
-            rawReportText = result.reply;
-            document.getElementById("outputBody").innerHTML = renderMarkdown(result.reply);
-            output.classList.add("active");
-            output.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-            throw new Error("No response received");
-        }
-
-    } catch (err) {
-        loading.classList.remove("active");
-        errorMsg.textContent = "Something went wrong generating your report. Please try again.";
-        errorMsg.classList.add("active");
-        errorMsg.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    btn.disabled = false;
-}
-
-function copyReport() {
-    var btn = document.getElementById("btnCopy");
-
-    navigator.clipboard.writeText(rawReportText).then(function() {
-        btn.classList.add("copied");
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg> Copied!';
-
-        setTimeout(function() {
-            btn.classList.remove("copied");
-            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg> Copy';
-        }, 2000);
-    });
-}
-
-function printReport() {
-    window.print();
-}
-
-function resetForm() {
-    document.getElementById("output").classList.remove("active");
-    document.getElementById("errorMsg").classList.remove("active");
-    document.getElementById("formCard").scrollIntoView({ behavior: "smooth", block: "start" });
-    rawReportText = "";
-
-    // Reset copy button state
-    var btn = document.getElementById("btnCopy");
-    btn.classList.remove("copied");
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg> Copy';
-}
-
-// Enter key submits form
-document.getElementById("snapshotForm").addEventListener("keydown", function(e) {
-    if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
-        e.preventDefault();
-        generateSnapshot();
-    }
-});
-</script>
-
+    function resetForm(){document.getElementById("output").classList.add("hidden");document.getElementById("errorMsg").classList.add("hidden");document.getElementById("formCard").scrollIntoView({behavior:"smooth",block:"start"});rawReportText="";}
+    document.getElementById("snapshotForm").addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName!=="TEXTAREA"){e.preventDefault();generateSnapshot();}});
+    </script>
 </body>
 </html>

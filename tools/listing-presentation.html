@@ -1,909 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Listing Presentation Builder | HomeEdge</title>
+    <meta name="description" content="Build a persuasive listing presentation in seconds with AI. Win more listings at the kitchen table.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']},colors:{navy:{900:'#040711',800:'#0A1128',700:'#141E3E',600:'#1D2A54'},cyan:{glow:'#00F2FE',deep:'#4FACFE'},gold:{light:'#F8E9A1',base:'#D4AF37',dark:'#A6821A'}},backgroundImage:{'cyan-glow':'linear-gradient(90deg,#4FACFE 0%,#00F2FE 100%)'},animation:{'bounce-dot':'bounce-dot 1.4s infinite'},keyframes:{'bounce-dot':{'0%,60%,100%':{transform:'translateY(0)',opacity:'0.4'},'30%':{transform:'translateY(-12px)',opacity:'1'}}}}}}</script>
     <style>
-        :root {
-            --bg-dark: #0A1929;
-            --bg-card: #132F4C;
-            --bg-input: #0E2240;
-            --accent-cyan: #00E5FF;
-            --accent-blue: #1565C0;
-            --accent-gold: #FFD54F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0BEC5;
-            --border: #1A3A5C;
-            --success: #66BB6A;
-            --error: #EF5350;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #050E1A 0%, var(--bg-card) 100%);
-            border-bottom: 2px solid var(--accent-cyan);
-            padding: 32px 24px;
-            text-align: center;
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .brand {
-            font-size: 0.85rem;
-            color: var(--accent-gold);
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), #80F0FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-        }
-
-        /* Main */
-        main {
-            flex: 1;
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 32px 20px 48px;
-        }
-
-        /* Form Card */
-        .form-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-            animation: fadeUp 0.5s ease-out 0.1s both;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-card h2 {
-            font-size: 1.15rem;
-            color: var(--accent-cyan);
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.3px;
-        }
-
-        .form-group label .required {
-            color: var(--accent-cyan);
-            margin-left: 2px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #4A6178;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        /* Section Divider */
-        .section-divider {
-            grid-column: 1 / -1;
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 4px 0;
-        }
-
-        .section-label {
-            grid-column: 1 / -1;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--accent-gold);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        /* Submit Button */
-        .submit-row {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: center;
-            margin-top: 8px;
-        }
-
-        .btn-generate {
-            background: linear-gradient(135deg, var(--accent-cyan), #00B8D4);
-            color: #0A1929;
-            border: none;
-            border-radius: 12px;
-            padding: 16px 48px;
-            font-size: 1.05rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s;
-            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25);
-        }
-
-        .btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 28px rgba(0, 229, 255, 0.35);
-        }
-
-        .btn-generate:active {
-            transform: translateY(0);
-        }
-
-        .btn-generate:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Loading State */
-        .loading-container {
-            display: none;
-            text-align: center;
-            padding: 48px 24px;
-            animation: fadeUp 0.3s ease-out;
-        }
-
-        .loading-container.active {
-            display: block;
-        }
-
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .loading-dots span {
-            width: 12px;
-            height: 12px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite;
-        }
-
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-12px); opacity: 1; }
-        }
-
-        .loading-text {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .loading-subtext {
-            color: #4A6178;
-            font-size: 0.8rem;
-            margin-top: 6px;
-        }
-
-        /* Output Area */
-        .output-container {
-            display: none;
-            animation: fadeUp 0.5s ease-out;
-        }
-
-        .output-container.active {
-            display: block;
-        }
-
-        .output-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .output-header h2 {
-            font-size: 1.25rem;
-            color: var(--accent-cyan);
-        }
-
-        .btn-copy {
-            background: rgba(0, 229, 255, 0.1);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            border-radius: 8px;
-            padding: 10px 20px;
-            color: var(--accent-cyan);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-copy:hover {
-            background: rgba(0, 229, 255, 0.2);
-            border-color: var(--accent-cyan);
-        }
-
-        .btn-copy.copied {
-            background: rgba(102, 187, 106, 0.15);
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        /* Presentation Section */
-        .presentation-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(0, 229, 255, 0.03);
-        }
-
-        .section-header h3 {
-            font-size: 1rem;
-            color: var(--accent-gold);
-            font-weight: 700;
-        }
-
-        .btn-copy-section {
-            background: rgba(0, 229, 255, 0.08);
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            border-radius: 6px;
-            padding: 6px 14px;
-            color: var(--accent-cyan);
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        .btn-copy-section:hover {
-            background: rgba(0, 229, 255, 0.15);
-            border-color: var(--accent-cyan);
-        }
-
-        .btn-copy-section.copied {
-            background: rgba(102, 187, 106, 0.15);
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        .section-content {
-            padding: 24px;
-            line-height: 1.8;
-        }
-
-        /* Markdown Rendered Content */
-        .section-content h1 {
-            font-size: 1.5rem;
-            color: var(--accent-cyan);
-            margin: 24px 0 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-content h1:first-child {
-            margin-top: 0;
-        }
-
-        .section-content h2 {
-            font-size: 1.25rem;
-            color: var(--accent-gold);
-            margin: 20px 0 10px;
-        }
-
-        .section-content h2:first-child {
-            margin-top: 0;
-        }
-
-        .section-content h3 {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            margin: 16px 0 8px;
-        }
-
-        .section-content p {
-            margin: 8px 0;
-            color: var(--text-primary);
-        }
-
-        .section-content strong {
-            color: var(--accent-cyan);
-            font-weight: 700;
-        }
-
-        .section-content ul,
-        .section-content ol {
-            margin: 8px 0 8px 24px;
-        }
-
-        .section-content li {
-            margin: 4px 0;
-            color: var(--text-primary);
-        }
-
-        .section-content li strong {
-            color: var(--accent-gold);
-        }
-
-        .section-content hr {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 16px 0;
-        }
-
-        /* Visual Divider between sections */
-        .section-visual-divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 8px 0;
-        }
-
-        .section-visual-divider::before,
-        .section-visual-divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-            opacity: 0.3;
-        }
-
-        .section-visual-divider span {
-            color: var(--accent-cyan);
-            font-size: 0.7rem;
-            opacity: 0.4;
-        }
-
-        /* New Report Button */
-        .btn-new-report {
-            display: inline-block;
-            margin-top: 24px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 28px;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-new-report:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        /* Error State */
-        .error-message {
-            display: none;
-            background: rgba(239, 83, 80, 0.1);
-            border: 1px solid rgba(239, 83, 80, 0.3);
-            border-radius: 12px;
-            padding: 16px 20px;
-            color: var(--error);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            animation: fadeUp 0.3s ease-out;
-        }
-
-        .error-message.active {
-            display: block;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 24px 20px;
-            border-top: 1px solid var(--border);
-            font-size: 0.8rem;
-            color: #4A6178;
-        }
-
-        footer a {
-            color: var(--accent-gold);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            header { padding: 24px 16px; }
-            header h1 { font-size: 1.5rem; }
-            main { padding: 20px 16px 40px; }
-            .form-card { padding: 20px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .section-content { padding: 16px; }
-            .section-header { padding: 12px 16px; }
-            .btn-generate { width: 100%; padding: 16px 24px; }
-            .output-header { flex-direction: column; align-items: flex-start; }
-        }
+        body{background-color:#040711;color:#fff;overflow-x:hidden}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#040711}::-webkit-scrollbar-thumb{background:#141E3E;border-radius:4px}
+        .glass-panel{background:rgba(10,17,40,0.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.05)}
+        .glass-card{background:linear-gradient(180deg,rgba(20,30,62,0.6) 0%,rgba(10,17,40,0.4) 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px 0 rgba(0,0,0,0.3);transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+        .text-gradient-brand{background:linear-gradient(135deg,#00F2FE,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent}
+        .btn-gold{position:relative;z-index:1;overflow:hidden}.btn-gold::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s ease;z-index:-1}.btn-gold:hover::before{left:100%}
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}.reveal.visible{opacity:1;transform:translateY(0)}
+        .form-input{background:rgba(4,7,17,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:0.95rem;width:100%;outline:none;transition:border-color 0.3s,box-shadow 0.3s}
+        .form-input:focus{border-color:rgba(0,242,254,0.5);box-shadow:0 0 0 3px rgba(0,242,254,0.08),0 0 20px rgba(0,242,254,0.05)}.form-input::placeholder{color:rgba(255,255,255,0.25)}textarea.form-input{resize:vertical;min-height:80px}
+        .report-output h1{font-size:1.5rem;font-weight:700;color:#00F2FE;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);font-family:'Playfair Display',serif}.report-output h1:first-child{margin-top:0}
+        .report-output h2{font-size:1.25rem;font-weight:600;color:#D4AF37;margin:20px 0 10px}.report-output h3{font-size:1.1rem;font-weight:600;color:#fff;margin:16px 0 8px}
+        .report-output p{margin:8px 0;color:rgba(255,255,255,0.85);line-height:1.8}.report-output strong{color:#00F2FE;font-weight:700}
+        .report-output ul,.report-output ol{margin:8px 0 8px 24px}.report-output li{margin:4px 0;color:rgba(255,255,255,0.85);line-height:1.7}.report-output li strong{color:#D4AF37}.report-output hr{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:16px 0}
+        .section-card{border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;background:linear-gradient(180deg,rgba(20,30,62,0.4) 0%,rgba(10,17,40,0.3) 100%);margin-bottom:12px}
+        .dot-delay-1{animation-delay:0s}.dot-delay-2{animation-delay:0.2s}.dot-delay-3{animation-delay:0.4s}
+        .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
     </style>
 </head>
-<body>
+<body class="font-sans min-h-screen flex flex-col">
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4"><div class="max-w-5xl mx-auto px-6 flex justify-between items-center"><a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;"><i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i><span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span></a><a href="/" style="text-decoration:none;"><span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span></a><a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;"><i class="ph ph-squares-four text-lg"></i><span class="hidden sm:inline">Dashboard</span></a></div></nav>
 
-<header>
-    <div class="brand">HomeEdge</div>
-    <h1>AI Listing Presentation Builder</h1>
-    <p>Win more listings at the kitchen table</p>
-</header>
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div><div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal"><div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6"><i class="ph ph-presentation-chart text-3xl text-cyan-glow"></i></div><h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">AI Listing Presentation Builder</h1><p class="text-lg text-white/50 max-w-lg mx-auto">Win more listings at the kitchen table</p></div>
+    </section>
 
-<main>
-    <!-- Input Form -->
-    <div class="form-card" id="formCard">
-        <h2>Property Information</h2>
-        <form id="presentationForm" class="form-grid" onsubmit="return false;">
-
-            <div class="form-group full-width">
-                <label>Property Address</label>
-                <input type="text" id="address" placeholder="123 Main Street">
-            </div>
-
-            <div class="form-group full-width">
-                <label>City, State</label>
-                <input type="text" id="cityState" placeholder="Springfield, IL">
-            </div>
-
-            <hr class="section-divider">
-            <div class="section-label">Agent Details</div>
-
-            <div class="form-group">
-                <label>Agent Name <span class="required">*</span></label>
-                <input type="text" id="agentName" placeholder="Your name" required>
-            </div>
-
-            <div class="form-group">
-                <label>Brokerage <span class="required">*</span></label>
-                <input type="text" id="brokerage" placeholder="Your brokerage" required>
-            </div>
-
-            <div class="form-group">
-                <label>Years of Experience</label>
-                <input type="number" id="yearsExp" placeholder="10" min="0" max="60">
-            </div>
-
-            <div class="form-group full-width">
-                <label>Specialties <span style="color:#4A6178;font-weight:400;">- What sets you apart?</span></label>
-                <textarea id="specialties" placeholder="e.g. Luxury homes, first-time buyers, relocation specialist, investment properties, new construction..."></textarea>
-            </div>
-
-            <div class="form-group full-width">
-                <label>Marketing Highlights <span style="color:#4A6178;font-weight:400;">- What marketing do you offer?</span></label>
-                <textarea id="marketing" placeholder="e.g. Professional photography, drone video, 3D virtual tours, social media campaigns, open house events, print mailers..."></textarea>
-            </div>
-
-            <div class="submit-row">
-                <button type="button" class="btn-generate" id="btnGenerate" onclick="buildPresentation()">Build Presentation</button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Loading -->
-    <div class="loading-container" id="loading">
-        <div class="loading-dots">
-            <span></span><span></span><span></span>
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal" id="formCard">
+            <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center"><i class="ph ph-house text-lg text-cyan-glow"></i></div><h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Property Information</h2></div>
+            <form id="presentationForm" onsubmit="return false;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="md:col-span-2"><label class="block text-sm font-medium text-white/50 mb-2">Property Address</label><input type="text" id="address" class="form-input" placeholder="123 Main Street"></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-medium text-white/50 mb-2">City, State</label><input type="text" id="cityState" class="form-input" placeholder="Springfield, IL"></div>
+                </div>
+                <div class="border-t border-white/5 my-8"></div>
+                <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center"><i class="ph ph-user-circle text-lg text-gold-base"></i></div><h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Agent Details</h2></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">Agent Name <span class="text-cyan-glow">*</span></label><input type="text" id="agentName" class="form-input" placeholder="Your name" required></div>
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">Brokerage <span class="text-cyan-glow">*</span></label><input type="text" id="brokerage" class="form-input" placeholder="Your brokerage" required></div>
+                    <div><label class="block text-sm font-medium text-white/50 mb-2">Years of Experience</label><input type="number" id="yearsExp" class="form-input" placeholder="10" min="0" max="60"></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-medium text-white/50 mb-2">Specialties <span class="text-white/25 font-normal">- What sets you apart?</span></label><textarea id="specialties" class="form-input" placeholder="e.g. Luxury homes, first-time buyers, relocation specialist..."></textarea></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-medium text-white/50 mb-2">Marketing Highlights <span class="text-white/25 font-normal">- What marketing do you offer?</span></label><textarea id="marketing" class="form-input" placeholder="e.g. Professional photography, drone video, 3D virtual tours..."></textarea></div>
+                </div>
+                <div class="mt-10"><button type="button" id="btnGenerate" onclick="buildPresentation()" class="btn-gold w-full py-4 px-8 rounded-xl font-bold text-base tracking-wide bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 flex items-center justify-center gap-3"><i class="ph ph-sparkle text-xl"></i> Build Presentation</button></div>
+            </form>
         </div>
-        <div class="loading-text">Building your listing presentation...</div>
-        <div class="loading-subtext">Crafting persuasive talking points and marketing strategy</div>
-    </div>
 
-    <!-- Error -->
-    <div class="error-message" id="errorMsg"></div>
+        <div class="hidden" id="loading"><div class="glass-card rounded-2xl p-12 text-center"><div class="flex justify-center gap-3 mb-6"><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-1"></span><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-2"></span><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-3"></span></div><p class="text-white/70 text-base font-medium">Building your listing presentation...</p><p class="text-white/30 text-sm mt-2">Crafting persuasive talking points and marketing strategy</p></div></div>
+        <div class="hidden" id="errorMsg"><div class="rounded-xl border border-red-500/30 bg-red-500/10 p-5 mb-6 flex items-start gap-4"><i class="ph ph-warning-circle text-2xl text-red-400 mt-0.5 flex-shrink-0"></i><p class="text-red-400 font-medium text-sm" id="errorText">Something went wrong. Please try again.</p></div></div>
 
-    <!-- Output -->
-    <div class="output-container" id="output">
-        <div class="output-header">
-            <h2>Your Listing Presentation</h2>
-            <button class="btn-copy" id="btnCopyAll" onclick="copyAll()">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg>
-                Copy All
-            </button>
+        <div class="hidden" id="output">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+                <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center"><i class="ph ph-presentation-chart text-lg text-cyan-glow"></i></div><h2 class="text-lg font-semibold text-white">Your Listing Presentation</h2></div>
+                <button id="btnCopyAll" onclick="copyAll()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border border-cyan-glow/30 text-cyan-glow bg-cyan-glow/5 hover:bg-cyan-glow/15 hover:border-cyan-glow/50 transition-all duration-300"><i class="ph ph-copy text-base"></i> <span>Copy All</span></button>
+            </div>
+            <div id="sectionsContainer"></div>
+            <div class="mt-8 flex items-center justify-center"><button onclick="resetForm()" class="btn-gold py-3 px-8 rounded-xl font-bold text-sm tracking-wide bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2"><i class="ph ph-plus text-base"></i> Build Another</button></div>
         </div>
-        <div id="sectionsContainer"></div>
-        <div style="text-align:center;">
-            <button class="btn-new-report" onclick="resetForm()">Build Another Presentation</button>
-        </div>
-    </div>
-</main>
+    </main>
+    <footer class="text-center py-8 border-t border-white/5"><p class="text-white/25 text-sm">Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a></p></footer>
 
-<footer>
-    Powered by <a href="https://gethomeedge.com" target="_blank">HomeEdge</a> | <a href="https://gethomeedge.com" target="_blank">gethomeedge.com</a>
-</footer>
+    <script>
+    const WORKER_URL="https://homeedge-chat.moltmind.workers.dev/tool";let rawPresentationText="";let sectionTexts=[];
+    const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target);}});},{threshold:0.1});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
-<script>
-const WORKER_URL = "https://homeedge-chat.moltmind.workers.dev/tool";
-const COPY_ICON = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg>';
-const CHECK_ICON = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg>';
+    function renderMarkdown(text){let html=text;html=html.replace(/^### (.+)$/gm,"<h3>$1</h3>");html=html.replace(/^## (.+)$/gm,"<h2>$1</h2>");html=html.replace(/^# (.+)$/gm,"<h1>$1</h1>");html=html.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>");html=html.replace(/\*(.*?)\*/g,"<em>$1</em>");html=html.replace(/^---$/gm,"<hr>");html=html.replace(/^- (.+)$/gm,"<li>$1</li>");html=html.replace(/((?:<li>.*<\/li>\n?)+)/g,"<ul>$1</ul>");html=html.replace(/^\d+\.\s+(.+)$/gm,"<oli>$1</oli>");html=html.replace(/((?:<oli>.*<\/oli>\n?)+)/g,function(match){return "<ol>"+match.replace(/<\/?oli>/g,function(tag){return tag.replace("oli","li");})+"</ol>";});html=html.replace(/\n\n+/g,"</p><p>");html=html.replace(/\n/g,"<br>");html="<p>"+html+"</p>";html=html.replace(/<p>\s*<(h[123]|ul|ol|hr)/g,"<$1");html=html.replace(/<\/(h[123]|ul|ol)>\s*<\/p>/g,"</$1>");html=html.replace(/<p>\s*<hr>\s*<\/p>/g,"<hr>");html=html.replace(/<p>\s*<\/p>/g,"");html=html.replace(/<br>\s*<(h[123]|ul|ol|hr)/g,"<$1");html=html.replace(/<\/(h[123]|ul|ol)>\s*<br>/g,"</$1>");html=html.replace(/<p><br>/g,"<p>");return html;}
 
-// Store raw text for clipboard
-let rawPresentationText = "";
-let sectionTexts = [];
+    function buildPrompt(d){let prompt=`Create a complete, persuasive listing presentation for a real estate agent to use at a seller consultation.`;if(d.address||d.cityState){prompt+=` The property is at`;if(d.address)prompt+=` ${d.address}`;if(d.address&&d.cityState)prompt+=`,`;if(d.cityState)prompt+=` ${d.cityState}`;prompt+=`.`;}prompt+=` The agent is ${d.agentName} with ${d.brokerage}.`;if(d.yearsExp)prompt+=` They have ${d.yearsExp} years of experience.`;if(d.specialties)prompt+=` Their specialties and differentiators: ${d.specialties}.`;if(d.marketing)prompt+=` Their marketing services include: ${d.marketing}.`;prompt+=` Structure the presentation with these clearly separated sections using ## headings: 1) Opening/Introduction, 2) About the Agent, 3) Market Analysis, 4) Marketing Strategy, 5) Pricing Strategy, 6) Timeline and Process, 7) Why Choose ${d.agentName}. Make each section persuasive and specific.`;return prompt;}
 
-function getFormData() {
-    return {
-        address: document.getElementById("address").value.trim(),
-        cityState: document.getElementById("cityState").value.trim(),
-        agentName: document.getElementById("agentName").value.trim(),
-        brokerage: document.getElementById("brokerage").value.trim(),
-        yearsExp: document.getElementById("yearsExp").value,
-        specialties: document.getElementById("specialties").value.trim(),
-        marketing: document.getElementById("marketing").value.trim()
-    };
-}
+    function splitIntoSections(text){const parts=text.split(/(?=^## )/gm).filter(s=>s.trim());if(parts.length<=1)return[{title:"Listing Presentation",content:text}];return parts.map(part=>{const lines=part.trim().split("\n");let title=lines[0].replace(/^#+\s*/,"").trim();title=title.replace(/^\d+[.)]\s*/,"");return{title,content:part.trim()};});}
 
-function buildPrompt(d) {
-    let prompt = `Create a complete, persuasive listing presentation for a real estate agent to use at a seller consultation.`;
+    function renderSections(sections){const container=document.getElementById("sectionsContainer");container.innerHTML="";sectionTexts=[];sections.forEach((section,index)=>{sectionTexts.push(section.content);const el=document.createElement("div");el.className="section-card";el.innerHTML=`<div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.02]"><h3 class="text-sm font-bold text-gold-base uppercase tracking-wide">${section.title}</h3><button class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border border-white/10 text-white/40 hover:text-cyan-glow hover:border-cyan-glow/30 transition-all" onclick="copySection(${index},this)"><i class="ph ph-copy"></i> Copy</button></div><div class="px-6 py-5 report-output">${renderMarkdown(section.content)}</div>`;container.appendChild(el);});}
 
-    if (d.address || d.cityState) {
-        prompt += ` The property is at`;
-        if (d.address) prompt += ` ${d.address}`;
-        if (d.address && d.cityState) prompt += `,`;
-        if (d.cityState) prompt += ` ${d.cityState}`;
-        prompt += `.`;
-    }
+    async function buildPresentation(){const data={address:document.getElementById("address").value.trim(),cityState:document.getElementById("cityState").value.trim(),agentName:document.getElementById("agentName").value.trim(),brokerage:document.getElementById("brokerage").value.trim(),yearsExp:document.getElementById("yearsExp").value,specialties:document.getElementById("specialties").value.trim(),marketing:document.getElementById("marketing").value.trim()};
+    if(!data.agentName){document.getElementById("agentName").focus();return;}if(!data.brokerage){document.getElementById("brokerage").focus();return;}
+    const prompt=buildPrompt(data);const btn=document.getElementById("btnGenerate");const loading=document.getElementById("loading");const output=document.getElementById("output");const errorEl=document.getElementById("errorMsg");
+    btn.disabled=true;errorEl.classList.add("hidden");output.classList.add("hidden");loading.classList.remove("hidden");loading.scrollIntoView({behavior:"smooth",block:"center"});
+    try{const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:prompt}],toolType:"presentation",context:{agentName:data.agentName||"Agent",company:data.brokerage||"",market:data.cityState||""}})});if(!res.ok)throw new Error("Server responded with "+res.status);const result=await res.json();loading.classList.add("hidden");if(result.reply){rawPresentationText=result.reply;renderSections(splitIntoSections(result.reply));output.classList.remove("hidden");output.scrollIntoView({behavior:"smooth",block:"start"});}else throw new Error("No response received");}catch(err){loading.classList.add("hidden");document.getElementById("errorText").textContent="Something went wrong. Please try again.";errorEl.classList.remove("hidden");errorEl.scrollIntoView({behavior:"smooth",block:"center"});}btn.disabled=false;}
 
-    prompt += ` The agent is ${d.agentName} with ${d.brokerage}.`;
+    function copyAll(){const btn=document.getElementById("btnCopyAll");navigator.clipboard.writeText(rawPresentationText).then(()=>{btn.querySelector('span').textContent='Copied!';btn.classList.remove("border-cyan-glow/30","text-cyan-glow","bg-cyan-glow/5");btn.classList.add("border-green-500/30","text-green-400","bg-green-500/10");setTimeout(()=>{btn.querySelector('span').textContent='Copy All';btn.classList.remove("border-green-500/30","text-green-400","bg-green-500/10");btn.classList.add("border-cyan-glow/30","text-cyan-glow","bg-cyan-glow/5");},2000);});}
 
-    if (d.yearsExp) {
-        prompt += ` They have ${d.yearsExp} years of experience.`;
-    }
+    function copySection(index,btn){const text=sectionTexts[index];if(!text)return;navigator.clipboard.writeText(text).then(()=>{btn.innerHTML='<i class="ph ph-check"></i> Copied!';btn.classList.add('text-green-400','border-green-500/30');setTimeout(()=>{btn.innerHTML='<i class="ph ph-copy"></i> Copy';btn.classList.remove('text-green-400','border-green-500/30');},2000);});}
 
-    if (d.specialties) {
-        prompt += ` Their specialties and differentiators: ${d.specialties}.`;
-    }
-
-    if (d.marketing) {
-        prompt += ` Their marketing services include: ${d.marketing}.`;
-    }
-
-    prompt += ` Structure the presentation with these clearly separated sections using ## headings: 1) Opening/Introduction - warm welcome and agenda, 2) About the Agent - credentials, track record, and why choose them, 3) Market Analysis - current market conditions and how they benefit the seller, 4) Marketing Strategy - comprehensive plan to sell the home, 5) Pricing Strategy - approach to pricing for maximum value, 6) Timeline and Process - what to expect from listing to closing, 7) Why Choose ${d.agentName} - compelling close and call to action. Make each section persuasive and specific. Use the agent's actual details throughout.`;
-
-    return prompt;
-}
-
-function renderMarkdown(text) {
-    let html = text;
-
-    // Headings: ###, ##, #
-    html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
-    html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
-    html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
-
-    // Bold
-    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-    // Italic
-    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-
-    // Horizontal rules
-    html = html.replace(/^---$/gm, "<hr>");
-
-    // Unordered lists
-    html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
-    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>");
-
-    // Ordered lists
-    html = html.replace(/^\d+\.\s+(.+)$/gm, "<oli>$1</oli>");
-    html = html.replace(/((?:<oli>.*<\/oli>\n?)+)/g, function(match) {
-        return "<ol>" + match.replace(/<\/?oli>/g, function(tag) {
-            return tag.replace("oli", "li");
-        }) + "</ol>";
-    });
-
-    // Paragraphs: double newlines
-    html = html.replace(/\n\n+/g, "</p><p>");
-
-    // Single newlines inside paragraphs
-    html = html.replace(/\n/g, "<br>");
-
-    // Wrap in paragraph tags
-    html = "<p>" + html + "</p>";
-
-    // Clean up empty paragraphs and bad nesting
-    html = html.replace(/<p>\s*<(h[123]|ul|ol|hr)/g, "<$1");
-    html = html.replace(/<\/(h[123]|ul|ol)>\s*<\/p>/g, "</$1>");
-    html = html.replace(/<p>\s*<hr>\s*<\/p>/g, "<hr>");
-    html = html.replace(/<p>\s*<\/p>/g, "");
-    html = html.replace(/<br>\s*<(h[123]|ul|ol|hr)/g, "<$1");
-    html = html.replace(/<\/(h[123]|ul|ol)>\s*<br>/g, "</$1>");
-    html = html.replace(/<p><br>/g, "<p>");
-
-    return html;
-}
-
-function splitIntoSections(text) {
-    // Split on ## headings, keeping the heading with the content
-    const parts = text.split(/(?=^## )/gm).filter(function(s) { return s.trim(); });
-
-    if (parts.length <= 1) {
-        // No ## headings found, return the whole thing as one section
-        return [{ title: "Listing Presentation", content: text }];
-    }
-
-    return parts.map(function(part) {
-        const lines = part.trim().split("\n");
-        let title = lines[0].replace(/^#+\s*/, "").trim();
-        // Remove numbering like "1)" or "1." from the title
-        title = title.replace(/^\d+[.)]\s*/, "");
-        const content = part.trim();
-        return { title: title, content: content };
-    });
-}
-
-function renderSections(sections) {
-    const container = document.getElementById("sectionsContainer");
-    container.innerHTML = "";
-    sectionTexts = [];
-
-    sections.forEach(function(section, index) {
-        sectionTexts.push(section.content);
-
-        const sectionEl = document.createElement("div");
-        sectionEl.className = "presentation-section";
-
-        const headerEl = document.createElement("div");
-        headerEl.className = "section-header";
-        headerEl.innerHTML =
-            '<h3>' + section.title + '</h3>' +
-            '<button class="btn-copy-section" onclick="copySection(' + index + ', this)">' +
-            COPY_ICON + ' Copy Section</button>';
-
-        const contentEl = document.createElement("div");
-        contentEl.className = "section-content";
-        contentEl.innerHTML = renderMarkdown(section.content);
-
-        sectionEl.appendChild(headerEl);
-        sectionEl.appendChild(contentEl);
-        container.appendChild(sectionEl);
-
-        // Add visual divider between sections (not after the last one)
-        if (index < sections.length - 1) {
-            const divider = document.createElement("div");
-            divider.className = "section-visual-divider";
-            divider.innerHTML = "<span></span>";
-            container.appendChild(divider);
-        }
-    });
-}
-
-async function buildPresentation() {
-    const data = getFormData();
-
-    // Validate required fields
-    if (!data.agentName) {
-        document.getElementById("agentName").focus();
-        return;
-    }
-    if (!data.brokerage) {
-        document.getElementById("brokerage").focus();
-        return;
-    }
-
-    const prompt = buildPrompt(data);
-    const btn = document.getElementById("btnGenerate");
-    const loading = document.getElementById("loading");
-    const output = document.getElementById("output");
-    const errorMsg = document.getElementById("errorMsg");
-
-    // Reset states
-    btn.disabled = true;
-    errorMsg.classList.remove("active");
-    output.classList.remove("active");
-    loading.classList.add("active");
-
-    // Scroll to loading
-    loading.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    try {
-        const res = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                messages: [{ role: "user", content: prompt }],
-                toolType: "presentation",
-                context: {
-                    agentName: data.agentName || "Agent",
-                    company: data.brokerage || "",
-                    market: data.cityState || ""
-                }
-            })
-        });
-
-        if (!res.ok) {
-            throw new Error("Server responded with " + res.status);
-        }
-
-        const result = await res.json();
-        loading.classList.remove("active");
-
-        if (result.reply) {
-            rawPresentationText = result.reply;
-            const sections = splitIntoSections(result.reply);
-            renderSections(sections);
-            output.classList.add("active");
-            output.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-            throw new Error("No response received");
-        }
-
-    } catch (err) {
-        loading.classList.remove("active");
-        errorMsg.textContent = "Something went wrong building your presentation. Please try again.";
-        errorMsg.classList.add("active");
-        errorMsg.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    btn.disabled = false;
-}
-
-function copyAll() {
-    const btn = document.getElementById("btnCopyAll");
-
-    navigator.clipboard.writeText(rawPresentationText).then(function() {
-        btn.classList.add("copied");
-        btn.innerHTML = CHECK_ICON + ' Copied!';
-
-        setTimeout(function() {
-            btn.classList.remove("copied");
-            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg> Copy All';
-        }, 2000);
-    });
-}
-
-function copySection(index, btn) {
-    const text = sectionTexts[index];
-    if (!text) return;
-
-    navigator.clipboard.writeText(text).then(function() {
-        btn.classList.add("copied");
-        btn.innerHTML = CHECK_ICON + ' Copied!';
-
-        setTimeout(function() {
-            btn.classList.remove("copied");
-            btn.innerHTML = COPY_ICON + ' Copy Section';
-        }, 2000);
-    });
-}
-
-function resetForm() {
-    document.getElementById("output").classList.remove("active");
-    document.getElementById("errorMsg").classList.remove("active");
-    document.getElementById("sectionsContainer").innerHTML = "";
-    document.getElementById("formCard").scrollIntoView({ behavior: "smooth", block: "start" });
-    rawPresentationText = "";
-    sectionTexts = [];
-
-    // Reset copy button state
-    const btn = document.getElementById("btnCopyAll");
-    btn.classList.remove("copied");
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M3 11V2.5A1.5 1.5 0 014.5 1H11"/></svg> Copy All';
-}
-
-// Enter key submits form
-document.getElementById("presentationForm").addEventListener("keydown", function(e) {
-    if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
-        e.preventDefault();
-        buildPresentation();
-    }
-});
-</script>
-
+    function resetForm(){document.getElementById("output").classList.add("hidden");document.getElementById("errorMsg").classList.add("hidden");document.getElementById("sectionsContainer").innerHTML="";document.getElementById("formCard").scrollIntoView({behavior:"smooth",block:"start"});rawPresentationText="";sectionTexts=[];}
+    document.getElementById("presentationForm").addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName!=="TEXTAREA"){e.preventDefault();buildPresentation();}});
+    </script>
 </body>
 </html>

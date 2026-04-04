@@ -266,18 +266,89 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         </section>
 
         <!-- ============================================ -->
-        <!-- TOOL GRID                                    -->
+        <!-- QUICK ACCESS (favorites or top picks)        -->
         <!-- ============================================ -->
-        <section class="mb-12">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                    <i class="ph ph-grid-four text-cyan-glow"></i>
-                    Your Tools
+        <section class="mb-10" id="quick-access-section">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-semibold text-white flex items-center gap-2">
+                    <i class="ph-fill ph-star text-gold-base"></i>
+                    Quick Access
                 </h2>
-                <span id="tool-count" class="text-sm text-gray-500"></span>
+                <span class="text-xs text-gray-600">Click the star on any tool to pin it here</span>
             </div>
-            <div id="tool-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                <!-- Tools injected by JavaScript -->
+            <div id="quick-access-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Favorites injected by JS -->
+            </div>
+            <div id="quick-access-empty" class="hidden glass-card rounded-xl p-6 text-center">
+                <i class="ph ph-star text-2xl text-gray-600 mb-2"></i>
+                <p class="text-sm text-gray-500">Star your favorite tools to pin them here for quick access</p>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- SEARCH (compact)                             -->
+        <!-- ============================================ -->
+        <div class="mb-6">
+            <div class="relative w-full sm:w-80">
+                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                <input id="tool-search" type="text" placeholder="Search all 28 tools..."
+                    class="w-full bg-navy-700/40 border border-white/5 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow/30 transition-colors">
+            </div>
+        </div>
+
+        <!-- Search results (hidden until searching) -->
+        <section id="search-results" class="mb-10 hidden">
+            <div id="search-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+            <div id="no-results" class="hidden text-center py-8">
+                <i class="ph ph-magnifying-glass text-3xl text-gray-600 mb-2"></i>
+                <p class="text-sm text-gray-500">No tools match your search</p>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- TOOL CATEGORIES (collapsible)                -->
+        <!-- ============================================ -->
+        <section class="mb-12" id="categories-section">
+            <!-- AI Generators -->
+            <div class="mb-6">
+                <button onclick="toggleCategory('generators')" class="w-full flex items-center justify-between py-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-cyan-glow/10 text-cyan-glow border border-cyan-glow/20">AI</span>
+                        <h3 class="text-sm font-semibold text-white">Generators</h3>
+                        <span class="text-xs text-gray-600" id="gen-count">14 tools</span>
+                    </div>
+                    <i class="ph ph-caret-down text-gray-500 group-hover:text-white transition-all duration-300" id="gen-arrow"></i>
+                </button>
+                <div id="cat-generators" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-2 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+                </div>
+            </div>
+
+            <!-- Calculators -->
+            <div class="mb-6">
+                <button onclick="toggleCategory('calculators')" class="w-full flex items-center justify-between py-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-gold-base/10 text-gold-base border border-gold-base/20">Math</span>
+                        <h3 class="text-sm font-semibold text-white">Calculators</h3>
+                        <span class="text-xs text-gray-600" id="calc-count">7 tools</span>
+                    </div>
+                    <i class="ph ph-caret-down text-gray-500 group-hover:text-white transition-all duration-300" id="calc-arrow"></i>
+                </button>
+                <div id="cat-calculators" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-2 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+                </div>
+            </div>
+
+            <!-- Dashboards -->
+            <div class="mb-6">
+                <button onclick="toggleCategory('dashboards')" class="w-full flex items-center justify-between py-3 group">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Systems</span>
+                        <h3 class="text-sm font-semibold text-white">Dashboards</h3>
+                        <span class="text-xs text-gray-600" id="dash-count">7 tools</span>
+                    </div>
+                    <i class="ph ph-caret-down text-gray-500 group-hover:text-white transition-all duration-300" id="dash-arrow"></i>
+                </button>
+                <div id="cat-dashboards" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-2 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+                </div>
             </div>
         </section>
 
@@ -414,96 +485,208 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         // ALL 28 TOOLS
         // ==========================================
         const ALL_TOOLS = [
-            { id: 'cma-generator', icon: 'ph-chart-bar', name: 'AI CMA Generator', desc: 'Generate comparative market analyses with AI-powered insights' },
-            { id: 'listing-description', icon: 'ph-text-aa', name: 'Listing Description Writer', desc: 'Write compelling MLS-ready listing descriptions in seconds' },
-            { id: 'social-media-generator', icon: 'ph-share-network', name: 'Social Media Generator', desc: 'Create scroll-stopping posts for every platform' },
-            { id: 'followup-email-generator', icon: 'ph-envelope', name: 'Follow-Up Email Generator', desc: 'Personalized follow-ups that keep leads warm' },
-            { id: 'market-snapshot', icon: 'ph-globe-hemisphere-west', name: 'Market Snapshot', desc: 'Instant local market reports for any ZIP code' },
-            { id: 'listing-presentation', icon: 'ph-presentation-chart', name: 'Listing Presentation', desc: 'Build branded listing presentations that win appointments' },
-            { id: 'video-script-generator', icon: 'ph-video-camera', name: 'Video Script Generator', desc: 'Scripts for property tours, market updates, and social videos' },
-            { id: 'expired-listing-kit', icon: 'ph-clock-countdown', name: 'Expired Listing Kit', desc: 'Complete outreach packages for expired and withdrawn listings' },
-            { id: 'neighborhood-farming', icon: 'ph-map-pin', name: 'Neighborhood Farming', desc: 'Hyper-local content and mailer campaigns for your farm area' },
-            { id: 'objection-handler', icon: 'ph-shield-check', name: 'Objection Handler', desc: 'Smart responses for every common seller objection' },
-            { id: 'seller-updates', icon: 'ph-megaphone', name: 'Seller Updates', desc: 'Automated weekly updates to keep sellers confident' },
-            { id: 'pricing-engine', icon: 'ph-tag', name: 'Pricing Strategy', desc: 'Data-driven pricing recommendations to win listings' },
-            { id: 'testimonial-collector', icon: 'ph-star', name: 'Testimonial Collector', desc: 'Automated review collection with shareable cards' },
-            { id: 'market-indicator', icon: 'ph-trend-up', name: 'Market Indicator', desc: 'Real-time market health scores for your area' },
-            { id: 'net-proceeds-calculator', icon: 'ph-calculator', name: 'Net Proceeds Calculator', desc: 'Show sellers exactly what they walk away with' },
-            { id: 'fix-vs-sell', icon: 'ph-wrench', name: 'Fix vs. Sell Analyzer', desc: 'Help sellers decide whether to repair or sell as-is' },
-            { id: 'commission-calculator', icon: 'ph-currency-dollar', name: 'Commission Calculator', desc: 'Transparent commission breakdowns for listing appointments' },
-            { id: 'closing-cost-explainer', icon: 'ph-receipt', name: 'Closing Cost Explainer', desc: 'Visual closing cost breakdowns sellers actually understand' },
-            { id: 'home-value-tracker', icon: 'ph-house-line', name: 'Home Value Tracker', desc: 'Branded home value pages that capture seller leads' },
-            { id: 'offer-comparison-matrix', icon: 'ph-scales', name: 'Offer Comparison', desc: 'Side-by-side offer analysis when multiple bids come in' },
-            { id: 'staging-roi-calculator', icon: 'ph-couch', name: 'Staging ROI Calculator', desc: 'Prove the ROI of staging with real numbers' },
-            { id: 'lead-crm', icon: 'ph-address-book', name: 'Seller Lead CRM', desc: 'Track and manage every seller lead in one place' },
-            { id: 'seller-dashboard', icon: 'ph-squares-four', name: 'Seller Dashboard', desc: 'A branded portal your sellers log into for updates' },
-            { id: 'performance-dashboard', icon: 'ph-chart-line-up', name: 'Performance Dashboard', desc: 'Track your listings, leads, and conversion metrics' },
-            { id: 'listing-portfolio', icon: 'ph-images', name: 'Listing Portfolio', desc: 'Beautiful portfolio pages showcasing your active listings' },
-            { id: 'open-house-qr', icon: 'ph-qr-code', name: 'Open House QR System', desc: 'Digital sign-in sheets with instant lead capture' },
-            { id: 'pre-list-checklist', icon: 'ph-check-square', name: 'Pre-List Checklist', desc: 'Guided checklists that prep sellers before you arrive' },
+            { id: 'cma-generator', icon: 'ph-chart-bar', name: 'AI CMA Generator', desc: 'Generate comparative market analyses with AI-powered insights', cat: 'generators' },
+            { id: 'listing-description', icon: 'ph-text-aa', name: 'Listing Description Writer', desc: 'Write compelling MLS-ready listing descriptions in seconds', cat: 'generators' },
+            { id: 'social-media-generator', icon: 'ph-share-network', name: 'Social Media Generator', desc: 'Create scroll-stopping posts for every platform', cat: 'generators' },
+            { id: 'followup-email-generator', icon: 'ph-envelope', name: 'Follow-Up Email Generator', desc: 'Personalized follow-ups that keep leads warm', cat: 'generators' },
+            { id: 'market-snapshot', icon: 'ph-globe-hemisphere-west', name: 'Market Snapshot', desc: 'Instant local market reports for any ZIP code', cat: 'generators' },
+            { id: 'listing-presentation', icon: 'ph-presentation-chart', name: 'Listing Presentation', desc: 'Build branded listing presentations that win appointments', cat: 'generators' },
+            { id: 'video-script-generator', icon: 'ph-video-camera', name: 'Video Script Generator', desc: 'Scripts for property tours, market updates, and social videos', cat: 'generators' },
+            { id: 'expired-listing-kit', icon: 'ph-clock-countdown', name: 'Expired Listing Kit', desc: 'Complete outreach packages for expired and withdrawn listings', cat: 'generators' },
+            { id: 'neighborhood-farming', icon: 'ph-map-pin', name: 'Neighborhood Farming', desc: 'Hyper-local content and mailer campaigns for your farm area', cat: 'generators' },
+            { id: 'objection-handler', icon: 'ph-shield-check', name: 'Objection Handler', desc: 'Smart responses for every common seller objection', cat: 'generators' },
+            { id: 'seller-updates', icon: 'ph-megaphone', name: 'Seller Updates', desc: 'Automated weekly updates to keep sellers confident', cat: 'generators' },
+            { id: 'pricing-engine', icon: 'ph-tag', name: 'Pricing Strategy', desc: 'Data-driven pricing recommendations to win listings', cat: 'generators' },
+            { id: 'testimonial-collector', icon: 'ph-star', name: 'Testimonial Collector', desc: 'Automated review collection with shareable cards', cat: 'generators' },
+            { id: 'market-indicator', icon: 'ph-trend-up', name: 'Market Indicator', desc: 'Real-time market health scores for your area', cat: 'generators' },
+            { id: 'net-proceeds-calculator', icon: 'ph-calculator', name: 'Net Proceeds Calculator', desc: 'Show sellers exactly what they walk away with', cat: 'calculators' },
+            { id: 'fix-vs-sell', icon: 'ph-wrench', name: 'Fix vs. Sell Analyzer', desc: 'Help sellers decide whether to repair or sell as-is', cat: 'calculators' },
+            { id: 'commission-calculator', icon: 'ph-currency-dollar', name: 'Commission Calculator', desc: 'Transparent commission breakdowns for listing appointments', cat: 'calculators' },
+            { id: 'closing-cost-explainer', icon: 'ph-receipt', name: 'Closing Cost Explainer', desc: 'Visual closing cost breakdowns sellers actually understand', cat: 'calculators' },
+            { id: 'home-value-tracker', icon: 'ph-house-line', name: 'Home Value Tracker', desc: 'Branded home value pages that capture seller leads', cat: 'calculators' },
+            { id: 'offer-comparison-matrix', icon: 'ph-scales', name: 'Offer Comparison', desc: 'Side-by-side offer analysis when multiple bids come in', cat: 'calculators' },
+            { id: 'staging-roi-calculator', icon: 'ph-couch', name: 'Staging ROI Calculator', desc: 'Prove the ROI of staging with real numbers', cat: 'calculators' },
+            { id: 'lead-crm', icon: 'ph-address-book', name: 'Seller Lead CRM', desc: 'Track and manage every seller lead in one place', cat: 'dashboards' },
+            { id: 'seller-dashboard', icon: 'ph-squares-four', name: 'Seller Dashboard', desc: 'A branded portal your sellers log into for updates', cat: 'dashboards' },
+            { id: 'performance-dashboard', icon: 'ph-chart-line-up', name: 'Performance Dashboard', desc: 'Track your listings, leads, and conversion metrics', cat: 'dashboards' },
+            { id: 'listing-portfolio', icon: 'ph-images', name: 'Listing Portfolio', desc: 'Beautiful portfolio pages showcasing your active listings', cat: 'dashboards' },
+            { id: 'open-house-qr', icon: 'ph-qr-code', name: 'Open House QR System', desc: 'Digital sign-in sheets with instant lead capture', cat: 'dashboards' },
+            { id: 'pre-list-checklist', icon: 'ph-check-square', name: 'Pre-List Checklist', desc: 'Guided checklists that prep sellers before you arrive', cat: 'dashboards' },
         ];
+
+        // Category labels and colors
+        var CAT_COLORS = {
+            generators: { border: 'cyan-glow', bg: 'cyan-glow', text: 'cyan-glow', label: 'AI Generator' },
+            calculators: { border: 'gold-base', bg: 'gold-base', text: 'gold-base', label: 'Calculator' },
+            dashboards: { border: 'emerald-400', bg: 'emerald-500', text: 'emerald-400', label: 'Dashboard' }
+        };
+
+        // Favorites (localStorage)
+        var favorites = JSON.parse(localStorage.getItem('he_favorites') || '[]');
+
+        // Current filter state
+        var currentFilter = 'all';
+        var searchTerm = '';
 
         // ==========================================
         // RENDER FUNCTIONS
         // ==========================================
 
+        var _currentTier = 'pro';
+        var _unlockedTools = [];
+        var openCategories = {};
+
+        // Default favorites for new users (best first impression)
+        var DEFAULT_FAVS = ['cma-generator', 'listing-description', 'net-proceeds-calculator', 'social-media-generator', 'lead-crm', 'seller-dashboard'];
+
         function renderDashboard(user, tier) {
             var tierDef = TIERS[tier] || TIERS.starter;
+            _currentTier = tier;
             var firstName = user ? (user.firstName || user.emailAddresses?.[0]?.emailAddress?.split('@')[0] || 'Agent') : 'Agent';
 
-            // Update welcome
             document.getElementById('user-first-name').textContent = firstName;
             document.getElementById('nav-user-name').textContent = firstName;
 
-            // Update tier badge
             var badge = document.getElementById('tier-badge');
             var badgeLabel = document.getElementById('tier-label');
             badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider tier-badge-' + tier + ' w-fit';
             badgeLabel.textContent = tierDef.label;
 
-            // Determine which tools are unlocked
-            var unlockedTools = tierDef.tools === 'all'
+            _unlockedTools = tierDef.tools === 'all'
                 ? ALL_TOOLS.map(function(t) { return t.id; })
                 : tierDef.tools;
 
-            var unlockedCount = unlockedTools.length;
-            document.getElementById('tool-count').textContent = unlockedCount + ' of ' + ALL_TOOLS.length + ' tools unlocked';
+            // Use defaults if no favorites set
+            if (favorites.length === 0) {
+                favorites = DEFAULT_FAVS.slice();
+                localStorage.setItem('he_favorites', JSON.stringify(favorites));
+            }
 
-            // Render tool grid
-            var grid = document.getElementById('tool-grid');
-            grid.innerHTML = '';
+            renderQuickAccess();
+            renderCategories();
 
-            ALL_TOOLS.forEach(function(tool) {
-                var isLocked = unlockedTools.indexOf(tool.id) === -1;
-                var card = document.createElement('a');
-                card.href = isLocked ? '#' : '/tools/' + tool.id + '.html';
+            // Search
+            document.getElementById('tool-search').addEventListener('input', function(e) {
+                searchTerm = e.target.value.toLowerCase().trim();
+                var searchSection = document.getElementById('search-results');
+                var catSection = document.getElementById('categories-section');
+                var qaSection = document.getElementById('quick-access-section');
 
-                if (isLocked) {
-                    card.onclick = function(e) {
-                        e.preventDefault();
-                        showUpgradeHint();
-                    };
+                if (searchTerm) {
+                    searchSection.classList.remove('hidden');
+                    catSection.classList.add('hidden');
+                    qaSection.classList.add('hidden');
+                    renderSearchResults();
+                } else {
+                    searchSection.classList.add('hidden');
+                    catSection.classList.remove('hidden');
+                    qaSection.classList.remove('hidden');
                 }
-
-                card.className = 'glass-card rounded-xl p-5 flex flex-col items-start gap-3 relative group' + (isLocked ? ' locked' : '');
-
-                card.innerHTML =
-                    (isLocked
-                        ? '<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-navy-900/80 border border-white/10 flex items-center justify-center"><i class="ph ph-lock-simple text-gray-500 text-xs"></i></div>'
-                        : '') +
-                    '<div class="w-11 h-11 rounded-xl flex items-center justify-center ' +
-                        (isLocked ? 'bg-navy-700/50' : 'bg-navy-700 group-hover:bg-cyan-glow/10') +
-                        ' transition-colors duration-300">' +
-                        '<i class="ph ' + tool.icon + ' text-xl ' + (isLocked ? 'text-gray-600' : 'text-cyan-glow') + '"></i>' +
-                    '</div>' +
-                    '<div>' +
-                        '<h3 class="text-sm font-semibold ' + (isLocked ? 'text-gray-500' : 'text-white') + ' leading-snug">' + tool.name + '</h3>' +
-                        '<p class="text-xs ' + (isLocked ? 'text-gray-600' : 'text-gray-400') + ' mt-1 leading-relaxed line-clamp-2">' + tool.desc + '</p>' +
-                    '</div>';
-
-                grid.appendChild(card);
             });
         }
+
+        function buildCard(tool, showStar) {
+            var isLocked = _unlockedTools.indexOf(tool.id) === -1;
+            var isFav = favorites.indexOf(tool.id) !== -1;
+            var catColor = CAT_COLORS[tool.cat] || CAT_COLORS.generators;
+
+            var card = document.createElement('div');
+            card.className = 'glass-card rounded-xl p-4 flex flex-col items-start gap-2.5 relative group' + (isLocked ? ' locked' : '');
+
+            var starHtml = '';
+            if (showStar && !isLocked) {
+                var starClass = isFav ? 'ph-fill ph-star text-gold-base' : 'ph ph-star text-gray-600 group-hover:text-gray-400';
+                starHtml = '<button onclick="event.stopPropagation();toggleFav(\'' + tool.id + '\')" class="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-navy-900/60 border border-white/5 flex items-center justify-center hover:border-gold-base/30 transition-colors"><i class="' + starClass + ' text-[10px]"></i></button>';
+            }
+            if (isLocked) {
+                starHtml = '<div class="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-navy-900/80 border border-white/10 flex items-center justify-center"><i class="ph ph-lock-simple text-gray-500 text-[10px]"></i></div>';
+            }
+
+            card.innerHTML = starHtml +
+                '<a href="' + (isLocked ? '#' : '/tools/' + tool.id + '.html') + '" ' + (isLocked ? 'onclick="event.preventDefault();showUpgradeHint()"' : '') + ' class="flex items-center gap-3 w-full">' +
+                    '<div class="w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center ' +
+                        (isLocked ? 'bg-navy-700/50' : 'bg-navy-700 group-hover:bg-' + catColor.bg + '/10') +
+                        ' transition-colors">' +
+                        '<i class="ph ' + tool.icon + ' text-lg ' + (isLocked ? 'text-gray-600' : 'text-' + catColor.text) + '"></i>' +
+                    '</div>' +
+                    '<div class="min-w-0">' +
+                        '<h3 class="text-sm font-semibold ' + (isLocked ? 'text-gray-500' : 'text-white') + ' leading-snug truncate">' + tool.name + '</h3>' +
+                        '<p class="text-[11px] ' + (isLocked ? 'text-gray-600' : 'text-gray-500') + ' truncate">' + tool.desc + '</p>' +
+                    '</div>' +
+                '</a>';
+
+            return card;
+        }
+
+        function renderQuickAccess() {
+            var grid = document.getElementById('quick-access-grid');
+            var empty = document.getElementById('quick-access-empty');
+            grid.innerHTML = '';
+
+            var favTools = ALL_TOOLS.filter(function(t) {
+                return favorites.indexOf(t.id) !== -1 && _unlockedTools.indexOf(t.id) !== -1;
+            });
+
+            if (favTools.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            empty.classList.add('hidden');
+            favTools.forEach(function(tool) { grid.appendChild(buildCard(tool, true)); });
+        }
+
+        function renderCategories() {
+            ['generators', 'calculators', 'dashboards'].forEach(function(cat) {
+                var container = document.getElementById('cat-' + cat);
+                container.innerHTML = '';
+                var tools = ALL_TOOLS.filter(function(t) { return t.cat === cat; });
+                tools.forEach(function(tool) { container.appendChild(buildCard(tool, true)); });
+            });
+        }
+
+        function renderSearchResults() {
+            var grid = document.getElementById('search-grid');
+            var noResults = document.getElementById('no-results');
+            grid.innerHTML = '';
+
+            var filtered = ALL_TOOLS.filter(function(tool) {
+                return tool.name.toLowerCase().indexOf(searchTerm) !== -1 || tool.desc.toLowerCase().indexOf(searchTerm) !== -1;
+            });
+
+            if (filtered.length === 0) { noResults.classList.remove('hidden'); return; }
+            noResults.classList.add('hidden');
+            filtered.forEach(function(tool) { grid.appendChild(buildCard(tool, true)); });
+        }
+
+        // Toggle favorite
+        window.toggleFav = function(toolId) {
+            var idx = favorites.indexOf(toolId);
+            if (idx === -1) { favorites.push(toolId); } else { favorites.splice(idx, 1); }
+            localStorage.setItem('he_favorites', JSON.stringify(favorites));
+            renderQuickAccess();
+            renderCategories();
+        };
+
+        // Toggle category open/closed
+        window.toggleCategory = function(cat) {
+            var container = document.getElementById('cat-' + cat);
+            var arrow = document.getElementById(cat === 'generators' ? 'gen-arrow' : cat === 'calculators' ? 'calc-arrow' : 'dash-arrow');
+
+            if (openCategories[cat]) {
+                container.style.maxHeight = '0';
+                container.style.opacity = '0';
+                arrow.style.transform = 'rotate(0deg)';
+                openCategories[cat] = false;
+            } else {
+                container.style.maxHeight = container.scrollHeight + 'px';
+                container.style.opacity = '1';
+                arrow.style.transform = 'rotate(180deg)';
+                openCategories[cat] = true;
+            }
+        };
 
         function showUpgradeHint() {
             // Brief visual hint

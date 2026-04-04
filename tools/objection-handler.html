@@ -1,824 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Objection Handler | HomeEdge</title>
+    <meta name="description" content="Get 3 ways to handle any real estate objection with AI. Built for agents by HomeEdge.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']},colors:{navy:{900:'#040711',800:'#0A1128',700:'#141E3E',600:'#1D2A54'},cyan:{glow:'#00F2FE',deep:'#4FACFE'},gold:{light:'#F8E9A1',base:'#D4AF37',dark:'#A6821A'}},backgroundImage:{'cyan-glow':'linear-gradient(90deg,#4FACFE 0%,#00F2FE 100%)'},animation:{'bounce-dot':'bounce-dot 1.4s infinite'},keyframes:{'bounce-dot':{'0%,60%,100%':{transform:'translateY(0)',opacity:'0.4'},'30%':{transform:'translateY(-12px)',opacity:'1'}}}}}}</script>
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: #0A1929;
-            color: #E0E0E0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 2.5rem 1rem 1.5rem;
-            border-bottom: 1px solid rgba(0, 229, 255, 0.15);
-        }
-
-        .brand {
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #00E5FF;
-            margin-bottom: 0.5rem;
-        }
-
-        header h1 {
-            font-size: clamp(1.6rem, 4vw, 2.4rem);
-            font-weight: 800;
-            color: #FFFFFF;
-            margin-bottom: 0.4rem;
-        }
-
-        header h1 span {
-            color: #00E5FF;
-        }
-
-        .subtitle {
-            font-size: 1.05rem;
-            color: #90CAF9;
-            font-weight: 400;
-        }
-
-        /* Main */
-        main {
-            flex: 1;
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* Quick Pick Section */
-        .section-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #90CAF9;
-            margin-bottom: 0.75rem;
-        }
-
-        .quick-picks {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .quick-pick-btn {
-            background: #132F4C;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            color: #E0E0E0;
-            padding: 0.55rem 1rem;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-
-        .quick-pick-btn:hover {
-            background: rgba(0, 229, 255, 0.12);
-            border-color: #00E5FF;
-            color: #FFFFFF;
-        }
-
-        .quick-pick-btn.active {
-            background: rgba(0, 229, 255, 0.18);
-            border-color: #00E5FF;
-            color: #00E5FF;
-        }
-
-        /* Divider */
-        .or-divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-            color: #546E7A;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .or-divider::before,
-        .or-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(0, 229, 255, 0.1);
-        }
-
-        /* Input Area */
-        .input-group {
-            margin-bottom: 1rem;
-        }
-
-        .objection-input {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            background: #132F4C;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            border-radius: 10px;
-            color: #FFFFFF;
-            font-size: 1rem;
-            font-family: inherit;
-            resize: none;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .objection-input::placeholder {
-            color: #546E7A;
-        }
-
-        .objection-input:focus {
-            border-color: #00E5FF;
-        }
-
-        /* Context Select */
-        .context-row {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .context-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #90CAF9;
-            white-space: nowrap;
-        }
-
-        .context-select {
-            flex: 1;
-            min-width: 180px;
-            padding: 0.6rem 1rem;
-            background: #132F4C;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            border-radius: 10px;
-            color: #FFFFFF;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2390CAF9' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 2rem;
-        }
-
-        .context-select:focus {
-            border-color: #00E5FF;
-        }
-
-        .context-select option {
-            background: #132F4C;
-            color: #FFFFFF;
-        }
-
-        /* Handle It Button */
-        .handle-btn {
-            width: 100%;
-            padding: 0.85rem;
-            background: linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%);
-            border: none;
-            border-radius: 10px;
-            color: #0A1929;
-            font-size: 1.05rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            letter-spacing: 0.5px;
-        }
-
-        .handle-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
-        }
-
-        .handle-btn:active {
-            transform: translateY(0);
-        }
-
-        .handle-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Loading */
-        .loader {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            padding: 3rem 1rem;
-        }
-
-        .loader.visible {
-            display: flex;
-        }
-
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid rgba(0, 229, 255, 0.15);
-            border-top-color: #00E5FF;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loader-text {
-            color: #90CAF9;
-            font-size: 0.9rem;
-        }
-
-        /* Response Cards */
-        .response-area {
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .response-area.visible {
-            display: block;
-        }
-
-        .response-header {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #90CAF9;
-            margin-bottom: 1rem;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .response-card {
-            background: #132F4C;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .card-header {
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .card-type {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .card-type-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* Card accent colors */
-        .card-data .card-dot { background: #42A5F5; }
-        .card-data .card-type-label { color: #42A5F5; }
-        .card-data { border-top: 3px solid #42A5F5; }
-
-        .card-empathy .card-dot { background: #66BB6A; }
-        .card-empathy .card-type-label { color: #66BB6A; }
-        .card-empathy { border-top: 3px solid #66BB6A; }
-
-        .card-story .card-dot { background: #FFD54F; }
-        .card-story .card-type-label { color: #FFD54F; }
-        .card-story { border-top: 3px solid #FFD54F; }
-
-        .copy-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #90CAF9;
-            padding: 0.3rem 0.7rem;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-
-        .copy-btn:hover {
-            background: rgba(0, 229, 255, 0.12);
-            border-color: #00E5FF;
-            color: #00E5FF;
-        }
-
-        .copy-btn.copied {
-            background: rgba(102, 187, 106, 0.15);
-            border-color: #66BB6A;
-            color: #66BB6A;
-        }
-
-        .card-body {
-            padding: 1rem;
-            font-size: 0.9rem;
-            line-height: 1.65;
-            color: #CFD8DC;
-        }
-
-        .card-body p {
-            margin-bottom: 0.6rem;
-        }
-
-        .card-body p:last-child {
-            margin-bottom: 0;
-        }
-
-        .card-body strong {
-            color: #FFFFFF;
-        }
-
-        .card-body em {
-            color: #90CAF9;
-            font-style: italic;
-        }
-
-        .card-body ul, .card-body ol {
-            margin: 0.5rem 0;
-            padding-left: 1.25rem;
-        }
-
-        .card-body li {
-            margin-bottom: 0.3rem;
-        }
-
-        /* Fallback full response */
-        .full-response {
-            background: #132F4C;
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid rgba(0, 229, 255, 0.15);
-            font-size: 0.9rem;
-            line-height: 1.65;
-            color: #CFD8DC;
-        }
-
-        .full-response p {
-            margin-bottom: 0.6rem;
-        }
-
-        .full-response strong {
-            color: #FFFFFF;
-        }
-
-        .full-response em {
-            color: #90CAF9;
-        }
-
-        .full-response ul, .full-response ol {
-            margin: 0.5rem 0;
-            padding-left: 1.25rem;
-        }
-
-        .full-response li {
-            margin-bottom: 0.3rem;
-        }
-
-        .full-response h1, .full-response h2, .full-response h3 {
-            color: #FFFFFF;
-            margin: 1rem 0 0.5rem;
-        }
-
-        /* Error */
-        .error-msg {
-            display: none;
-            background: rgba(244, 67, 54, 0.1);
-            border: 1px solid rgba(244, 67, 54, 0.3);
-            border-radius: 10px;
-            padding: 1rem 1.25rem;
-            color: #EF9A9A;
-            font-size: 0.9rem;
-            margin-top: 1.5rem;
-        }
-
-        .error-msg.visible {
-            display: block;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 1.5rem 1rem;
-            border-top: 1px solid rgba(0, 229, 255, 0.1);
-            font-size: 0.8rem;
-            color: #546E7A;
-        }
-
-        footer a {
-            color: #00E5FF;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
+        body{background-color:#040711;color:#fff;overflow-x:hidden}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#040711}::-webkit-scrollbar-thumb{background:#141E3E;border-radius:4px}
+        .glass-panel{background:rgba(10,17,40,0.4);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.05)}
+        .glass-card{background:linear-gradient(180deg,rgba(20,30,62,0.6) 0%,rgba(10,17,40,0.4) 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px 0 rgba(0,0,0,0.3);transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+        .text-gradient-brand{background:linear-gradient(135deg,#00F2FE,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent}
+        .btn-gold{position:relative;z-index:1;overflow:hidden}.btn-gold::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s ease;z-index:-1}.btn-gold:hover::before{left:100%}
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)}.reveal.visible{opacity:1;transform:translateY(0)}
+        .form-input{background:rgba(4,7,17,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:0.95rem;width:100%;outline:none;transition:border-color 0.3s,box-shadow 0.3s}
+        .form-input:focus{border-color:rgba(0,242,254,0.5);box-shadow:0 0 0 3px rgba(0,242,254,0.08),0 0 20px rgba(0,242,254,0.05)}.form-input::placeholder{color:rgba(255,255,255,0.25)}
+        select.form-input{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2300F2FE'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}select.form-input option{background:#0A1128;color:#fff}textarea.form-input{resize:none;min-height:60px}
+        .quick-pick{padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:rgba(4,7,17,0.6);color:rgba(255,255,255,0.5);font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.3s;font-family:'Inter',sans-serif}.quick-pick:hover{border-color:rgba(0,242,254,0.5);color:#00F2FE}.quick-pick.active{border-color:rgba(0,242,254,0.5);background:rgba(0,242,254,0.08);color:#00F2FE;font-weight:600}
+        .response-card{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,rgba(20,30,62,0.4) 0%,rgba(10,17,40,0.3) 100%)}
+        .card-accent-data{border-top:3px solid #4FACFE}.card-accent-empathy{border-top:3px solid #4ade80}.card-accent-story{border-top:3px solid #D4AF37}
+        .dot-delay-1{animation-delay:0s}.dot-delay-2{animation-delay:0.2s}.dot-delay-3{animation-delay:0.4s}
+        .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
     </style>
 </head>
-<body>
+<body class="font-sans min-h-screen flex flex-col">
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4"><div class="max-w-5xl mx-auto px-6 flex justify-between items-center"><a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;"><i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i><span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span></a><a href="/" style="text-decoration:none;"><span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span></a><a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;"><i class="ph ph-squares-four text-lg"></i><span class="hidden sm:inline">Dashboard</span></a></div></nav>
 
-    <header>
-        <div class="brand">HomeEdge</div>
-        <h1>AI <span>Objection Handler</span></h1>
-        <p class="subtitle">3 ways to handle any objection</p>
-    </header>
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div><div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal"><div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6"><i class="ph ph-shield-check text-3xl text-cyan-glow"></i></div><h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">AI Objection Handler</h1><p class="text-lg text-white/50 max-w-lg mx-auto">3 ways to handle any objection</p></div>
+    </section>
 
-    <main>
-        <!-- Quick Picks -->
-        <div class="section-label">Common Objections</div>
-        <div class="quick-picks">
-            <button class="quick-pick-btn" data-text="Your commission is too high">Your commission is too high</button>
-            <button class="quick-pick-btn" data-text="I want to sell FSBO">I want to sell FSBO</button>
-            <button class="quick-pick-btn" data-text="Zillow says my home is worth more">Zillow says my home is worth more</button>
-            <button class="quick-pick-btn" data-text="I want to wait for a better market">I want to wait for a better market</button>
-            <button class="quick-pick-btn" data-text="Another agent will do it for less">Another agent will do it for less</button>
-            <button class="quick-pick-btn" data-text="I don't think I need staging">I don't think I need staging</button>
-        </div>
-
-        <div class="or-divider">OR</div>
-
-        <!-- Text Input -->
-        <div class="input-group">
-            <textarea class="objection-input" id="objectionInput" rows="2" placeholder="Type any objection you're hearing..."></textarea>
-        </div>
-
-        <!-- Context -->
-        <div class="context-row">
-            <span class="context-label">Context:</span>
-            <select class="context-select" id="contextSelect">
-                <option value="Listing Appointment">Listing Appointment</option>
-                <option value="Phone Call">Phone Call</option>
-                <option value="Negotiation">Negotiation</option>
-                <option value="Open House">Open House</option>
-            </select>
-        </div>
-
-        <!-- Submit -->
-        <button class="handle-btn" id="handleBtn">Handle It</button>
-
-        <!-- Loading -->
-        <div class="loader" id="loader">
-            <div class="spinner"></div>
-            <div class="loader-text">Crafting your responses...</div>
-        </div>
-
-        <!-- Error -->
-        <div class="error-msg" id="errorMsg"></div>
-
-        <!-- Response -->
-        <div class="response-area" id="responseArea">
-            <div class="response-header">Your 3 Responses</div>
-            <div class="cards-grid" id="cardsGrid">
-
-                <div class="response-card card-data" id="cardData">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <div class="card-dot"></div>
-                            <span class="card-type-label">Data-Driven</span>
-                        </div>
-                        <button class="copy-btn" onclick="copyCard('cardDataBody')">Copy</button>
-                    </div>
-                    <div class="card-body" id="cardDataBody"></div>
-                </div>
-
-                <div class="response-card card-empathy" id="cardEmpathy">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <div class="card-dot"></div>
-                            <span class="card-type-label">Empathetic</span>
-                        </div>
-                        <button class="copy-btn" onclick="copyCard('cardEmpathyBody')">Copy</button>
-                    </div>
-                    <div class="card-body" id="cardEmpathyBody"></div>
-                </div>
-
-                <div class="response-card card-story" id="cardStory">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <div class="card-dot"></div>
-                            <span class="card-type-label">Story-Based</span>
-                        </div>
-                        <button class="copy-btn" onclick="copyCard('cardStoryBody')">Copy</button>
-                    </div>
-                    <div class="card-body" id="cardStoryBody"></div>
-                </div>
-
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal" id="formCard">
+            <div class="flex items-center gap-3 mb-4"><div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center"><i class="ph ph-lightning text-lg text-cyan-glow"></i></div><h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Common Objections</h2></div>
+            <div class="flex flex-wrap gap-2 mb-8" id="quickPicks">
+                <button class="quick-pick" data-text="Your commission is too high">Your commission is too high</button>
+                <button class="quick-pick" data-text="I want to sell FSBO">I want to sell FSBO</button>
+                <button class="quick-pick" data-text="Zillow says my home is worth more">Zillow says my home is worth more</button>
+                <button class="quick-pick" data-text="I want to wait for a better market">I want to wait for a better market</button>
+                <button class="quick-pick" data-text="Another agent will do it for less">Another agent will do it for less</button>
+                <button class="quick-pick" data-text="I don't think I need staging">I don't think I need staging</button>
             </div>
+            <div class="flex items-center gap-4 mb-6 text-white/20 text-xs font-semibold uppercase tracking-widest"><div class="flex-1 h-px bg-white/10"></div>OR<div class="flex-1 h-px bg-white/10"></div></div>
+            <div class="mb-5"><label class="block text-sm font-medium text-white/50 mb-2">Type any objection</label><textarea class="form-input" id="objectionInput" rows="2" placeholder="Type any objection you're hearing..."></textarea></div>
+            <div class="mb-8"><label class="block text-sm font-medium text-white/50 mb-2">Context</label><select class="form-input md:max-w-[50%]" id="contextSelect"><option value="Listing Appointment">Listing Appointment</option><option value="Phone Call">Phone Call</option><option value="Negotiation">Negotiation</option><option value="Open House">Open House</option></select></div>
+            <button id="handleBtn" onclick="handleObjection()" class="btn-gold w-full py-4 px-8 rounded-xl font-bold text-base tracking-wide bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 flex items-center justify-center gap-3"><i class="ph ph-sparkle text-xl"></i> Handle It</button>
+        </div>
 
-            <!-- Fallback if parsing fails -->
-            <div class="full-response" id="fullResponse" style="display:none;"></div>
+        <div class="hidden" id="loading"><div class="glass-card rounded-2xl p-12 text-center"><div class="flex justify-center gap-3 mb-6"><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-1"></span><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-2"></span><span class="w-3 h-3 bg-cyan-glow rounded-full animate-bounce-dot dot-delay-3"></span></div><p class="text-white/70 text-base font-medium">Crafting your responses...</p><p class="text-white/30 text-sm mt-2">Building data-driven, empathetic, and story-based approaches</p></div></div>
+        <div class="hidden" id="errorMsg"><div class="rounded-xl border border-red-500/30 bg-red-500/10 p-5 mb-6 flex items-start gap-4"><i class="ph ph-warning-circle text-2xl text-red-400 mt-0.5 flex-shrink-0"></i><p class="text-red-400 font-medium text-sm" id="errorText">Something went wrong. Please try again.</p></div></div>
+
+        <div class="hidden" id="output">
+            <div class="flex items-center gap-3 mb-6"><div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center"><i class="ph ph-chat-circle-text text-lg text-cyan-glow"></i></div><h2 class="text-lg font-semibold text-white">Your 3 Responses</h2></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="cardsGrid">
+                <div class="response-card card-accent-data">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-white/5"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-cyan-deep"></div><span class="text-xs font-bold uppercase tracking-wider text-cyan-deep">Data-Driven</span></div><button class="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-white/10 text-white/30 hover:text-cyan-glow hover:border-cyan-glow/30 transition-all" onclick="copyCard('cardDataBody',this)"><i class="ph ph-copy"></i></button></div>
+                    <div class="p-4 text-sm text-white/80 leading-relaxed" id="cardDataBody"></div>
+                </div>
+                <div class="response-card card-accent-empathy">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-white/5"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-400"></div><span class="text-xs font-bold uppercase tracking-wider text-green-400">Empathetic</span></div><button class="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-white/10 text-white/30 hover:text-green-400 hover:border-green-500/30 transition-all" onclick="copyCard('cardEmpathyBody',this)"><i class="ph ph-copy"></i></button></div>
+                    <div class="p-4 text-sm text-white/80 leading-relaxed" id="cardEmpathyBody"></div>
+                </div>
+                <div class="response-card card-accent-story">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-white/5"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-gold-base"></div><span class="text-xs font-bold uppercase tracking-wider text-gold-base">Story-Based</span></div><button class="flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold border border-white/10 text-white/30 hover:text-gold-base hover:border-gold-base/30 transition-all" onclick="copyCard('cardStoryBody',this)"><i class="ph ph-copy"></i></button></div>
+                    <div class="p-4 text-sm text-white/80 leading-relaxed" id="cardStoryBody"></div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 hidden" id="fullResponse"></div>
+            <div class="mt-8 flex items-center justify-center"><button onclick="resetForm()" class="btn-gold py-3 px-8 rounded-xl font-bold text-sm tracking-wide bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2"><i class="ph ph-plus text-base"></i> Handle Another</button></div>
         </div>
     </main>
-
-    <footer>
-        Powered by <a href="https://gethomeedge.com" target="_blank">HomeEdge</a> | gethomeedge.com
-    </footer>
+    <footer class="text-center py-8 border-t border-white/5"><p class="text-white/25 text-sm">Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a></p></footer>
 
     <script>
-        // --- Quick Pick Buttons ---
-        const quickPicks = document.querySelectorAll('.quick-pick-btn');
-        const objectionInput = document.getElementById('objectionInput');
+    const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target);}});},{threshold:0.1});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
-        quickPicks.forEach(btn => {
-            btn.addEventListener('click', () => {
-                quickPicks.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                objectionInput.value = btn.dataset.text;
-                objectionInput.focus();
-            });
-        });
+    const objectionInput=document.getElementById('objectionInput');
+    document.querySelectorAll('.quick-pick').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.quick-pick').forEach(b=>b.classList.remove('active'));btn.classList.add('active');objectionInput.value=btn.dataset.text;objectionInput.focus();});});
+    objectionInput.addEventListener('input',()=>{const val=objectionInput.value;document.querySelectorAll('.quick-pick').forEach(b=>{b.classList.toggle('active',b.dataset.text===val);});});
+    objectionInput.addEventListener('keydown',(e)=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleObjection();}});
 
-        // Clear active quick-pick when user types manually
-        objectionInput.addEventListener('input', () => {
-            const val = objectionInput.value;
-            let matched = false;
-            quickPicks.forEach(b => {
-                if (b.dataset.text === val) {
-                    b.classList.add('active');
-                    matched = true;
-                } else {
-                    b.classList.remove('active');
-                }
-            });
-        });
+    async function handleObjection(){const text=objectionInput.value.trim();if(!text){objectionInput.focus();return;}const context=document.getElementById('contextSelect').value;
+    const btn=document.getElementById('handleBtn');const loading=document.getElementById('loading');const output=document.getElementById('output');const errorEl=document.getElementById('errorMsg');
+    btn.disabled=true;loading.classList.remove('hidden');output.classList.add('hidden');errorEl.classList.add('hidden');
+    document.getElementById('cardsGrid').classList.remove('hidden');document.getElementById('fullResponse').classList.add('hidden');
 
-        // --- Handle It ---
-        const handleBtn = document.getElementById('handleBtn');
-        const loader = document.getElementById('loader');
-        const errorMsg = document.getElementById('errorMsg');
-        const responseArea = document.getElementById('responseArea');
-        const cardsGrid = document.getElementById('cardsGrid');
-        const fullResponse = document.getElementById('fullResponse');
-        const contextSelect = document.getElementById('contextSelect');
+    const prompt=`Handle this real estate objection 3 different ways. The objection is: "${text}". Context: ${context}.\n\nPlease provide exactly 3 response approaches with these headers:\n\n**Data-Driven**\n(A response that uses facts, statistics, and market data to address the objection)\n\n**Empathetic**\n(A response that validates the client's feelings first, then gently redirects with understanding)\n\n**Story-Based**\n(A response that uses a brief anecdote or case study from a past client to illustrate the point)\n\nKeep each response conversational and ready to use word-for-word in a ${context.toLowerCase()}. Each response should be 2-4 sentences.`;
 
-        handleBtn.addEventListener('click', handleObjection);
+    try{const res=await fetch('https://homeedge-chat.moltmind.workers.dev/tool',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],toolType:'objection'})});if(!res.ok)throw new Error(`Server returned ${res.status}`);const data=await res.json();const raw=data.reply||data.response||data.content||data.message||(typeof data==='string'?data:JSON.stringify(data));displayResponse(raw);}catch(err){document.getElementById('errorText').textContent=`Something went wrong: ${err.message}. Please try again.`;errorEl.classList.remove('hidden');}finally{btn.disabled=false;loading.classList.add('hidden');}}
 
-        // Allow Enter key in textarea (Shift+Enter for newline)
-        objectionInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleObjection();
-            }
-        });
+    function displayResponse(raw){const sections=parseThreeSections(raw);if(sections){document.getElementById('cardDataBody').innerHTML=renderMarkdown(sections.data);document.getElementById('cardEmpathyBody').innerHTML=renderMarkdown(sections.empathy);document.getElementById('cardStoryBody').innerHTML=renderMarkdown(sections.story);document.getElementById('cardsGrid').classList.remove('hidden');document.getElementById('fullResponse').classList.add('hidden');}else{document.getElementById('cardsGrid').classList.add('hidden');const fr=document.getElementById('fullResponse');fr.classList.remove('hidden');fr.innerHTML='<div class="text-sm text-white/80 leading-relaxed">'+renderMarkdown(raw)+'</div>';}document.getElementById('output').classList.remove('hidden');document.getElementById('output').scrollIntoView({behavior:'smooth',block:'start'});}
 
-        async function handleObjection() {
-            const text = objectionInput.value.trim();
-            if (!text) {
-                objectionInput.focus();
-                return;
-            }
+    function parseThreeSections(text){const patterns=[/\*\*Data[- ]Driven\*\*/i,/##?\s*Data[- ]Driven/i,/Data[- ]Driven:/i,/1[\.\)]\s*Data[- ]Driven/i];const empathyPatterns=[/\*\*Empathetic\*\*/i,/##?\s*Empathetic/i,/Empathetic:/i,/2[\.\)]\s*Empathetic/i];const storyPatterns=[/\*\*Story[- ]Based\*\*/i,/##?\s*Story[- ]Based/i,/Story[- ]Based:/i,/3[\.\)]\s*Story[- ]Based/i];
+    let dataIdx=-1,empathyIdx=-1,storyIdx=-1,dataMatch,empathyMatch,storyMatch;
+    for(const p of patterns){const m=text.match(p);if(m){dataIdx=text.indexOf(m[0]);dataMatch=m[0];break;}}for(const p of empathyPatterns){const m=text.match(p);if(m){empathyIdx=text.indexOf(m[0]);empathyMatch=m[0];break;}}for(const p of storyPatterns){const m=text.match(p);if(m){storyIdx=text.indexOf(m[0]);storyMatch=m[0];break;}}
+    if(dataIdx===-1||empathyIdx===-1||storyIdx===-1)return null;
+    const ordered=[{key:'data',idx:dataIdx,matchLen:dataMatch.length},{key:'empathy',idx:empathyIdx,matchLen:empathyMatch.length},{key:'story',idx:storyIdx,matchLen:storyMatch.length}].sort((a,b)=>a.idx-b.idx);const result={};for(let i=0;i<ordered.length;i++){const start=ordered[i].idx+ordered[i].matchLen;const end=i<ordered.length-1?ordered[i+1].idx:text.length;result[ordered[i].key]=text.slice(start,end).trim();}return result;}
 
-            const context = contextSelect.value;
+    function renderMarkdown(md){if(!md)return '';let html=md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong class="text-white font-semibold">$1</strong>').replace(/\*(.+?)\*/g,'<em class="text-cyan-glow/80">$1</em>').replace(/_(.+?)_/g,'<em class="text-cyan-glow/80">$1</em>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/^\d+\.\s(.+)$/gm,'<li>$1</li>');html=html.replace(/((?:<li>.*<\/li>\s*)+)/g,'<ul class="list-disc ml-4 my-2 space-y-1">$1</ul>');html=html.split(/\n{2,}/).map(block=>{block=block.trim();if(!block)return '';if(block.startsWith('<h')||block.startsWith('<ul')||block.startsWith('<ol'))return block;return '<p class="mb-2">'+block.replace(/\n/g,'<br>')+'</p>';}).join('');return html;}
 
-            // Reset UI
-            handleBtn.disabled = true;
-            loader.classList.add('visible');
-            responseArea.classList.remove('visible');
-            errorMsg.classList.remove('visible');
-            cardsGrid.style.display = '';
-            fullResponse.style.display = 'none';
+    function copyCard(bodyId,btn){const el=document.getElementById(bodyId);const text=el.innerText;navigator.clipboard.writeText(text).then(()=>{btn.innerHTML='<i class="ph ph-check"></i>';btn.classList.add('text-green-400','border-green-500/30');setTimeout(()=>{btn.innerHTML='<i class="ph ph-copy"></i>';btn.classList.remove('text-green-400','border-green-500/30');},2000);});}
 
-            const prompt = `Handle this real estate objection 3 different ways. The objection is: "${text}". Context: ${context}.
-
-Please provide exactly 3 response approaches with these headers:
-
-**Data-Driven**
-(A response that uses facts, statistics, and market data to address the objection)
-
-**Empathetic**
-(A response that validates the client's feelings first, then gently redirects with understanding)
-
-**Story-Based**
-(A response that uses a brief anecdote or case study from a past client to illustrate the point)
-
-Keep each response conversational and ready to use word-for-word in a ${context.toLowerCase()}. Each response should be 2-4 sentences.`;
-
-            try {
-                const res = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        messages: [{ role: 'user', content: prompt }],
-                        toolType: 'objection'
-                    })
-                });
-
-                if (!res.ok) {
-                    throw new Error(`Server returned ${res.status}`);
-                }
-
-                const data = await res.json();
-                const raw = data.reply || data.response || data.content || data.message || (typeof data === 'string' ? data : JSON.stringify(data));
-
-                displayResponse(raw);
-
-            } catch (err) {
-                errorMsg.textContent = `Something went wrong: ${err.message}. Please try again.`;
-                errorMsg.classList.add('visible');
-            } finally {
-                handleBtn.disabled = false;
-                loader.classList.remove('visible');
-            }
-        }
-
-        // --- Parse & Display ---
-        function displayResponse(raw) {
-            const sections = parseThreeSections(raw);
-
-            if (sections) {
-                document.getElementById('cardDataBody').innerHTML = renderMarkdown(sections.data);
-                document.getElementById('cardEmpathyBody').innerHTML = renderMarkdown(sections.empathy);
-                document.getElementById('cardStoryBody').innerHTML = renderMarkdown(sections.story);
-                cardsGrid.style.display = '';
-                fullResponse.style.display = 'none';
-            } else {
-                // Fallback: show full response
-                cardsGrid.style.display = 'none';
-                fullResponse.style.display = '';
-                fullResponse.innerHTML = renderMarkdown(raw);
-            }
-
-            responseArea.classList.add('visible');
-            responseArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function parseThreeSections(text) {
-            // Try multiple header patterns
-            const patterns = [
-                /\*\*Data[- ]Driven\*\*/i,
-                /##?\s*Data[- ]Driven/i,
-                /Data[- ]Driven:/i,
-                /1[\.\)]\s*Data[- ]Driven/i
-            ];
-
-            const empathyPatterns = [
-                /\*\*Empathetic\*\*/i,
-                /##?\s*Empathetic/i,
-                /Empathetic:/i,
-                /2[\.\)]\s*Empathetic/i
-            ];
-
-            const storyPatterns = [
-                /\*\*Story[- ]Based\*\*/i,
-                /##?\s*Story[- ]Based/i,
-                /Story[- ]Based:/i,
-                /3[\.\)]\s*Story[- ]Based/i
-            ];
-
-            let dataIdx = -1, empathyIdx = -1, storyIdx = -1;
-            let dataMatch, empathyMatch, storyMatch;
-
-            for (const p of patterns) {
-                const m = text.match(p);
-                if (m) { dataIdx = text.indexOf(m[0]); dataMatch = m[0]; break; }
-            }
-
-            for (const p of empathyPatterns) {
-                const m = text.match(p);
-                if (m) { empathyIdx = text.indexOf(m[0]); empathyMatch = m[0]; break; }
-            }
-
-            for (const p of storyPatterns) {
-                const m = text.match(p);
-                if (m) { storyIdx = text.indexOf(m[0]); storyMatch = m[0]; break; }
-            }
-
-            if (dataIdx === -1 || empathyIdx === -1 || storyIdx === -1) {
-                return null;
-            }
-
-            // Sort indices to extract sections in order
-            const ordered = [
-                { key: 'data', idx: dataIdx, matchLen: dataMatch.length },
-                { key: 'empathy', idx: empathyIdx, matchLen: empathyMatch.length },
-                { key: 'story', idx: storyIdx, matchLen: storyMatch.length }
-            ].sort((a, b) => a.idx - b.idx);
-
-            const result = {};
-            for (let i = 0; i < ordered.length; i++) {
-                const start = ordered[i].idx + ordered[i].matchLen;
-                const end = i < ordered.length - 1 ? ordered[i + 1].idx : text.length;
-                result[ordered[i].key] = text.slice(start, end).trim();
-            }
-
-            return result;
-        }
-
-        // --- Simple Markdown Renderer ---
-        function renderMarkdown(md) {
-            if (!md) return '';
-            let html = md
-                // Escape HTML
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                // Bold
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                // Italic
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                .replace(/_(.+?)_/g, '<em>$1</em>')
-                // Headings
-                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-                // Unordered lists
-                .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
-                // Numbered lists
-                .replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>');
-
-            // Wrap consecutive <li> in <ul>
-            html = html.replace(/((?:<li>.*<\/li>\s*)+)/g, '<ul>$1</ul>');
-
-            // Paragraphs: split by double newlines
-            html = html
-                .split(/\n{2,}/)
-                .map(block => {
-                    block = block.trim();
-                    if (!block) return '';
-                    if (block.startsWith('<h') || block.startsWith('<ul') || block.startsWith('<ol')) return block;
-                    // Single newlines become <br>
-                    return '<p>' + block.replace(/\n/g, '<br>') + '</p>';
-                })
-                .join('');
-
-            return html;
-        }
-
-        // --- Copy ---
-        function copyCard(bodyId) {
-            const el = document.getElementById(bodyId);
-            const text = el.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = el.parentElement.querySelector('.copy-btn');
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
+    function resetForm(){document.getElementById('output').classList.add('hidden');document.getElementById('errorMsg').classList.add('hidden');document.getElementById('formCard').scrollIntoView({behavior:'smooth',block:'start'});}
     </script>
-
 </body>
 </html>

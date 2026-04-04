@@ -1,280 +1,465 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Performance Dashboard | HomeEdge</title>
-<style>
-:root {
-  --bg-dark: #0A1929;
-  --bg-card: #132F4C;
-  --bg-input: #0E2240;
-  --accent-cyan: #00E5FF;
-  --accent-gold: #FFD54F;
-  --text-primary: #FFFFFF;
-  --text-secondary: #B0BEC5;
-  --border: #1A3A5C;
-  --success: #4ADE80;
-  --error: #EF5350;
-  --warning: #FFD54F;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:var(--bg-dark);color:var(--text-primary);
-  font-family:system-ui,-apple-system,sans-serif;
-  min-height:100vh;line-height:1.6;
-}
-header{
-  text-align:center;padding:32px 20px 28px;
-  background:linear-gradient(180deg,#050E1A,#132F4C);
-  border-bottom:2px solid var(--accent-cyan);
-}
-.brand{color:var(--accent-gold);text-transform:uppercase;letter-spacing:2px;font-size:.85rem;font-weight:600;margin-bottom:8px;}
-header h1{
-  font-size:2rem;font-weight:800;
-  background:linear-gradient(135deg,#00E5FF,#80F0FF);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;margin-bottom:6px;
-}
-header .subtitle{color:var(--text-secondary);font-size:1rem;}
-.container{max-width:1100px;margin:0 auto;padding:24px 20px 40px;}
-.card{
-  background:var(--bg-card);border:1px solid var(--border);
-  border-radius:14px;padding:28px;margin-bottom:24px;
-}
-.card-title{font-size:1.15rem;font-weight:700;margin-bottom:18px;color:var(--accent-gold);}
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Dashboard | HomeEdge</title>
+    <meta name="description" content="Track your HomeEdge platform performance, lead flow, and tool usage at a glance.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
 
-/* TOP STATS */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
-.stat-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;
-}
-.stat-card .stat-number{font-size:2.5rem;font-weight:800;color:var(--accent-cyan);line-height:1.1;}
-.stat-card .stat-number.green{color:var(--success);}
-.stat-card .stat-label{color:var(--text-secondary);font-size:.85rem;margin-bottom:8px;font-weight:600;}
-.stat-card .stat-sub{font-size:.78rem;margin-top:6px;}
-.stat-sub.green{color:var(--success);}
-.stat-sub.gold{color:var(--accent-gold);}
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-/* BAR CHART */
-.chart-area{
-  background:var(--bg-input);border-radius:10px;padding:24px 20px 16px;
-  position:relative;
-}
-.chart-bars{display:flex;align-items:flex-end;justify-content:space-around;height:220px;position:relative;}
-.chart-gridline{
-  position:absolute;left:0;right:0;top:50%;height:1px;
-  border-top:1px dashed rgba(176,190,197,.15);
-}
-.bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
-.bar-value{font-size:.75rem;font-weight:600;color:var(--accent-cyan);}
-.bar{
-  width:36px;border-radius:6px 6px 0 0;
-  background:linear-gradient(to top,#00E5FF,#80F0FF);
-  transition:height .5s ease;
-}
-.bar-label{font-size:.72rem;color:var(--text-secondary);margin-top:2px;}
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-/* TOOL USAGE */
-.tool-bars{display:flex;flex-direction:column;gap:12px;}
-.tool-row{display:flex;align-items:center;gap:14px;}
-.tool-name{width:180px;font-size:.85rem;font-weight:500;text-align:right;color:var(--text-secondary);flex-shrink:0;}
-.tool-track{flex:1;height:28px;background:var(--bg-input);border-radius:6px;overflow:hidden;position:relative;}
-.tool-fill{
-  height:100%;border-radius:6px;
-  background:linear-gradient(90deg,#00E5FF,#80F0FF);
-  display:flex;align-items:center;justify-content:flex-end;padding-right:10px;
-  font-size:.75rem;font-weight:700;color:#0A1929;
-  transition:width .6s ease;
-}
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-/* TABLE */
-.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-table{width:100%;border-collapse:collapse;min-width:600px;}
-th{
-  text-align:left;padding:12px 14px;font-size:.78rem;
-  color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;
-  border-bottom:1px solid var(--border);
-}
-td{padding:12px 14px;font-size:.88rem;border-bottom:1px solid rgba(26,58,92,.4);}
-tr:hover td{background:rgba(0,229,255,.03);}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
-.dot.red{background:var(--error);}
-.dot.gold{background:var(--accent-gold);}
-.dot.green{background:var(--success);}
-.dot.cyan{background:var(--accent-cyan);}
-.dot.gray{background:#78909C;}
-.badge-listed{
-  display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;
-  background:rgba(74,222,128,.15);color:var(--success);border:1px solid var(--success);
-}
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            900: '#040711',
+                            800: '#0A1128',
+                            700: '#141E3E',
+                            600: '#1D2A54',
+                        },
+                        cyan: {
+                            glow: '#00F2FE',
+                            deep: '#4FACFE',
+                        },
+                        gold: {
+                            light: '#F8E9A1',
+                            base: '#D4AF37',
+                            dark: '#A6821A',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
+                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'grow-bar': 'grow-bar 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+                        },
+                        'reveal-up': {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'grow-bar': {
+                            '0%': { width: '0%' },
+                            '100%': { width: 'var(--bar-width)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
 
-/* MONTHLY TREND */
-.trend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.trend-item{background:var(--bg-input);border-radius:10px;padding:18px;text-align:center;}
-.trend-label{font-size:.8rem;color:var(--text-secondary);margin-bottom:6px;}
-.trend-values{font-size:.9rem;font-weight:600;margin-bottom:4px;}
-.trend-values span{color:var(--text-secondary);font-weight:400;}
-.trend-change{font-size:.82rem;color:var(--success);font-weight:600;}
+    <style>
+        body {
+            background-color: #040711;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-footer{
-  text-align:center;padding:28px 20px;color:var(--text-secondary);font-size:.85rem;
-  border-top:1px solid var(--border);margin-top:20px;
-}
-footer a{color:var(--accent-gold);text-decoration:none;}
-footer a:hover{text-decoration:underline;}
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
 
-@media(max-width:768px){
-  .stats-row{grid-template-columns:1fr;}
-  .tool-name{width:110px;font-size:.78rem;}
-  .trend-grid{grid-template-columns:1fr;}
-}
-@media(max-width:480px){
-  .container{padding:16px 12px 32px;}
-  .card{padding:20px 16px;}
-  header{padding:24px 16px 20px;}
-  header h1{font-size:1.5rem;}
-  .bar{width:24px;}
-  .tool-name{width:90px;font-size:.72rem;}
-}
-</style>
+        .glass-panel {
+            background: rgba(10, 17, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #00F2FE, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* Bar chart styling */
+        .chart-bar {
+            background: linear-gradient(to top, #4FACFE, #00F2FE);
+            border-radius: 6px 6px 0 0;
+            transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Tool usage bar */
+        .tool-bar-fill {
+            background: linear-gradient(90deg, #4FACFE, #00F2FE);
+            border-radius: 6px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #040711;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Table row hover */
+        .table-row:hover {
+            background: rgba(0, 242, 254, 0.03);
+        }
+    </style>
 </head>
-<body>
-<header>
-  <div class="brand">HomeEdge</div>
-  <h1>Performance Dashboard</h1>
-  <p class="subtitle">Track your platform's impact at a glance</p>
-</header>
+<body class="font-sans min-h-screen flex flex-col">
 
-<div class="container">
+    <!-- Fixed Glass Nav -->
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
+        </div>
+    </nav>
 
-  <!-- TOP STATS -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-label">Total Leads</div>
-      <div class="stat-number">47</div>
-      <div class="stat-sub green">+12 this month</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Tool Uses</div>
-      <div class="stat-number">312</div>
-      <div class="stat-sub green">+89 this month</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Listings Won</div>
-      <div class="stat-number green">3</div>
-      <div class="stat-sub gold">$36,000 commission</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Avg Response Time</div>
-      <div class="stat-number">&lt; 2 min</div>
-      <div class="stat-sub" style="color:var(--text-secondary)">AI-powered 24/7</div>
-    </div>
-  </div>
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-8 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
 
-  <!-- WEEKLY ACTIVITY CHART -->
-  <div class="card">
-    <div class="card-title">Weekly Activity (Last 8 Weeks)</div>
-    <div class="chart-area">
-      <div class="chart-gridline"></div>
-      <div class="chart-bars">
-        <div class="bar-col"><div class="bar-value">28</div><div class="bar" style="height:90px"></div><div class="bar-label">W1</div></div>
-        <div class="bar-col"><div class="bar-value">35</div><div class="bar" style="height:113px"></div><div class="bar-label">W2</div></div>
-        <div class="bar-col"><div class="bar-value">42</div><div class="bar" style="height:135px"></div><div class="bar-label">W3</div></div>
-        <div class="bar-col"><div class="bar-value">38</div><div class="bar" style="height:123px"></div><div class="bar-label">W4</div></div>
-        <div class="bar-col"><div class="bar-value">51</div><div class="bar" style="height:165px"></div><div class="bar-label">W5</div></div>
-        <div class="bar-col"><div class="bar-value">45</div><div class="bar" style="height:145px"></div><div class="bar-label">W6</div></div>
-        <div class="bar-col"><div class="bar-value">62</div><div class="bar" style="height:200px"></div><div class="bar-label">W7</div></div>
-        <div class="bar-col"><div class="bar-value">49</div><div class="bar" style="height:158px"></div><div class="bar-label">W8</div></div>
-      </div>
-    </div>
-  </div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-chart-line-up text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Performance Dashboard
+            </h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">
+                Track your platform's impact at a glance
+            </p>
+        </div>
+    </section>
 
-  <!-- TOOL USAGE BREAKDOWN -->
-  <div class="card">
-    <div class="card-title">Most Used Tools</div>
-    <div class="tool-bars">
-      <div class="tool-row"><div class="tool-name">AI Chatbot</div><div class="tool-track"><div class="tool-fill" style="width:100%">89</div></div></div>
-      <div class="tool-row"><div class="tool-name">Net Proceeds Calculator</div><div class="tool-track"><div class="tool-fill" style="width:81%">72</div></div></div>
-      <div class="tool-row"><div class="tool-name">CMA Generator</div><div class="tool-track"><div class="tool-fill" style="width:65%">58</div></div></div>
-      <div class="tool-row"><div class="tool-name">Fix vs. Sell Analyzer</div><div class="tool-track"><div class="tool-fill" style="width:46%">41</div></div></div>
-      <div class="tool-row"><div class="tool-name">Social Media Generator</div><div class="tool-track"><div class="tool-fill" style="width:31%">28</div></div></div>
-      <div class="tool-row"><div class="tool-name">Listing Description Writer</div><div class="tool-track"><div class="tool-fill" style="width:25%">22</div></div></div>
-      <div class="tool-row"><div class="tool-name">Objection Handler</div><div class="tool-track"><div class="tool-fill" style="width:17%">15</div></div></div>
-      <div class="tool-row"><div class="tool-name">Market Snapshot</div><div class="tool-track"><div class="tool-fill" style="width:13%">12</div></div></div>
-    </div>
-  </div>
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-6 pb-20">
 
-  <!-- RECENT LEADS TABLE -->
-  <div class="card">
-    <div class="card-title">Recent Leads</div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Name</th><th>Source</th><th>Date</th><th>Status</th><th>Value</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jennifer Walsh</td><td>AI Chatbot</td><td>Mar 30</td>
-            <td><span class="dot red"></span>Hot</td><td>$425K</td>
-          </tr>
-          <tr>
-            <td>Robert Chen</td><td>Calculator</td><td>Mar 28</td>
-            <td><span class="dot gold"></span>Warm</td><td>$380K</td>
-          </tr>
-          <tr>
-            <td>Maria Santos</td><td>Open House QR</td><td>Mar 27</td>
-            <td><span class="dot green"></span>Appointment Set</td><td>$310K</td>
-          </tr>
-          <tr>
-            <td>David Kim</td><td>Website Form</td><td>Mar 25</td>
-            <td><span class="dot cyan"></span>Contacted</td><td>$520K</td>
-          </tr>
-          <tr>
-            <td>Amanda Lewis</td><td>Referral</td><td>Mar 23</td>
-            <td><span class="badge-listed">Listed!</span></td><td>$295K</td>
-          </tr>
-          <tr>
-            <td>James O'Brien</td><td>AI Chatbot</td><td>Mar 21</td>
-            <td><span class="dot gray"></span>Cold</td><td>$450K</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+        <!-- Top Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 reveal">
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mb-2">Total Leads</div>
+                <div class="text-4xl font-extrabold text-cyan-glow">47</div>
+                <div class="text-xs text-green-400 font-semibold mt-2">+12 this month</div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mb-2">Tool Uses</div>
+                <div class="text-4xl font-extrabold text-cyan-glow">312</div>
+                <div class="text-xs text-green-400 font-semibold mt-2">+89 this month</div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mb-2">Listings Won</div>
+                <div class="text-4xl font-extrabold text-green-400">3</div>
+                <div class="text-xs text-gold-base font-semibold mt-2">$36,000 commission</div>
+            </div>
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="text-xs text-white/40 font-semibold uppercase tracking-wide mb-2">Avg Response Time</div>
+                <div class="text-4xl font-extrabold text-cyan-glow">&lt; 2m</div>
+                <div class="text-xs text-white/30 font-semibold mt-2">AI-powered 24/7</div>
+            </div>
+        </div>
 
-  <!-- MONTHLY TREND -->
-  <div class="card">
-    <div class="card-title">This Month vs Last Month</div>
-    <div class="trend-grid">
-      <div class="trend-item">
-        <div class="trend-label">Leads</div>
-        <div class="trend-values">47 <span>vs 35</span></div>
-        <div class="trend-change">&#9650; +34%</div>
-      </div>
-      <div class="trend-item">
-        <div class="trend-label">Tool Uses</div>
-        <div class="trend-values">312 <span>vs 223</span></div>
-        <div class="trend-change">&#9650; +40%</div>
-      </div>
-      <div class="trend-item">
-        <div class="trend-label">Conversion Rate</div>
-        <div class="trend-values">6.4% <span>vs 5.7%</span></div>
-        <div class="trend-change">&#9650; +0.7%</div>
-      </div>
-    </div>
-  </div>
+        <!-- Weekly Activity Chart -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-chart-bar text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Weekly Activity (Last 8 Weeks)</h2>
+            </div>
 
-</div>
+            <div class="rounded-xl bg-navy-900/40 border border-white/5 p-6">
+                <div class="relative">
+                    <div class="absolute left-0 right-0 top-1/2 h-px border-t border-dashed border-white/[0.06]"></div>
+                    <div class="flex items-end justify-around h-56 relative">
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">28</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:90px"></div>
+                            <span class="text-xs text-white/30 mt-1">W1</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">35</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:113px"></div>
+                            <span class="text-xs text-white/30 mt-1">W2</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">42</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:135px"></div>
+                            <span class="text-xs text-white/30 mt-1">W3</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">38</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:123px"></div>
+                            <span class="text-xs text-white/30 mt-1">W4</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">51</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:165px"></div>
+                            <span class="text-xs text-white/30 mt-1">W5</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">45</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:145px"></div>
+                            <span class="text-xs text-white/30 mt-1">W6</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">62</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:200px"></div>
+                            <span class="text-xs text-white/30 mt-1">W7</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-xs font-semibold text-cyan-glow">49</span>
+                            <div class="chart-bar w-8 sm:w-10" style="height:158px"></div>
+                            <span class="text-xs text-white/30 mt-1">W8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<footer>Powered by <a href="https://gethomeedge.com">HomeEdge</a> | <a href="https://gethomeedge.com">gethomeedge.com</a></footer>
+        <!-- Most Used Tools -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-wrench text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Most Used Tools</h2>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">AI Chatbot</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:100%">89</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">Net Proceeds Calculator</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:81%">72</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">CMA Generator</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:65%">58</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">Fix vs. Sell Analyzer</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:46%">41</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">Social Media Generator</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:31%">28</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">Listing Description Writer</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:25%">22</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">Objection Handler</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:17%">15</div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-40 sm:w-48 text-right text-xs text-white/40 font-medium flex-shrink-0 truncate">Market Snapshot</span>
+                    <div class="flex-1 h-7 rounded-lg bg-navy-900/40 border border-white/5 overflow-hidden"><div class="tool-bar-fill" style="width:13%">12</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Leads Table -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-users text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Recent Leads</h2>
+            </div>
+
+            <div class="overflow-x-auto -mx-2">
+                <table class="w-full min-w-[600px]">
+                    <thead>
+                        <tr class="border-b border-white/5">
+                            <th class="text-left px-3 py-3 text-xs text-white/30 font-semibold uppercase tracking-wide">Name</th>
+                            <th class="text-left px-3 py-3 text-xs text-white/30 font-semibold uppercase tracking-wide">Source</th>
+                            <th class="text-left px-3 py-3 text-xs text-white/30 font-semibold uppercase tracking-wide">Date</th>
+                            <th class="text-left px-3 py-3 text-xs text-white/30 font-semibold uppercase tracking-wide">Status</th>
+                            <th class="text-left px-3 py-3 text-xs text-white/30 font-semibold uppercase tracking-wide">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-row border-b border-white/[0.03] transition-colors">
+                            <td class="px-3 py-3 text-sm text-white/80">Jennifer Walsh</td>
+                            <td class="px-3 py-3 text-sm text-white/50">AI Chatbot</td>
+                            <td class="px-3 py-3 text-sm text-white/40">Mar 30</td>
+                            <td class="px-3 py-3 text-sm"><span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-400"></span><span class="text-white/70">Hot</span></span></td>
+                            <td class="px-3 py-3 text-sm text-cyan-glow font-semibold">$425K</td>
+                        </tr>
+                        <tr class="table-row border-b border-white/[0.03] transition-colors">
+                            <td class="px-3 py-3 text-sm text-white/80">Robert Chen</td>
+                            <td class="px-3 py-3 text-sm text-white/50">Calculator</td>
+                            <td class="px-3 py-3 text-sm text-white/40">Mar 28</td>
+                            <td class="px-3 py-3 text-sm"><span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-gold-base"></span><span class="text-white/70">Warm</span></span></td>
+                            <td class="px-3 py-3 text-sm text-cyan-glow font-semibold">$380K</td>
+                        </tr>
+                        <tr class="table-row border-b border-white/[0.03] transition-colors">
+                            <td class="px-3 py-3 text-sm text-white/80">Maria Santos</td>
+                            <td class="px-3 py-3 text-sm text-white/50">Open House QR</td>
+                            <td class="px-3 py-3 text-sm text-white/40">Mar 27</td>
+                            <td class="px-3 py-3 text-sm"><span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-400"></span><span class="text-white/70">Appointment Set</span></span></td>
+                            <td class="px-3 py-3 text-sm text-cyan-glow font-semibold">$310K</td>
+                        </tr>
+                        <tr class="table-row border-b border-white/[0.03] transition-colors">
+                            <td class="px-3 py-3 text-sm text-white/80">David Kim</td>
+                            <td class="px-3 py-3 text-sm text-white/50">Website Form</td>
+                            <td class="px-3 py-3 text-sm text-white/40">Mar 25</td>
+                            <td class="px-3 py-3 text-sm"><span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cyan-glow"></span><span class="text-white/70">Contacted</span></span></td>
+                            <td class="px-3 py-3 text-sm text-cyan-glow font-semibold">$520K</td>
+                        </tr>
+                        <tr class="table-row border-b border-white/[0.03] transition-colors">
+                            <td class="px-3 py-3 text-sm text-white/80">Amanda Lewis</td>
+                            <td class="px-3 py-3 text-sm text-white/50">Referral</td>
+                            <td class="px-3 py-3 text-sm text-white/40">Mar 23</td>
+                            <td class="px-3 py-3 text-sm"><span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-400/15 text-green-400 border border-green-400/30">Listed!</span></td>
+                            <td class="px-3 py-3 text-sm text-cyan-glow font-semibold">$295K</td>
+                        </tr>
+                        <tr class="table-row transition-colors">
+                            <td class="px-3 py-3 text-sm text-white/80">James O'Brien</td>
+                            <td class="px-3 py-3 text-sm text-white/50">AI Chatbot</td>
+                            <td class="px-3 py-3 text-sm text-white/40">Mar 21</td>
+                            <td class="px-3 py-3 text-sm"><span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-white/20"></span><span class="text-white/50">Cold</span></span></td>
+                            <td class="px-3 py-3 text-sm text-cyan-glow font-semibold">$450K</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Monthly Trend -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-trend-up text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">This Month vs Last Month</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5 text-center">
+                    <div class="text-xs text-white/40 mb-2">Leads</div>
+                    <div class="text-lg font-bold text-white">47 <span class="text-white/30 font-normal">vs 35</span></div>
+                    <div class="text-sm text-green-400 font-semibold mt-1">+34%</div>
+                </div>
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5 text-center">
+                    <div class="text-xs text-white/40 mb-2">Tool Uses</div>
+                    <div class="text-lg font-bold text-white">312 <span class="text-white/30 font-normal">vs 223</span></div>
+                    <div class="text-sm text-green-400 font-semibold mt-1">+40%</div>
+                </div>
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5 text-center">
+                    <div class="text-xs text-white/40 mb-2">Conversion Rate</div>
+                    <div class="text-lg font-bold text-white">6.4% <span class="text-white/30 font-normal">vs 5.7%</span></div>
+                    <div class="text-sm text-green-400 font-semibold mt-1">+0.7%</div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
+
+    <script>
+    // Scroll reveal observer
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+
 </body>
 </html>

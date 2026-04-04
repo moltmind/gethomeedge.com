@@ -1,857 +1,312 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staging ROI Calculator -- Real Estate Agent Tool</title>
+    <title>Staging ROI Calculator | HomeEdge</title>
+    <meta name="description" content="Discover how professional staging can increase your home's value and reduce time on market.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: {
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    },
+                    backgroundImage: { 'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)' },
+                    animation: { 'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards' },
+                    keyframes: { 'reveal-up': { '0%': { opacity: '0', transform: 'translateY(40px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --bg-dark: #0A1929;
-            --bg-darker: #050E1A;
-            --bg-card: #132F4C;
-            --accent-cyan: #00E5FF;
-            --accent-blue: #1565C0;
-            --accent-gold: #FFD54F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0BEC5;
-            --text-light: #E0E0E0;
-            --border-color: #1A3A52;
-            --success-green: #4CAF50;
-            --spacing-unit: 0.5rem;
-        }
+        body { background-color: #040711; color: #ffffff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .glass-panel { background: rgba(10, 17, 40, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        .glass-card:hover { border-color: rgba(255, 255, 255, 0.12); }
+        .text-gradient-brand { background: linear-gradient(135deg, #00F2FE, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+        .form-input {
+            background: rgba(4, 7, 17, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px;
+            color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.95rem; width: 100%; outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
+        .form-input:focus { border-color: rgba(0, 242, 254, 0.5); box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.08), 0 0 20px rgba(0, 242, 254, 0.05); }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-card) 100%);
-            border-bottom: 2px solid var(--accent-cyan);
-            padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
 
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: calc(var(--spacing-unit) * 3);
-            flex-wrap: wrap;
-        }
-
-        .agent-info {
-            display: flex;
-            align-items: center;
-            gap: calc(var(--spacing-unit) * 2);
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .agent-photo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 24px;
-            color: var(--bg-dark);
-            flex-shrink: 0;
-        }
-
-        .agent-text h1 {
-            font-family: Georgia, serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            margin-bottom: 2px;
-        }
-
-        .agent-text p {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .agent-contact {
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--spacing-unit) * 1);
-            text-align: right;
-            font-size: 13px;
-        }
-
-        .agent-contact span {
-            color: var(--text-secondary);
-        }
-
-        .agent-contact .phone {
-            color: var(--accent-gold);
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* Main Container */
-        .container {
-            flex: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 2);
-            width: 100%;
-        }
-
-        .page-title {
-            font-family: Georgia, serif;
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: calc(var(--spacing-unit) * 2);
-            text-align: center;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: calc(var(--spacing-unit) * 6);
-            font-size: 16px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Input Section */
-        .input-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: calc(var(--spacing-unit) * 4);
-            margin-bottom: calc(var(--spacing-unit) * 4);
-        }
-
-        .input-group {
-            margin-bottom: calc(var(--spacing-unit) * 4);
-        }
-
-        .input-group label {
-            display: block;
-            font-family: Georgia, serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .input-group input[type="number"] {
-            width: 100%;
-            max-width: 300px;
-            padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2.5);
-            background: var(--bg-darker);
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--accent-cyan);
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input[type="number"]:focus {
-            outline: none;
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
-        }
-
-        .home-value-display {
-            display: inline-block;
-            margin-top: calc(var(--spacing-unit) * 1);
-            padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
-            background: rgba(0, 229, 255, 0.1);
-            border-left: 3px solid var(--accent-cyan);
-            border-radius: 4px;
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        /* Room Selection */
-        .rooms-section {
-            margin-top: calc(var(--spacing-unit) * 3);
-        }
-
-        .rooms-section h2 {
-            font-family: Georgia, serif;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: calc(var(--spacing-unit) * 3);
-            display: flex;
-            align-items: center;
-            gap: calc(var(--spacing-unit) * 1.5);
-        }
-
-        .rooms-section h2::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 20px;
-            background: var(--accent-gold);
-            border-radius: 2px;
-        }
-
-        .rooms-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: calc(var(--spacing-unit) * 3);
-        }
-
-        .room-card {
-            background: var(--bg-darker);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: calc(var(--spacing-unit) * 3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .room-card:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 8px 24px rgba(21, 101, 192, 0.15);
-        }
-
-        .room-card.selected {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 229, 255, 0.05);
-            box-shadow: 0 8px 24px rgba(0, 229, 255, 0.2);
-        }
+        .room-card { cursor: pointer; transition: all 0.3s ease; }
+        .room-card:hover { border-color: rgba(79, 172, 254, 0.3) !important; }
+        .room-card.selected { border-color: rgba(0, 242, 254, 0.4) !important; background: linear-gradient(180deg, rgba(0, 242, 254, 0.08) 0%, rgba(10, 17, 40, 0.4) 100%) !important; }
 
         .room-checkbox {
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-darker);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: calc(var(--spacing-unit) * 2);
-            flex-shrink: 0;
+            appearance: none; width: 22px; height: 22px; border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 6px; background: rgba(4, 7, 17, 0.6); cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;
         }
-
-        .room-checkbox:checked {
-            background: var(--accent-cyan);
-            border-color: var(--accent-cyan);
-        }
-
-        .room-checkbox:checked::after {
-            content: '✓';
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--bg-dark);
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .room-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .room-name {
-            font-family: Georgia, serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .room-details {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .room-cost {
-            color: var(--accent-gold);
-            font-weight: 600;
-            margin-bottom: calc(var(--spacing-unit) * 1);
-        }
-
-        .room-value {
-            color: var(--success-green);
-            font-weight: 600;
-        }
-
-        /* Results Section */
-        .results-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: calc(var(--spacing-unit) * 3);
-            margin-top: calc(var(--spacing-unit) * 6);
-        }
-
-        .result-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: calc(var(--spacing-unit) * 3);
-            text-align: center;
-            animation: slideUp 0.5s ease forwards;
-            opacity: 0;
-        }
-
-        .result-card:nth-child(1) { animation-delay: 0.1s; }
-        .result-card:nth-child(2) { animation-delay: 0.2s; }
-        .result-card:nth-child(3) { animation-delay: 0.3s; }
-        .result-card:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: calc(var(--spacing-unit) * 1.5);
-            font-weight: 600;
-        }
-
-        .result-value {
-            font-family: Georgia, serif;
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            line-height: 1;
-            margin-bottom: calc(var(--spacing-unit) * 1);
-        }
-
-        .result-card.roi-positive .result-value {
-            color: var(--success-green);
-        }
-
-        .result-card.roi-cost .result-value {
-            color: var(--accent-gold);
-        }
-
-        .result-card.roi-days .result-value {
-            color: var(--accent-blue);
-        }
-
-        .result-note {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: calc(var(--spacing-unit) * 1);
-            font-style: italic;
-        }
-
-        /* Summary Card */
-        .summary-card {
-            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(21, 101, 192, 0.1) 100%);
-            border: 2px solid var(--accent-blue);
-            border-radius: 12px;
-            padding: calc(var(--spacing-unit) * 5);
-            margin-top: calc(var(--spacing-unit) * 6);
-            text-align: center;
-        }
-
-        .summary-title {
-            font-family: Georgia, serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: calc(var(--spacing-unit) * 3);
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: calc(var(--spacing-unit) * 3);
-            margin-bottom: calc(var(--spacing-unit) * 4);
-        }
-
-        .summary-item {
-            padding: calc(var(--spacing-unit) * 2);
-            background: var(--bg-darker);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .summary-item-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: calc(var(--spacing-unit) * 1);
-        }
-
-        .summary-item-value {
-            font-family: Georgia, serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
-
-        .summary-item.roi-positive .summary-item-value {
-            color: var(--success-green);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, rgba(0, 229, 255, 0.05) 0%, rgba(21, 101, 192, 0.05) 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: calc(var(--spacing-unit) * 4);
-            text-align: center;
-            margin-top: calc(var(--spacing-unit) * 6);
-        }
-
-        .cta-text {
-            font-family: Georgia, serif;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: calc(var(--spacing-unit) * 2.5) calc(var(--spacing-unit) * 5);
-            background: linear-gradient(135deg, var(--accent-blue) 0%, #0D47A1 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(21, 101, 192, 0.4);
-            background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-        }
-
-        .cta-button:active {
-            transform: translateY(0);
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: calc(var(--spacing-unit) * 6);
-            font-style: italic;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: calc(var(--spacing-unit) * 2);
-            }
-
-            .agent-contact {
-                text-align: left;
-            }
-
-            .page-title {
-                font-size: 28px;
-            }
-
-            .container {
-                padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 1);
-            }
-
-            .input-section {
-                padding: calc(var(--spacing-unit) * 3);
-            }
-
-            .rooms-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .result-value {
-                font-size: 24px;
-            }
-
-            .summary-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .page-title {
-                font-size: 22px;
-            }
-
-            .agent-info {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .agent-photo {
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
-            }
-
-            .agent-text h1 {
-                font-size: 16px;
-            }
-
-            .result-value {
-                font-size: 20px;
-            }
-
-            .summary-item-value {
-                font-size: 18px;
-            }
-
-            .cta-text {
-                font-size: 16px;
-            }
-
-            .cta-button {
-                padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
-                font-size: 13px;
-            }
-        }
+        .room-checkbox:checked { background: #00F2FE; border-color: #00F2FE; }
+        .room-checkbox:checked::after { content: '\2713'; display: flex; align-items: center; justify-content: center; color: #040711; font-weight: bold; font-size: 13px; }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="agent-info">
-                <div class="agent-photo"></div>
-                <div class="agent-text">
-                    <h1>Your Agent</h1>
-                    <p>Your Brokerage</p>
+<body class="font-sans min-h-screen flex flex-col">
+
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-couch text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">Staging ROI Calculator</h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">Discover how professional staging can increase your home's value</p>
+        </div>
+    </section>
+
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+
+        <!-- Input Card -->
+        <div class="glass-card rounded-2xl p-8 md:p-10 mb-8 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-house text-lg text-cyan-glow"></i>
                 </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Home Value</h2>
             </div>
-            <div class="agent-contact">
-                <span>Contact:</span>
-                <div class="phone">(555) 000-0000</div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container">
-        <h2 class="page-title">Staging ROI Calculator</h2>
-        <p class="subtitle">Discover how professional staging can increase your home's value and reduce time on market</p>
-
-        <!-- Input Section -->
-        <div class="input-section">
-            <div class="input-group">
-                <label for="homeValue">What is your home's estimated value?</label>
-                <input type="number" id="homeValue" placeholder="e.g., 450000" min="0" step="1000">
-                <div class="home-value-display" id="homeValueDisplay" style="display: none;"></div>
+            <div>
+                <label class="block text-sm font-medium text-white/50 mb-2">What is your home's estimated value?</label>
+                <input type="number" id="homeValue" class="form-input" placeholder="e.g., 450000" min="0" step="1000">
+                <div class="mt-2 px-3 py-2 rounded-lg bg-cyan-glow/5 border-l-2 border-cyan-glow text-cyan-glow text-sm font-semibold hidden" id="homeValueDisplay"></div>
             </div>
 
-            <!-- Room Selection -->
-            <div class="rooms-section">
-                <h2>Select rooms to stage</h2>
-                <div class="rooms-grid" id="roomsGrid"></div>
+            <div class="border-t border-white/5 my-8"></div>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-couch text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Select Rooms to Stage</h2>
             </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="roomsGrid"></div>
         </div>
 
-        <!-- Results Section -->
+        <!-- Results -->
         <div id="resultsContainer" style="display: none;">
-            <div class="results-section" id="resultCards"></div>
+            <!-- Result Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="resultCards"></div>
 
             <!-- Summary Card -->
-            <div class="summary-card">
-                <h3 class="summary-title">Your Staging Investment Summary</h3>
-                <div class="summary-grid">
-                    <div class="summary-item">
-                        <div class="summary-item-label">Total Cost</div>
-                        <div class="summary-item-value" id="summaryTotalCost">$0</div>
+            <div class="glass-card rounded-2xl p-8 mb-8 text-center reveal" style="background: linear-gradient(135deg, rgba(20, 30, 62, 0.8) 0%, rgba(0, 242, 254, 0.05) 100%);">
+                <h3 class="font-serif text-xl font-bold text-white mb-6">Your Staging Investment Summary</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-navy-900/50 rounded-xl p-4 border border-white/5">
+                        <p class="text-[10px] text-white/30 uppercase tracking-wider mb-1">Total Cost</p>
+                        <p class="font-serif text-xl font-bold text-gold-base" id="summaryTotalCost">$0</p>
                     </div>
-                    <div class="summary-item">
-                        <div class="summary-item-label">Value Increase</div>
-                        <div class="summary-item-value" id="summaryValueIncrease">$0</div>
+                    <div class="bg-navy-900/50 rounded-xl p-4 border border-white/5">
+                        <p class="text-[10px] text-white/30 uppercase tracking-wider mb-1">Value Increase</p>
+                        <p class="font-serif text-xl font-bold text-cyan-glow" id="summaryValueIncrease">$0</p>
                     </div>
-                    <div class="summary-item roi-positive">
-                        <div class="summary-item-label">Net Profit</div>
-                        <div class="summary-item-value" id="summaryNetProfit">$0</div>
+                    <div class="bg-navy-900/50 rounded-xl p-4 border border-white/5">
+                        <p class="text-[10px] text-white/30 uppercase tracking-wider mb-1">Net Profit</p>
+                        <p class="font-serif text-xl font-bold text-green-400" id="summaryNetProfit">$0</p>
                     </div>
-                    <div class="summary-item">
-                        <div class="summary-item-label">ROI</div>
-                        <div class="summary-item-value" id="summaryROI">0%</div>
+                    <div class="bg-navy-900/50 rounded-xl p-4 border border-white/5">
+                        <p class="text-[10px] text-white/30 uppercase tracking-wider mb-1">ROI</p>
+                        <p class="font-serif text-xl font-bold text-cyan-glow" id="summaryROI">0%</p>
                     </div>
                 </div>
             </div>
-
-            <!-- CTA -->
-            <div class="cta-section">
-                <p class="cta-text">Ready to maximize your home's potential?</p>
-                <button class="cta-button" id="ctaButton"></button>
-            </div>
         </div>
 
-        <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="text-center text-white/30 py-12 italic hidden" id="emptyState">
             Enter your home value and select rooms to see your staging ROI
         </div>
     </main>
 
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
+
     <script>
-        // Room data with staging costs and expected value increases
-        const ROOMS = [
-            {
-                id: 'living-room',
-                name: 'Living Room',
-                costMin: 500,
-                costMax: 1500,
-                valueIncreaseMin: 1,
-                valueIncreaseMax: 3
-            },
-            {
-                id: 'master-bedroom',
-                name: 'Master Bedroom',
-                costMin: 300,
-                costMax: 800,
-                valueIncreaseMin: 0.5,
-                valueIncreaseMax: 1.5
-            },
-            {
-                id: 'kitchen',
-                name: 'Kitchen',
-                costMin: 400,
-                costMax: 1200,
-                valueIncreaseMin: 1,
-                valueIncreaseMax: 2
-            },
-            {
-                id: 'dining-room',
-                name: 'Dining Room',
-                costMin: 200,
-                costMax: 600,
-                valueIncreaseMin: 0.3,
-                valueIncreaseMax: 0.8
-            },
-            {
-                id: 'bathroom',
-                name: 'Bathroom',
-                costMin: 200,
-                costMax: 500,
-                valueIncreaseMin: 0.3,
-                valueIncreaseMax: 0.8
-            },
-            {
-                id: 'outdoor',
-                name: 'Outdoor / Curb Appeal',
-                costMin: 300,
-                costMax: 1000,
-                valueIncreaseMin: 1,
-                valueIncreaseMax: 2
-            }
-        ];
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        const DOM = {
-            homeValue: document.getElementById('homeValue'),
-            homeValueDisplay: document.getElementById('homeValueDisplay'),
-            roomsGrid: document.getElementById('roomsGrid'),
-            resultsContainer: document.getElementById('resultsContainer'),
-            resultCards: document.getElementById('resultCards'),
-            emptyState: document.getElementById('emptyState'),
-            summaryTotalCost: document.getElementById('summaryTotalCost'),
-            summaryValueIncrease: document.getElementById('summaryValueIncrease'),
-            summaryNetProfit: document.getElementById('summaryNetProfit'),
-            summaryROI: document.getElementById('summaryROI'),
-            ctaButton: document.getElementById('ctaButton')
-        };
+    const ROOMS = [
+        { id: 'living-room', name: 'Living Room', icon: 'ph-television', costMin: 500, costMax: 1500, valueIncreaseMin: 1, valueIncreaseMax: 3 },
+        { id: 'master-bedroom', name: 'Master Bedroom', icon: 'ph-bed', costMin: 300, costMax: 800, valueIncreaseMin: 0.5, valueIncreaseMax: 1.5 },
+        { id: 'kitchen', name: 'Kitchen', icon: 'ph-cooking-pot', costMin: 400, costMax: 1200, valueIncreaseMin: 1, valueIncreaseMax: 2 },
+        { id: 'dining-room', name: 'Dining Room', icon: 'ph-fork-knife', costMin: 200, costMax: 600, valueIncreaseMin: 0.3, valueIncreaseMax: 0.8 },
+        { id: 'bathroom', name: 'Bathroom', icon: 'ph-bathtub', costMin: 200, costMax: 500, valueIncreaseMin: 0.3, valueIncreaseMax: 0.8 },
+        { id: 'outdoor', name: 'Outdoor / Curb Appeal', icon: 'ph-tree', costMin: 300, costMax: 1000, valueIncreaseMin: 1, valueIncreaseMax: 2 }
+    ];
 
-        const selectedRooms = new Set();
+    const DOM = {
+        homeValue: document.getElementById('homeValue'),
+        homeValueDisplay: document.getElementById('homeValueDisplay'),
+        roomsGrid: document.getElementById('roomsGrid'),
+        resultsContainer: document.getElementById('resultsContainer'),
+        resultCards: document.getElementById('resultCards'),
+        emptyState: document.getElementById('emptyState'),
+        summaryTotalCost: document.getElementById('summaryTotalCost'),
+        summaryValueIncrease: document.getElementById('summaryValueIncrease'),
+        summaryNetProfit: document.getElementById('summaryNetProfit'),
+        summaryROI: document.getElementById('summaryROI'),
+    };
 
-        // Initialize room cards
-        function initializeRooms() {
-            DOM.roomsGrid.innerHTML = '';
-            ROOMS.forEach(room => {
-                const card = document.createElement('div');
-                card.className = 'room-card';
-                card.innerHTML = `
-                    <div class="room-header">
-                        <input type="checkbox" class="room-checkbox" data-room-id="${room.id}">
-                        <span class="room-name">${room.name}</span>
-                    </div>
-                    <div class="room-details">
-                        <div class="room-cost">Cost: $${room.costMin.toLocaleString()} - $${room.costMax.toLocaleString()}</div>
-                        <div class="room-value">Value increase: ${room.valueIncreaseMin}% - ${room.valueIncreaseMax}%</div>
-                    </div>
-                `;
+    const selectedRooms = new Set();
 
-                const checkbox = card.querySelector('.room-checkbox');
-                checkbox.addEventListener('change', (e) => {
-                    if (e.target.checked) {
-                        selectedRooms.add(room.id);
-                        card.classList.add('selected');
-                    } else {
-                        selectedRooms.delete(room.id);
-                        card.classList.remove('selected');
-                    }
-                    updateCalculations();
-                });
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+    }
 
-                card.addEventListener('click', (e) => {
-                    if (e.target !== checkbox) {
-                        checkbox.checked = !checkbox.checked;
-                        checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-                    }
-                });
+    function initializeRooms() {
+        DOM.roomsGrid.innerHTML = '';
+        ROOMS.forEach(room => {
+            const card = document.createElement('div');
+            card.className = 'room-card glass-card rounded-xl p-4';
+            card.innerHTML =
+                '<div class="flex items-center gap-3 mb-3">' +
+                    '<input type="checkbox" class="room-checkbox" data-room-id="' + room.id + '">' +
+                    '<i class="ph ' + room.icon + ' text-lg text-cyan-glow"></i>' +
+                    '<span class="text-sm font-semibold text-white">' + room.name + '</span>' +
+                '</div>' +
+                '<div class="pl-[34px] space-y-1">' +
+                    '<p class="text-xs text-gold-base font-medium">Cost: $' + room.costMin.toLocaleString() + ' - $' + room.costMax.toLocaleString() + '</p>' +
+                    '<p class="text-xs text-green-400 font-medium">Value increase: ' + room.valueIncreaseMin + '% - ' + room.valueIncreaseMax + '%</p>' +
+                '</div>';
 
-                DOM.roomsGrid.appendChild(card);
+            const checkbox = card.querySelector('.room-checkbox');
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) { selectedRooms.add(room.id); card.classList.add('selected'); }
+                else { selectedRooms.delete(room.id); card.classList.remove('selected'); }
+                updateCalculations();
             });
+
+            card.addEventListener('click', (e) => {
+                if (e.target !== checkbox) { checkbox.checked = !checkbox.checked; checkbox.dispatchEvent(new Event('change', { bubbles: true })); }
+            });
+
+            DOM.roomsGrid.appendChild(card);
+        });
+    }
+
+    DOM.homeValue.addEventListener('input', (e) => {
+        const value = parseFloat(e.target.value) || 0;
+        if (value > 0) { DOM.homeValueDisplay.textContent = formatCurrency(value); DOM.homeValueDisplay.classList.remove('hidden'); }
+        else { DOM.homeValueDisplay.classList.add('hidden'); }
+        updateCalculations();
+    });
+
+    function updateCalculations() {
+        const homeValue = parseFloat(DOM.homeValue.value) || 0;
+
+        if (homeValue <= 0 || selectedRooms.size === 0) {
+            DOM.resultsContainer.style.display = 'none';
+            DOM.emptyState.classList.remove('hidden');
+            return;
         }
 
-        // Format currency
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
+        DOM.emptyState.classList.add('hidden');
+        DOM.resultsContainer.style.display = 'block';
 
-        // Update home value display
-        DOM.homeValue.addEventListener('input', (e) => {
-            const value = parseFloat(e.target.value) || 0;
-            if (value > 0) {
-                DOM.homeValueDisplay.textContent = formatCurrency(value);
-                DOM.homeValueDisplay.style.display = 'inline-block';
-            } else {
-                DOM.homeValueDisplay.style.display = 'none';
-            }
-            updateCalculations();
+        let totalCostMin = 0, totalCostMax = 0, totalValueIncreaseMin = 0, totalValueIncreaseMax = 0;
+
+        selectedRooms.forEach(roomId => {
+            const room = ROOMS.find(r => r.id === roomId);
+            totalCostMin += room.costMin; totalCostMax += room.costMax;
+            totalValueIncreaseMin += room.valueIncreaseMin; totalValueIncreaseMax += room.valueIncreaseMax;
         });
 
-        // Update CTA button
-        function updateCtaButton() {
-            const agentName = 'Your Agent';
-            const phone = '(555) 000-0000';
-            DOM.ctaButton.textContent = `Contact ${agentName} to discuss staging options`;
-            if (phone && phone !== '(555) 000-0000') {
-                DOM.ctaButton.href = `tel:${phone}`;
-            }
-        }
+        const avgCost = (totalCostMin + totalCostMax) / 2;
+        const avgValueIncrease = (totalValueIncreaseMin + totalValueIncreaseMax) / 2;
+        const projectedValueIncrease = (homeValue * avgValueIncrease) / 100;
+        const netProfit = projectedValueIncrease - avgCost;
+        const roi = avgCost > 0 ? ((netProfit / avgCost) * 100) : 0;
+        const daysReduction = Math.round((30 + 50) / 2);
 
-        // Main calculation function
-        function updateCalculations() {
-            const homeValue = parseFloat(DOM.homeValue.value) || 0;
+        DOM.summaryTotalCost.textContent = formatCurrency(avgCost);
+        DOM.summaryValueIncrease.textContent = formatCurrency(projectedValueIncrease);
+        DOM.summaryNetProfit.textContent = formatCurrency(netProfit);
+        DOM.summaryROI.textContent = roi >= 0 ? '+' + roi.toFixed(0) + '%' : roi.toFixed(0) + '%';
 
-            if (homeValue <= 0 || selectedRooms.size === 0) {
-                DOM.resultsContainer.style.display = 'none';
-                DOM.emptyState.style.display = 'block';
-                return;
-            }
+        DOM.resultCards.innerHTML =
+            '<div class="glass-card rounded-xl p-5 text-center reveal visible">' +
+                '<p class="text-[10px] text-white/30 uppercase tracking-wider mb-2">Total Staging Cost</p>' +
+                '<p class="font-serif text-2xl font-bold text-gold-base">' + formatCurrency(avgCost) + '</p>' +
+                '<p class="text-[10px] text-white/20 mt-1 italic">$' + totalCostMin.toLocaleString() + ' to $' + totalCostMax.toLocaleString() + '</p>' +
+            '</div>' +
+            '<div class="glass-card rounded-xl p-5 text-center reveal visible">' +
+                '<p class="text-[10px] text-white/30 uppercase tracking-wider mb-2">Projected Value Increase</p>' +
+                '<p class="font-serif text-2xl font-bold text-cyan-glow">' + formatCurrency(projectedValueIncrease) + '</p>' +
+                '<p class="text-[10px] text-white/20 mt-1 italic">' + avgValueIncrease.toFixed(1) + '% of home value</p>' +
+            '</div>' +
+            '<div class="glass-card rounded-xl p-5 text-center reveal visible">' +
+                '<p class="text-[10px] text-white/30 uppercase tracking-wider mb-2">Net ROI</p>' +
+                '<p class="font-serif text-2xl font-bold text-green-400">' + (roi >= 0 ? '+' : '') + roi.toFixed(0) + '%</p>' +
+                '<p class="text-[10px] text-white/20 mt-1 italic">' + formatCurrency(netProfit) + ' profit</p>' +
+            '</div>' +
+            '<div class="glass-card rounded-xl p-5 text-center reveal visible">' +
+                '<p class="text-[10px] text-white/30 uppercase tracking-wider mb-2">Faster Sales</p>' +
+                '<p class="font-serif text-2xl font-bold text-cyan-deep">~' + daysReduction + '%</p>' +
+                '<p class="text-[10px] text-white/20 mt-1 italic">30 to 50% fewer days on market</p>' +
+            '</div>';
+    }
 
-            DOM.emptyState.style.display = 'none';
-            DOM.resultsContainer.style.display = 'block';
-
-            // Calculate totals
-            let totalCostMin = 0;
-            let totalCostMax = 0;
-            let totalValueIncreaseMin = 0;
-            let totalValueIncreaseMax = 0;
-
-            selectedRooms.forEach(roomId => {
-                const room = ROOMS.find(r => r.id === roomId);
-                totalCostMin += room.costMin;
-                totalCostMax += room.costMax;
-                totalValueIncreaseMin += room.valueIncreaseMin;
-                totalValueIncreaseMax += room.valueIncreaseMax;
-            });
-
-            // Calculate averages for display
-            const avgCost = (totalCostMin + totalCostMax) / 2;
-            const avgValueIncrease = (totalValueIncreaseMin + totalValueIncreaseMax) / 2;
-
-            // Value calculations
-            const projectedValueIncrease = (homeValue * avgValueIncrease) / 100;
-            const netProfit = projectedValueIncrease - avgCost;
-            const roi = avgCost > 0 ? ((netProfit / avgCost) * 100) : 0;
-            const daysReduction = Math.round((30 + 50) / 2);
-
-            // Update summary
-            DOM.summaryTotalCost.textContent = formatCurrency(avgCost);
-            DOM.summaryValueIncrease.textContent = formatCurrency(projectedValueIncrease);
-            DOM.summaryNetProfit.textContent = formatCurrency(netProfit);
-            DOM.summaryROI.textContent = roi >= 0 ? `+${roi.toFixed(0)}%` : `${roi.toFixed(0)}%`;
-
-            // Update result cards
-            DOM.resultCards.innerHTML = `
-                <div class="result-card roi-cost">
-                    <div class="result-label">Total Staging Cost</div>
-                    <div class="result-value">${formatCurrency(avgCost)}</div>
-                    <div class="result-note">$${totalCostMin.toLocaleString()} -- $${totalCostMax.toLocaleString()}</div>
-                </div>
-                <div class="result-card">
-                    <div class="result-label">Projected Value Increase</div>
-                    <div class="result-value">${formatCurrency(projectedValueIncrease)}</div>
-                    <div class="result-note">${avgValueIncrease.toFixed(1)}% of home value</div>
-                </div>
-                <div class="result-card roi-positive">
-                    <div class="result-label">Net ROI</div>
-                    <div class="result-value">${roi >= 0 ? '+' : ''}${roi.toFixed(0)}%</div>
-                    <div class="result-note">${formatCurrency(netProfit)} profit</div>
-                </div>
-                <div class="result-card roi-days">
-                    <div class="result-label">Faster Sales</div>
-                    <div class="result-value">~${daysReduction}%</div>
-                    <div class="result-note">30--50% reduction in days on market</div>
-                </div>
-            `;
-        }
-
-        // Initialize
-        initializeRooms();
-        updateCtaButton();
-        updateCalculations();
+    initializeRooms();
+    updateCalculations();
     </script>
-<div style="text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.8rem;color:#4A6178;margin-top:2rem;">Powered by <a href="https://gethomeedge.com" target="_blank" style="color:#FFD54F;text-decoration:none;font-weight:600;">HomeEdge</a></div>
 </body>
 </html>

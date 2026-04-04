@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,318 +7,248 @@
     <meta name="description" content="Explore all 28 HomeEdge AI tools: generators, calculators, dashboards, and systems built for real estate listing agents.">
     <link rel="icon" href="/homeedge-logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: {
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    }
+                }
+            }
+        }
+    </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --navy: #0B1426;
-            --navy-light: #121E36;
-            --navy-mid: #1A2A4A;
-            --cyan: #00D4FF;
-            --cyan-glow: rgba(0, 212, 255, 0.15);
-            --gold: #F5A623;
-            --gold-light: #FFD54F;
-            --white: #FFFFFF;
-            --gray: #94A3B8;
-            --gray-light: #CBD5E1;
-            --border: rgba(255,255,255,0.08);
-            --success: #10B981;
-        }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--navy);
-            color: var(--white);
-            line-height: 1.6;
-        }
-        header {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(11, 20, 38, 0.92);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
-        }
-        .logo {
-            font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 800;
-            background: linear-gradient(135deg, var(--cyan), var(--gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-decoration: none;
-        }
-        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
-        .nav-links a:hover { color: var(--cyan); }
-        .btn-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            color: var(--navy); padding: 0.6rem 1.4rem; border-radius: 8px;
-            font-weight: 700; font-size: 0.85rem; text-decoration: none;
-        }
-        .hero {
-            padding: 8rem 2rem 4rem; text-align: center; max-width: 900px; margin: 0 auto;
-        }
-        .hero h1 {
-            font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 800;
-            line-height: 1.2; margin-bottom: 1rem;
-        }
-        .hero h1 span { color: var(--cyan); }
-        .hero p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem; }
-        .category { max-width: 1200px; margin: 0 auto 4rem; padding: 0 2rem; }
-        .category-header {
-            display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
-        }
-        .category-label {
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
-            font-weight: 700; padding: 0.4rem 1rem; border-radius: 20px;
-        }
-        .category-label.ai { background: var(--cyan-glow); color: var(--cyan); }
-        .category-label.calc { background: rgba(245, 166, 35, 0.15); color: var(--gold); }
-        .category-label.dash { background: rgba(16, 185, 129, 0.15); color: var(--success); }
-        .category-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; }
-        .tools-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
-        }
-        .tool-card {
-            background: var(--navy-light); border: 1px solid var(--border);
-            border-radius: 12px; padding: 1.5rem; transition: all 0.3s;
-            text-decoration: none; color: var(--white); display: block;
-        }
-        .tool-card:hover {
-            border-color: var(--cyan); transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.1);
-        }
-        .tool-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
-        .tool-card p { color: var(--gray); font-size: 0.85rem; line-height: 1.5; }
-        .tool-card .tool-type {
-            display: inline-block; font-size: 0.7rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-top: 0.75rem; font-weight: 600;
-        }
-        .tool-card .tool-type.ai { color: var(--cyan); }
-        .tool-card .tool-type.calc { color: var(--gold); }
-        .tool-card .tool-type.dash { color: var(--success); }
-        .cta-section {
-            text-align: center; padding: 4rem 2rem; max-width: 700px; margin: 0 auto;
-        }
-        .cta-section h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem; }
-        .cta-section p { color: var(--gray); margin-bottom: 2rem; }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--cyan), #0099cc);
-            color: var(--navy); padding: 1rem 2.5rem; border-radius: 10px;
-            font-weight: 700; font-size: 1rem; text-decoration: none;
-            display: inline-block; transition: transform 0.2s;
-        }
-        .btn-primary:hover { transform: scale(1.03); }
-        footer {
-            border-top: 1px solid var(--border); padding: 2rem;
-            text-align: center; color: var(--gray); font-size: 0.8rem;
-        }
-        footer a { color: var(--cyan); text-decoration: none; }
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .nav-links { display: none; }
-            .tools-grid { grid-template-columns: 1fr; }
-        }
+        body { background: #040711; }
+        .tool-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tool-card:hover { transform: translateY(-4px); }
+        .tool-card:hover .tool-icon { transform: scale(1.1); }
+        .tool-icon { transition: transform 0.3s; }
     </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <a href="/" class="logo">HomeEdge</a>
-            <ul class="nav-links">
-                <li><a href="/#features">Features</a></li>
-                <li><a href="/#pricing">Pricing</a></li>
-                <li><a href="/#faq">FAQ</a></li>
-            </ul>
-            <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank" class="btn-header">Book a Call</a>
-        </nav>
-    </header>
+<body class="font-sans text-white min-h-screen">
 
-    <div class="hero">
-        <h1>All <span>28 Tools</span>. Try Them Live.</h1>
-        <p>Every tool below is included in your HomeEdge platform, branded to you. Click any tool to try it.</p>
+    <!-- Ambient glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-cyan-glow/5 rounded-full blur-[150px]"></div>
+        <div class="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-gold-base/5 rounded-full blur-[120px]"></div>
     </div>
+
+    <!-- Nav -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-navy-900/80 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="font-serif text-2xl font-bold bg-gradient-to-r from-cyan-glow to-gold-base bg-clip-text text-transparent">HomeEdge</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="/#features" class="text-sm text-slate-400 hover:text-cyan-glow transition-colors">Features</a>
+                <a href="/#pricing" class="text-sm text-slate-400 hover:text-cyan-glow transition-colors">Pricing</a>
+                <a href="/app/dashboard.html" class="text-sm text-slate-400 hover:text-cyan-glow transition-colors">Dashboard</a>
+                <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank" class="bg-gradient-to-r from-gold-base to-gold-light text-navy-900 px-5 py-2 rounded-lg text-sm font-bold hover:shadow-lg hover:shadow-gold-base/20 transition-all">Book a Call</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative z-10 pt-32 pb-16 text-center px-6">
+        <div class="max-w-3xl mx-auto">
+            <p class="text-xs font-bold tracking-widest text-cyan-glow uppercase mb-4">Explore the Platform</p>
+            <h1 class="font-serif text-4xl md:text-6xl font-bold mb-6">All <span class="bg-gradient-to-r from-cyan-glow to-gold-base bg-clip-text text-transparent">28 Tools</span>. Try Them Live.</h1>
+            <p class="text-lg text-slate-400 max-w-xl mx-auto">Every tool below is included in your HomeEdge platform, branded to you. Click any tool to try it.</p>
+        </div>
+    </section>
 
     <!-- AI Generators -->
-    <div class="category">
-        <div class="category-header">
-            <span class="category-label ai">AI Generators</span>
-            <h2 class="category-title">14 AI-Powered Tools</h2>
+    <section class="relative z-10 max-w-7xl mx-auto px-6 mb-16">
+        <div class="flex items-center gap-3 mb-8">
+            <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-cyan-glow/10 text-cyan-glow border border-cyan-glow/20">AI Generators</span>
+            <h2 class="font-serif text-2xl font-semibold">14 AI-Powered Tools</h2>
         </div>
-        <div class="tools-grid">
-            <a href="cma-generator.html" class="tool-card">
-                <h3>CMA Generator</h3>
-                <p>Branded comparative market analysis in 30 seconds. Hand it to sellers at the kitchen table.</p>
-                <span class="tool-type ai">AI Generator</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="cma-generator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-chart-bar text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">CMA Generator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Branded comparative market analysis in 30 seconds.</p>
             </a>
-            <a href="listing-description.html" class="tool-card">
-                <h3>Listing Description Writer</h3>
-                <p>MLS-ready property descriptions in one click. No more writer's block.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="listing-description.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-text-aa text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Listing Description Writer</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">MLS-ready property descriptions in one click.</p>
             </a>
-            <a href="social-media-generator.html" class="tool-card">
-                <h3>Social Media Generator</h3>
-                <p>Posts for Facebook, Instagram, LinkedIn in your voice. Just listing, new price, open house, or sold.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="social-media-generator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-share-network text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Social Media Generator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Posts for Facebook, Instagram, LinkedIn in your voice.</p>
             </a>
-            <a href="followup-email-generator.html" class="tool-card">
-                <h3>Follow-Up Email Generator</h3>
-                <p>Professional follow-ups for every scenario. Post-showing, post-open house, price change, and more.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="followup-email-generator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-envelope text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Follow-Up Email Generator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Professional follow-ups for every scenario.</p>
             </a>
-            <a href="market-snapshot.html" class="tool-card">
-                <h3>Market Snapshot</h3>
-                <p>Neighborhood market reports with trends, comps, and insights. Send to sellers weekly.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="market-snapshot.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-globe-hemisphere-west text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Market Snapshot</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Neighborhood market reports with trends and comps.</p>
             </a>
-            <a href="listing-presentation.html" class="tool-card">
-                <h3>Listing Presentation Builder</h3>
-                <p>Generate a professional listing presentation outline with market data and your value proposition.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="listing-presentation.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-presentation-chart text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Listing Presentation Builder</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Professional listing presentation with market data.</p>
             </a>
-            <a href="video-script-generator.html" class="tool-card">
-                <h3>Video Script Generator</h3>
-                <p>Scripts for listing tours, market updates, and social videos. Ready to record in minutes.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="video-script-generator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-video-camera text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Video Script Generator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Scripts for listing tours and market update videos.</p>
             </a>
-            <a href="expired-listing-kit.html" class="tool-card">
-                <h3>Expired Listing Kit</h3>
-                <p>Prospecting letters, scripts, and strategies for expired listings in your area.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="expired-listing-kit.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-clock-countdown text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Expired Listing Kit</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Prospecting letters and scripts for expired listings.</p>
             </a>
-            <a href="neighborhood-farming.html" class="tool-card">
-                <h3>Neighborhood Farming Toolkit</h3>
-                <p>Door-knocking scripts, mailer copy, and farming strategies for your target neighborhoods.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="neighborhood-farming.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-map-pin text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Neighborhood Farming</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Door-knocking scripts and farming strategies.</p>
             </a>
-            <a href="objection-handler.html" class="tool-card">
-                <h3>Objection Handler</h3>
-                <p>AI-powered responses to common seller objections. Practice before the appointment.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="objection-handler.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-shield-check text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Objection Handler</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">AI responses to common seller objections.</p>
             </a>
-            <a href="seller-updates.html" class="tool-card">
-                <h3>Seller Update Generator</h3>
-                <p>Weekly seller updates with market activity, showing feedback, and next steps. Keep clients informed.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="seller-updates.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-megaphone text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Seller Update Generator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Weekly seller updates with market activity.</p>
             </a>
-            <a href="pricing-engine.html" class="tool-card">
-                <h3>AI Pricing Strategy</h3>
-                <p>Data-driven pricing recommendations with strategies for different market conditions.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="pricing-engine.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-tag text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">AI Pricing Strategy</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Data-driven pricing recommendations.</p>
             </a>
-            <a href="testimonial-collector.html" class="tool-card">
-                <h3>Testimonial Collector</h3>
-                <p>Generate review request emails and texts that actually get responses from past clients.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="testimonial-collector.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-star text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Testimonial Collector</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Review requests that get responses from past clients.</p>
             </a>
-            <a href="market-indicator.html" class="tool-card">
-                <h3>Market Condition Analyzer</h3>
-                <p>Analyze market conditions with data points that matter. Buyer's market, seller's market, or balanced.</p>
-                <span class="tool-type ai">AI Generator</span>
+            <a href="market-indicator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-cyan-glow/30 hover:shadow-lg hover:shadow-cyan-glow/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-cyan-glow/10 flex items-center justify-center mb-3"><i class="ph ph-trend-up text-xl text-cyan-glow"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Market Indicator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Buyer's market, seller's market, or balanced.</p>
             </a>
         </div>
-    </div>
+    </section>
 
-    <!-- Smart Calculators -->
-    <div class="category">
-        <div class="category-header">
-            <span class="category-label calc">Smart Calculators</span>
-            <h2 class="category-title">7 Interactive Calculators</h2>
+    <!-- Calculators -->
+    <section class="relative z-10 max-w-7xl mx-auto px-6 mb-16">
+        <div class="flex items-center gap-3 mb-8">
+            <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-gold-base/10 text-gold-base border border-gold-base/20">Smart Calculators</span>
+            <h2 class="font-serif text-2xl font-semibold">7 Interactive Calculators</h2>
         </div>
-        <div class="tools-grid">
-            <a href="net-proceeds-calculator.html" class="tool-card">
-                <h3>Net Proceeds Calculator</h3>
-                <p>Show sellers exactly what they walk away with. Commissions, closing costs, mortgage payoff. Trust in 30 seconds.</p>
-                <span class="tool-type calc">Calculator</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="net-proceeds-calculator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-calculator text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Net Proceeds Calculator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Show sellers exactly what they walk away with.</p>
             </a>
-            <a href="fix-vs-sell.html" class="tool-card">
-                <h3>Fix vs. Sell Analyzer</h3>
-                <p>Should they renovate or sell as-is? Side-by-side ROI comparison with real numbers.</p>
-                <span class="tool-type calc">Calculator</span>
+            <a href="fix-vs-sell.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-wrench text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Fix vs. Sell Analyzer</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Renovate or sell as-is? Side-by-side ROI comparison.</p>
             </a>
-            <a href="commission-calculator.html" class="tool-card">
-                <h3>Commission Value Calculator</h3>
-                <p>Show your value in dollars. What your commission actually covers and delivers.</p>
-                <span class="tool-type calc">Calculator</span>
+            <a href="commission-calculator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-currency-dollar text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Commission Value Calculator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Show your value in dollars.</p>
             </a>
-            <a href="closing-cost-explainer.html" class="tool-card">
-                <h3>Closing Cost Explainer</h3>
-                <p>Break down every closing cost line item. No surprises at the table.</p>
-                <span class="tool-type calc">Calculator</span>
+            <a href="closing-cost-explainer.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-receipt text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Closing Cost Explainer</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Break down every closing cost line item.</p>
             </a>
-            <a href="home-value-tracker.html" class="tool-card">
-                <h3>Home Value Tracker</h3>
-                <p>Track property values over time. Give sellers data-backed confidence in their pricing.</p>
-                <span class="tool-type calc">Calculator</span>
+            <a href="home-value-tracker.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-house-line text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Home Value Tracker</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Track property values over time with data.</p>
             </a>
-            <a href="offer-comparison-matrix.html" class="tool-card">
-                <h3>Offer Comparison Matrix</h3>
-                <p>Compare multiple offers side by side. Net proceeds, terms, contingencies at a glance.</p>
-                <span class="tool-type calc">Calculator</span>
+            <a href="offer-comparison-matrix.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-scales text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Offer Comparison Matrix</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Compare multiple offers side by side.</p>
             </a>
-            <a href="staging-roi-calculator.html" class="tool-card">
-                <h3>Staging ROI Calculator</h3>
-                <p>Calculate the return on staging investment. Show sellers the math behind staging.</p>
-                <span class="tool-type calc">Calculator</span>
+            <a href="staging-roi-calculator.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-gold-base/30 hover:shadow-lg hover:shadow-gold-base/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-gold-base/10 flex items-center justify-center mb-3"><i class="ph ph-couch text-xl text-gold-base"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Staging ROI Calculator</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Calculate the return on staging investment.</p>
             </a>
         </div>
-    </div>
+    </section>
 
-    <!-- Dashboards & Systems -->
-    <div class="category">
-        <div class="category-header">
-            <span class="category-label dash">Dashboards & Systems</span>
-            <h2 class="category-title">7 Business Systems</h2>
+    <!-- Dashboards -->
+    <section class="relative z-10 max-w-7xl mx-auto px-6 mb-16">
+        <div class="flex items-center gap-3 mb-8">
+            <span class="px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Dashboards & Systems</span>
+            <h2 class="font-serif text-2xl font-semibold">7 Business Systems</h2>
         </div>
-        <div class="tools-grid">
-            <a href="/" class="tool-card">
-                <h3>24/7 AI Chatbot</h3>
-                <p>Answers seller questions in your voice around the clock. Qualifies leads while you sleep.</p>
-                <span class="tool-type dash">System</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <a href="/" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-robot text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">24/7 AI Chatbot</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Answers seller questions in your voice around the clock.</p>
             </a>
-            <a href="seller-dashboard.html" class="tool-card">
-                <h3>Seller Dashboard</h3>
-                <p>Client portal with property status, activity feed, market updates, and next steps.</p>
-                <span class="tool-type dash">Dashboard</span>
+            <a href="seller-dashboard.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-squares-four text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Seller Dashboard</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Client portal with status, activity, and next steps.</p>
             </a>
-            <a href="performance-dashboard.html" class="tool-card">
-                <h3>Performance Dashboard</h3>
-                <p>Track your listing metrics, conversion rates, and platform usage at a glance.</p>
-                <span class="tool-type dash">Dashboard</span>
+            <a href="performance-dashboard.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-chart-line-up text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Performance Dashboard</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Track listing metrics and conversion rates.</p>
             </a>
-            <a href="lead-crm.html" class="tool-card">
-                <h3>Seller Lead CRM</h3>
-                <p>Track every lead from first touch to closing. Pipeline, notes, search. No more spreadsheets.</p>
-                <span class="tool-type dash">System</span>
+            <a href="lead-crm.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-address-book text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Seller Lead CRM</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Track every lead from first touch to closing.</p>
             </a>
-            <a href="open-house-qr.html" class="tool-card">
-                <h3>Open House QR System</h3>
-                <p>Generate QR codes for open houses that capture visitor info and send follow-ups automatically.</p>
-                <span class="tool-type dash">System</span>
+            <a href="open-house-qr.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-qr-code text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Open House QR System</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">QR codes that capture visitor info automatically.</p>
             </a>
-            <a href="listing-portfolio.html" class="tool-card">
-                <h3>Listing Portfolio</h3>
-                <p>Showcase your active and sold listings in a beautiful branded portfolio page.</p>
-                <span class="tool-type dash">Dashboard</span>
+            <a href="listing-portfolio.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-images text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Listing Portfolio</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Showcase active and sold listings beautifully.</p>
             </a>
-            <a href="pre-list-checklist.html" class="tool-card">
-                <h3>Pre-List Checklist</h3>
-                <p>Interactive checklist for sellers to prepare their home. Send before every appointment.</p>
-                <span class="tool-type dash">System</span>
+            <a href="pre-list-checklist.html" class="tool-card block bg-navy-700/30 backdrop-blur-sm border border-white/5 rounded-xl p-5 hover:border-emerald-400/30 hover:shadow-lg hover:shadow-emerald-400/5">
+                <div class="tool-icon w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3"><i class="ph ph-check-square text-xl text-emerald-400"></i></div>
+                <h3 class="font-semibold text-sm mb-1">Pre-List Checklist</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Interactive checklist for seller home prep.</p>
             </a>
         </div>
-    </div>
+    </section>
 
     <!-- CTA -->
-    <div class="cta-section">
-        <h2>All 28 Tools. Your Brand. Your Domain.</h2>
-        <p>Every tool above gets deployed under your brand in 48 hours. Your logo, your colors, your voice. Sellers see you, not us.</p>
-        <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank" class="btn-primary">Book a Free Call</a>
-    </div>
+    <section class="relative z-10 py-20 text-center px-6">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">All 28 Tools. <span class="bg-gradient-to-r from-cyan-glow to-gold-base bg-clip-text text-transparent">Your Brand.</span></h2>
+            <p class="text-slate-400 mb-8">Every tool gets deployed under your brand in 48 hours. Your logo, your colors, your voice.</p>
+            <a href="https://api.leadconnectorhq.com/widget/booking/PMz8WLScmxvvx6306krj" target="_blank" class="inline-block bg-gradient-to-r from-gold-base to-gold-light text-navy-900 px-8 py-3.5 rounded-lg font-bold hover:shadow-lg hover:shadow-gold-base/25 transition-all hover:-translate-y-0.5">Book a Free Call</a>
+        </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2026 <a href="/">HomeEdge</a>. All rights reserved. | <a href="mailto:cole@gethomeedge.com">cole@gethomeedge.com</a></p>
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-white/5 py-8 text-center">
+        <p class="text-sm text-slate-500">&copy; 2026 <a href="/" class="text-cyan-glow hover:underline">HomeEdge</a>. All rights reserved. | <a href="mailto:cole@gethomeedge.com" class="text-slate-400 hover:text-cyan-glow">cole@gethomeedge.com</a></p>
     </footer>
+
 </body>
 </html>

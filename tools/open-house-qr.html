@@ -1,633 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open House QR & Feedback System | HomeEdge</title>
+    <title>Open House QR System | HomeEdge</title>
+    <meta name="description" content="Generate QR codes and sign-in sheets for your open houses. Collect visitor feedback instantly.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: {
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    },
+                    backgroundImage: { 'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)' },
+                    animation: { 'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards' },
+                    keyframes: { 'reveal-up': { '0%': { opacity: '0', transform: 'translateY(40px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --bg-dark: #0A1929;
-            --bg-card: #132F4C;
-            --bg-input: #0E2240;
-            --accent-cyan: #00E5FF;
-            --accent-blue: #1565C0;
-            --accent-gold: #FFD54F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0BEC5;
-            --border: #1A3A5C;
-            --success: #66BB6A;
-            --error: #EF5350;
+        body { background-color: #040711; color: #ffffff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+
+        .glass-panel { background: rgba(10, 17, 40, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
+        .text-gradient-brand { background: linear-gradient(135deg, #00F2FE, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .btn-gold { position: relative; z-index: 1; overflow: hidden; }
+        .btn-gold::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; z-index: -1; }
+        .btn-gold:hover::before { left: 100%; }
 
-        html, body {
-            min-height: 100vh;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: system-ui, -apple-system, sans-serif;
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .form-input {
+            background: rgba(4, 7, 17, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px;
+            color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.95rem; width: 100%; outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
+        .form-input:focus { border-color: rgba(0, 242, 254, 0.5); box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.08), 0 0 20px rgba(0, 242, 254, 0.05); }
+        .form-input::placeholder { color: rgba(255, 255, 255, 0.25); }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        textarea.form-input { resize: vertical; min-height: 60px; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        header {
-            background: linear-gradient(135deg, #050E1A, var(--bg-card));
-            border-bottom: 2px solid var(--accent-cyan);
-            padding: 32px;
-            text-align: center;
-            animation: slideDown 0.5s ease-out;
-        }
-
-        .brand {
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), #80F0FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: var(--text-secondary);
-        }
-
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 32px 20px 48px;
-        }
-
-        .form-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            animation: fadeUp 0.5s ease-out 0.1s both;
-        }
-
-        .form-card h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group { display: flex; flex-direction: column; }
-        .form-group.full-width { grid-column: 1 / -1; }
-
-        label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-        }
-
-        input, textarea {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus, textarea:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15);
-        }
-
-        textarea { resize: vertical; min-height: 48px; }
-
-        .section-divider {
-            grid-column: 1 / -1;
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 4px 0;
-        }
-
-        .section-label {
-            grid-column: 1 / -1;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .btn-submit {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 12px;
-            padding: 16px 48px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-submit:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .error-message {
-            display: none;
-            background: rgba(239, 83, 80, 0.1);
-            border: 1px solid var(--error);
-            color: var(--error);
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-top: 20px;
-        }
-
-        .error-message.active { display: block; }
-
-        .output-card {
-            display: none;
-            margin-top: 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            animation: fadeUp 0.5s ease-out;
-        }
-
-        .output-card.active { display: block; }
-
-        .output-card h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-        }
-
-        .qr-section {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .qr-section img {
-            background: #fff;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
-
-        .qr-section p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .btn-print {
-            display: inline-block;
-            margin-top: 16px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 12px;
-            padding: 14px 36px;
-            font-size: 0.95rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-print:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3);
-        }
-
-        .btn-reset {
-            display: inline-block;
-            margin-top: 16px;
-            margin-left: 12px;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            padding: 14px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .btn-reset:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
 
         /* Sign-in sheet (screen preview) */
-        .sign-in-sheet {
-            background: #fff;
-            color: #111;
-            border-radius: 12px;
-            padding: 32px;
-            margin-top: 20px;
-        }
+        .sign-in-sheet { background: #fff; color: #111; border-radius: 16px; padding: 32px; }
+        .sign-in-sheet h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; color: #111; }
+        .sign-in-sheet .sheet-subtitle { font-size: 0.9rem; color: #555; margin-bottom: 4px; }
+        .sign-in-sheet .sheet-agent { font-size: 0.85rem; color: #333; margin-bottom: 16px; }
+        .sign-in-sheet .qr-inline { text-align: center; margin: 16px 0; }
+        .sign-in-sheet .qr-inline img { background: #fff; padding: 4px; border: 2px solid #ddd; border-radius: 8px; }
+        .sign-in-sheet .scan-text { text-align: center; font-weight: 700; font-size: 1rem; margin-bottom: 20px; color: #111; }
+        .sign-in-sheet table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .sign-in-sheet th { background: #f0f0f0; padding: 10px 8px; text-align: left; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; border: 1px solid #ccc; color: #333; }
+        .sign-in-sheet td { padding: 14px 8px; border: 1px solid #ccc; min-height: 40px; }
+        .sign-in-sheet .feedback-section h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: #111; }
+        .sign-in-sheet .feedback-question { margin-bottom: 8px; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; color: #333; }
+        .sign-in-sheet .sheet-footer { text-align: center; margin-top: 16px; font-size: 0.75rem; color: #999; }
 
-        .sign-in-sheet h3 {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 4px;
-            color: #111;
-        }
-
-        .sign-in-sheet .sheet-subtitle {
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 4px;
-        }
-
-        .sign-in-sheet .sheet-agent {
-            font-size: 0.85rem;
-            color: #333;
-            margin-bottom: 16px;
-        }
-
-        .sign-in-sheet .qr-inline {
-            text-align: center;
-            margin: 16px 0;
-        }
-
-        .sign-in-sheet .qr-inline img {
-            background: #fff;
-            padding: 4px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .sign-in-sheet .scan-text {
-            text-align: center;
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #111;
-        }
-
-        .sign-in-sheet table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
-        }
-
-        .sign-in-sheet th {
-            background: #f0f0f0;
-            padding: 10px 8px;
-            text-align: left;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: 1px solid #ccc;
-            color: #333;
-        }
-
-        .sign-in-sheet td {
-            padding: 14px 8px;
-            border: 1px solid #ccc;
-            min-height: 40px;
-        }
-
-        .sign-in-sheet .feedback-section h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #111;
-        }
-
-        .sign-in-sheet .feedback-question {
-            margin-bottom: 8px;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 0.9rem;
-            color: #333;
-        }
-
-        .sign-in-sheet .sheet-footer {
-            text-align: center;
-            margin-top: 16px;
-            font-size: 0.75rem;
-            color: #999;
-        }
-
-        footer {
-            text-align: center;
-            padding: 24px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        footer a {
-            color: var(--accent-gold);
-            text-decoration: none;
-        }
-
-        footer a:hover { text-decoration: underline; }
-
-        @media (max-width: 640px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .btn-submit { width: 100%; }
-            header h1 { font-size: 1.5rem; }
-            .btn-print, .btn-reset { width: 100%; margin-left: 0; }
-        }
-
-        /* Print stylesheet */
         @media print {
-            html, body {
-                background: #fff !important;
-                color: #000 !important;
-                min-height: auto;
-            }
-
-            header, .form-card, .qr-section, .btn-print, .btn-reset,
-            footer, .error-message, .output-card > h2, .output-card > .qr-section {
-                display: none !important;
-            }
-
-            .output-card {
-                display: block !important;
-                background: none !important;
-                border: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                border-radius: 0 !important;
-            }
-
-            .sign-in-sheet {
-                display: block !important;
-                border-radius: 0 !important;
-                padding: 20px !important;
-                margin: 0 !important;
-                background: #fff !important;
-                color: #000 !important;
-                box-shadow: none !important;
-                page-break-inside: avoid;
-            }
-
-            .sign-in-sheet h3 { font-size: 1.4rem; }
-
-            .sign-in-sheet table {
-                page-break-inside: avoid;
-            }
-
-            .sign-in-sheet th {
-                background: #eee !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .sign-in-sheet .qr-inline img {
-                width: 180px !important;
-                height: 180px !important;
-            }
-
-            main {
-                max-width: 100% !important;
-                padding: 0 !important;
-            }
+            html, body { background: #fff !important; color: #000 !important; min-height: auto; }
+            nav, .form-card-container, .qr-preview, .action-btns, footer, .error-message, .output-header { display: none !important; }
+            .output-card { display: block !important; background: none !important; border: none !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; backdrop-filter: none !important; }
+            .sign-in-sheet { display: block !important; border-radius: 0 !important; padding: 20px !important; margin: 0 !important; }
+            .sign-in-sheet th { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .sign-in-sheet .qr-inline img { width: 180px !important; height: 180px !important; }
+            main { max-width: 100% !important; padding: 0 !important; }
+            section { display: none !important; }
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="brand">HomeEdge</div>
-        <h1>Open House QR System</h1>
-        <p>Generate QR codes and sign-in sheets for your open houses</p>
-    </header>
+<body class="font-sans min-h-screen flex flex-col">
 
-    <main>
-        <div class="form-card">
-            <h2>Open House Details</h2>
-            <form id="toolForm" class="form-grid">
-                <div class="form-group full-width">
-                    <label for="address">Property Address</label>
-                    <input type="text" id="address" required placeholder="123 Main St">
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-28 pb-12 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-qr-code text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">Open House QR System</h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">Generate QR codes and sign-in sheets for your open houses</p>
+        </div>
+    </section>
+
+    <main class="flex-1 max-w-3xl w-full mx-auto px-6 pb-20">
+
+        <!-- Form Card -->
+        <div class="form-card-container glass-card rounded-2xl p-8 md:p-10 mb-8 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-house text-lg text-cyan-glow"></i>
                 </div>
-                <div class="form-group full-width">
-                    <label for="cityState">City, State</label>
-                    <input type="text" id="cityState" required placeholder="Milwaukee, WI">
-                </div>
-                <div class="form-group">
-                    <label for="ohDate">Open House Date</label>
-                    <input type="date" id="ohDate">
-                </div>
-                <div class="form-group">
-                    <label for="ohTime">Open House Time</label>
-                    <input type="text" id="ohTime" placeholder="1:00 PM - 3:00 PM">
-                </div>
-                <div class="form-group">
-                    <label for="agentName">Agent Name</label>
-                    <input type="text" id="agentName" required placeholder="Your name">
-                </div>
-                <div class="form-group">
-                    <label for="agentPhone">Agent Phone</label>
-                    <input type="tel" id="agentPhone" placeholder="(555) 123-4567">
-                </div>
-                <div class="form-group">
-                    <label for="agentEmail">Agent Email</label>
-                    <input type="email" id="agentEmail" placeholder="agent@email.com">
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Open House Details</h2>
+            </div>
+
+            <form id="toolForm" onsubmit="return false;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-white/50 mb-2">Property Address <span class="text-cyan-glow">*</span></label>
+                        <input type="text" id="address" class="form-input" required placeholder="123 Main St">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-white/50 mb-2">City, State <span class="text-cyan-glow">*</span></label>
+                        <input type="text" id="cityState" class="form-input" required placeholder="Springfield, IL">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Open House Date</label>
+                        <input type="date" id="ohDate" class="form-input">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Open House Time</label>
+                        <input type="text" id="ohTime" class="form-input" placeholder="1:00 PM - 3:00 PM">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Agent Name <span class="text-cyan-glow">*</span></label>
+                        <input type="text" id="agentName" class="form-input" required placeholder="Your name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Agent Phone</label>
+                        <input type="tel" id="agentPhone" class="form-input" placeholder="(555) 123-4567">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-white/50 mb-2">Agent Email</label>
+                        <input type="email" id="agentEmail" class="form-input" placeholder="agent@email.com">
+                    </div>
                 </div>
 
-                <hr class="section-divider">
-                <div class="section-label">Feedback Questions</div>
+                <div class="border-t border-white/5 my-8"></div>
 
-                <div class="form-group full-width">
-                    <label for="q1">Question 1</label>
-                    <textarea id="q1">What did you like most about this home?</textarea>
-                </div>
-                <div class="form-group full-width">
-                    <label for="q2">Question 2</label>
-                    <textarea id="q2">Is this home in your price range?</textarea>
-                </div>
-                <div class="form-group full-width">
-                    <label for="q3">Question 3</label>
-                    <textarea id="q3">Are you currently working with an agent?</textarea>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                        <i class="ph ph-chat-circle-text text-lg text-gold-base"></i>
+                    </div>
+                    <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Feedback Questions</h2>
                 </div>
 
-                <button type="submit" class="btn-submit" id="submitBtn">Generate QR Code & Sign-In Sheet</button>
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Question 1</label>
+                        <textarea id="q1" class="form-input">What did you like most about this home?</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Question 2</label>
+                        <textarea id="q2" class="form-input">Is this home in your price range?</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-white/50 mb-2">Question 3</label>
+                        <textarea id="q3" class="form-input">Are you currently working with an agent?</textarea>
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <button type="button" id="btnGenerate" onclick="generateQR()"
+                        class="btn-gold w-full py-4 px-8 rounded-xl font-bold text-base tracking-wide
+                               bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark
+                               text-navy-900 border border-gold-base/30
+                               hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5
+                               active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-3">
+                        <i class="ph ph-qr-code text-xl"></i>
+                        Generate QR Code & Sign-In Sheet
+                    </button>
+                </div>
             </form>
         </div>
 
-        <div class="error-message" id="errorMsg"></div>
-
-        <div class="output-card" id="outputCard">
-            <h2>Your Open House Materials</h2>
-
-            <div class="qr-section">
-                <img id="qrImage" src="" alt="QR Code" width="250" height="250">
-                <p>Visitors scan this code to leave feedback</p>
-            </div>
-
-            <div style="text-align: center;">
-                <button class="btn-print" onclick="window.print()">Print Sign-In Sheet</button>
-                <button class="btn-reset" onclick="resetForm()">Start Over</button>
-            </div>
-
-            <div class="sign-in-sheet" id="signInSheet">
-                <h3 id="sheetAddress"></h3>
-                <div class="sheet-subtitle" id="sheetDateTime"></div>
-                <div class="sheet-agent" id="sheetAgent"></div>
-
-                <div class="qr-inline">
-                    <img id="qrImagePrint" src="" alt="QR Code" width="180" height="180">
-                </div>
-                <div class="scan-text">Scan to share your feedback!</div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:28%">Name</th>
-                            <th style="width:28%">Email</th>
-                            <th style="width:22%">Phone</th>
-                            <th style="width:22%">Working with agent?</th>
-                        </tr>
-                    </thead>
-                    <tbody id="signInRows"></tbody>
-                </table>
-
-                <div class="feedback-section">
-                    <h4>Feedback Questions</h4>
-                    <div class="feedback-question" id="fbQ1"></div>
-                    <div class="feedback-question" id="fbQ2"></div>
-                    <div class="feedback-question" id="fbQ3"></div>
-                </div>
-
-                <div class="sheet-footer">Powered by HomeEdge | gethomeedge.com</div>
+        <!-- Error State -->
+        <div class="hidden" id="errorMsg">
+            <div class="rounded-xl border border-red-500/30 bg-red-500/10 p-5 mb-6 flex items-start gap-4">
+                <i class="ph ph-warning-circle text-2xl text-red-400 mt-0.5 flex-shrink-0"></i>
+                <p class="text-red-400 font-medium text-sm" id="errorText"></p>
             </div>
         </div>
+
+        <!-- Output Card -->
+        <div class="hidden" id="outputCard">
+            <div class="glass-card rounded-2xl overflow-hidden">
+
+                <div class="output-header flex items-center justify-between px-8 pt-8 pb-0 flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                            <i class="ph ph-qr-code text-lg text-cyan-glow"></i>
+                        </div>
+                        <h2 class="text-lg font-semibold text-white">Your Open House Materials</h2>
+                    </div>
+                </div>
+
+                <!-- QR Preview -->
+                <div class="qr-preview text-center px-8 py-8">
+                    <img id="qrImage" src="" alt="QR Code" width="250" height="250" class="inline-block bg-white p-3 rounded-xl mb-4">
+                    <p class="text-sm text-white/40">Visitors scan this code to leave feedback</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-btns px-8 pb-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="window.print()"
+                        class="btn-gold w-full sm:w-auto py-3 px-8 rounded-xl font-bold text-sm tracking-wide
+                               bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30
+                               hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0
+                               transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="ph ph-printer text-base"></i> Print Sign-In Sheet
+                    </button>
+                    <button onclick="resetForm()"
+                        class="w-full sm:w-auto py-3 px-8 rounded-xl font-bold text-sm tracking-wide
+                               border border-white/10 text-white/50 hover:text-white/70 hover:border-white/20
+                               transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="ph ph-arrow-counter-clockwise text-base"></i> Start Over
+                    </button>
+                </div>
+
+                <!-- Sign-In Sheet -->
+                <div class="sign-in-sheet mx-8 mb-8" id="signInSheet">
+                    <h3 id="sheetAddress"></h3>
+                    <div class="sheet-subtitle" id="sheetDateTime"></div>
+                    <div class="sheet-agent" id="sheetAgent"></div>
+
+                    <div class="qr-inline">
+                        <img id="qrImagePrint" src="" alt="QR Code" width="180" height="180">
+                    </div>
+                    <div class="scan-text">Scan to share your feedback!</div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:28%">Name</th>
+                                <th style="width:28%">Email</th>
+                                <th style="width:22%">Phone</th>
+                                <th style="width:22%">Working with agent?</th>
+                            </tr>
+                        </thead>
+                        <tbody id="signInRows"></tbody>
+                    </table>
+
+                    <div class="feedback-section">
+                        <h4>Feedback Questions</h4>
+                        <div class="feedback-question" id="fbQ1"></div>
+                        <div class="feedback-question" id="fbQ2"></div>
+                        <div class="feedback-question" id="fbQ3"></div>
+                    </div>
+
+                    <div class="sheet-footer">Powered by HomeEdge | gethomeedge.com</div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <footer>
-        Powered by <a href="https://gethomeedge.com">HomeEdge</a> | <a href="https://gethomeedge.com">gethomeedge.com</a>
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
     </footer>
 
     <script>
-        document.getElementById("toolForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            generateQR();
-        });
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        document.getElementById("toolForm").addEventListener("keydown", function(e) {
-            if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
-                e.preventDefault();
-                generateQR();
-            }
-        });
+    document.getElementById("toolForm").addEventListener("keydown", function(e) {
+        if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") { e.preventDefault(); generateQR(); }
+    });
 
-        function generateQR() {
-            const errorMsg = document.getElementById("errorMsg");
-            const outputCard = document.getElementById("outputCard");
+    function generateQR() {
+        const errorMsg = document.getElementById("errorMsg");
+        const outputCard = document.getElementById("outputCard");
 
-            const address = document.getElementById("address").value.trim();
-            const cityState = document.getElementById("cityState").value.trim();
-            const ohDate = document.getElementById("ohDate").value;
-            const ohTime = document.getElementById("ohTime").value.trim();
-            const agentName = document.getElementById("agentName").value.trim();
-            const agentPhone = document.getElementById("agentPhone").value.trim();
-            const agentEmail = document.getElementById("agentEmail").value.trim();
-            const q1 = document.getElementById("q1").value.trim();
-            const q2 = document.getElementById("q2").value.trim();
-            const q3 = document.getElementById("q3").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const cityState = document.getElementById("cityState").value.trim();
+        const ohDate = document.getElementById("ohDate").value;
+        const ohTime = document.getElementById("ohTime").value.trim();
+        const agentName = document.getElementById("agentName").value.trim();
+        const agentPhone = document.getElementById("agentPhone").value.trim();
+        const agentEmail = document.getElementById("agentEmail").value.trim();
+        const q1 = document.getElementById("q1").value.trim();
+        const q2 = document.getElementById("q2").value.trim();
+        const q3 = document.getElementById("q3").value.trim();
 
-            if (!address || !cityState || !agentName) {
-                errorMsg.textContent = "Please fill in the required fields: Property Address, City/State, and Agent Name.";
-                errorMsg.classList.add("active");
-                return;
-            }
-
-            errorMsg.classList.remove("active");
-            outputCard.classList.remove("active");
-
-            const fullAddress = address + ", " + cityState;
-            const feedbackUrl = "https://gethomeedge.com/feedback?address=" + encodeURIComponent(fullAddress) + "&agent=" + encodeURIComponent(agentName);
-            const qrSrc = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(feedbackUrl);
-
-            document.getElementById("qrImage").src = qrSrc;
-            document.getElementById("qrImagePrint").src = qrSrc;
-
-            document.getElementById("sheetAddress").textContent = fullAddress;
-
-            let dateTimeStr = "";
-            if (ohDate) {
-                const d = new Date(ohDate + "T12:00:00");
-                dateTimeStr = d.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-            }
-            if (ohTime) {
-                dateTimeStr += (dateTimeStr ? " | " : "") + ohTime;
-            }
-            document.getElementById("sheetDateTime").textContent = dateTimeStr;
-
-            let agentInfo = "Hosted by " + agentName;
-            if (agentPhone) agentInfo += " | " + agentPhone;
-            if (agentEmail) agentInfo += " | " + agentEmail;
-            document.getElementById("sheetAgent").textContent = agentInfo;
-
-            const tbody = document.getElementById("signInRows");
-            tbody.innerHTML = "";
-            for (let i = 0; i < 10; i++) {
-                const row = document.createElement("tr");
-                row.innerHTML = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
-                tbody.appendChild(row);
-            }
-
-            document.getElementById("fbQ1").textContent = "1. " + (q1 || "What did you like most about this home?");
-            document.getElementById("fbQ2").textContent = "2. " + (q2 || "Is this home in your price range?");
-            document.getElementById("fbQ3").textContent = "3. " + (q3 || "Are you currently working with an agent?");
-
-            outputCard.classList.add("active");
-            outputCard.scrollIntoView({ behavior: "smooth" });
+        if (!address || !cityState || !agentName) {
+            document.getElementById("errorText").textContent = "Please fill in the required fields: Property Address, City/State, and Agent Name.";
+            errorMsg.classList.remove("hidden");
+            return;
         }
 
-        function resetForm() {
-            document.getElementById("outputCard").classList.remove("active");
-            document.querySelector(".form-card").scrollIntoView({ behavior: "smooth" });
+        errorMsg.classList.add("hidden");
+        outputCard.classList.add("hidden");
+
+        const fullAddress = address + ", " + cityState;
+        const feedbackUrl = "https://gethomeedge.com/feedback?address=" + encodeURIComponent(fullAddress) + "&agent=" + encodeURIComponent(agentName);
+        const qrSrc = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(feedbackUrl);
+
+        document.getElementById("qrImage").src = qrSrc;
+        document.getElementById("qrImagePrint").src = qrSrc;
+
+        document.getElementById("sheetAddress").textContent = fullAddress;
+
+        let dateTimeStr = "";
+        if (ohDate) {
+            const d = new Date(ohDate + "T12:00:00");
+            dateTimeStr = d.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
         }
+        if (ohTime) {
+            dateTimeStr += (dateTimeStr ? " | " : "") + ohTime;
+        }
+        document.getElementById("sheetDateTime").textContent = dateTimeStr;
+
+        let agentInfo = "Hosted by " + agentName;
+        if (agentPhone) agentInfo += " | " + agentPhone;
+        if (agentEmail) agentInfo += " | " + agentEmail;
+        document.getElementById("sheetAgent").textContent = agentInfo;
+
+        const tbody = document.getElementById("signInRows");
+        tbody.innerHTML = "";
+        for (let i = 0; i < 10; i++) {
+            const row = document.createElement("tr");
+            row.innerHTML = "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>";
+            tbody.appendChild(row);
+        }
+
+        document.getElementById("fbQ1").textContent = "1. " + (q1 || "What did you like most about this home?");
+        document.getElementById("fbQ2").textContent = "2. " + (q2 || "Is this home in your price range?");
+        document.getElementById("fbQ3").textContent = "3. " + (q3 || "Are you currently working with an agent?");
+
+        outputCard.classList.remove("hidden");
+        outputCard.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function resetForm() {
+        document.getElementById("outputCard").classList.add("hidden");
+        document.querySelector(".form-card-container").scrollIntoView({ behavior: "smooth" });
+    }
     </script>
 </body>
 </html>

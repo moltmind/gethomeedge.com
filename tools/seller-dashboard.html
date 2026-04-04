@@ -1,364 +1,516 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-X6LMX9VR0Y');
-</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seller Dashboard | HomeEdge</title>
-<style>
-:root {
-  --bg-dark: #0A1929;
-  --bg-card: #132F4C;
-  --bg-input: #0E2240;
-  --accent-cyan: #00E5FF;
-  --accent-gold: #FFD54F;
-  --text-primary: #FFFFFF;
-  --text-secondary: #B0BEC5;
-  --border: #1A3A5C;
-  --success: #4ADE80;
-  --error: #EF5350;
-  --warning: #FFD54F;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:var(--bg-dark);color:var(--text-primary);
-  font-family:system-ui,-apple-system,sans-serif;
-  min-height:100vh;line-height:1.6;
-}
-header{
-  text-align:center;padding:32px 20px 28px;
-  background:linear-gradient(180deg,#050E1A,#132F4C);
-  border-bottom:2px solid var(--accent-cyan);
-}
-.brand{color:var(--accent-gold);text-transform:uppercase;letter-spacing:2px;font-size:.85rem;font-weight:600;margin-bottom:8px;}
-header h1{
-  font-size:2rem;font-weight:800;
-  background:linear-gradient(135deg,#00E5FF,#80F0FF);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;margin-bottom:6px;
-}
-header .subtitle{color:var(--text-secondary);font-size:1rem;}
-.container{max-width:1000px;margin:0 auto;padding:24px 20px 40px;}
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X6LMX9VR0Y');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard | HomeEdge</title>
+    <meta name="description" content="A real-time seller dashboard that keeps your clients informed throughout the selling process. Built by HomeEdge.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
 
-.demo-banner{
-  border:1px solid var(--accent-gold);border-radius:10px;
-  padding:12px 20px;text-align:center;margin-bottom:28px;
-  background:rgba(255,213,79,.06);color:var(--accent-gold);
-  font-weight:600;font-size:.9rem;letter-spacing:.5px;
-}
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-.card{
-  background:var(--bg-card);border:1px solid var(--border);
-  border-radius:14px;padding:28px;margin-bottom:24px;
-}
-.card-title{
-  font-size:1.15rem;font-weight:700;margin-bottom:18px;
-  color:var(--accent-gold);
-}
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-/* CARD 1 — Property Overview */
-.property-overview{display:flex;gap:28px;align-items:stretch;}
-.property-photo{
-  flex:0 0 280px;min-height:240px;border-radius:12px;
-  background:linear-gradient(135deg,#132F4C,#1A3A5C);
-  display:flex;align-items:center;justify-content:center;
-}
-.property-photo svg{width:80px;height:80px;opacity:.45;}
-.property-details{flex:1;display:flex;flex-direction:column;gap:8px;}
-.property-address{font-size:1.4rem;font-weight:700;}
-.property-city{color:var(--text-secondary);font-size:.95rem;}
-.status-badge{
-  display:inline-block;padding:4px 14px;border-radius:20px;font-size:.8rem;font-weight:600;
-  background:rgba(0,229,255,.15);color:var(--accent-cyan);border:1px solid var(--accent-cyan);
-  width:fit-content;
-}
-.list-price{font-size:1.6rem;font-weight:800;color:var(--accent-cyan);margin-top:4px;}
-.property-meta{color:var(--text-secondary);font-size:.85rem;display:flex;gap:16px;flex-wrap:wrap;}
-.property-agent{color:var(--text-secondary);font-size:.9rem;margin-top:auto;}
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-/* CARD 2 — Timeline */
-.timeline{display:flex;align-items:flex-start;gap:0;position:relative;padding:10px 0;}
-.timeline-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1;}
-.timeline-circle{
-  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:.85rem;font-weight:700;margin-bottom:10px;position:relative;
-}
-.timeline-circle.completed{background:var(--success);color:#0A1929;}
-.timeline-circle.current{background:var(--accent-cyan);color:#0A1929;}
-.timeline-circle.upcoming{background:transparent;border:2px solid #455A64;color:#455A64;}
-.timeline-label{font-size:.8rem;font-weight:600;margin-bottom:4px;}
-.timeline-detail{font-size:.72rem;color:var(--text-secondary);max-width:120px;}
-.timeline-connector{
-  position:absolute;top:18px;left:calc(50% + 18px);right:calc(-50% + 18px);height:3px;z-index:0;
-}
-.timeline-step:last-child .timeline-connector{display:none;}
-.timeline-connector.completed{background:var(--success);}
-.timeline-connector.current{background:var(--accent-cyan);}
-.timeline-connector.upcoming{background:#455A64;background-image:repeating-linear-gradient(90deg,#455A64 0,#455A64 6px,transparent 6px,transparent 12px);}
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            900: '#040711',
+                            800: '#0A1128',
+                            700: '#141E3E',
+                            600: '#1D2A54',
+                        },
+                        cyan: {
+                            glow: '#00F2FE',
+                            deep: '#4FACFE',
+                        },
+                        gold: {
+                            light: '#F8E9A1',
+                            base: '#D4AF37',
+                            dark: '#A6821A',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
+                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'reveal-up': 'reveal-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-ring': 'pulse-ring 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+                        },
+                        'reveal-up': {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'pulse-ring': {
+                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(0, 242, 254, 0.5)' },
+                            '50%': { boxShadow: '0 0 0 8px rgba(0, 242, 254, 0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
 
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,.5);}50%{box-shadow:0 0 0 8px rgba(0,229,255,0);}}
-.timeline-circle.current{animation:pulse 2s infinite;}
+    <style>
+        body {
+            background-color: #040711;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-/* CARD 3 — Activity Feed */
-.activity-list{list-style:none;}
-.activity-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(26,58,92,.5);}
-.activity-item:last-child{border-bottom:none;}
-.activity-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:6px;}
-.activity-dot.cyan{background:var(--accent-cyan);}
-.activity-dot.gold{background:var(--accent-gold);}
-.activity-dot.green{background:var(--success);}
-.activity-content{flex:1;}
-.activity-event{font-weight:600;font-size:.9rem;}
-.activity-detail{color:var(--text-secondary);font-size:.82rem;margin-top:2px;}
-.activity-time{color:#78909C;font-size:.75rem;white-space:nowrap;margin-top:4px;}
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #040711; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
 
-/* CARD 4 — Market Snapshot */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.stat-mini{
-  background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:18px;
-}
-.stat-mini .stat-label{font-size:.8rem;color:var(--text-secondary);margin-bottom:6px;}
-.stat-mini .stat-value{font-size:1.3rem;font-weight:700;color:var(--accent-cyan);}
-.stat-mini .stat-note{font-size:.78rem;margin-top:4px;}
-.stat-note.green{color:var(--success);}
-.stat-note.gold{color:var(--accent-gold);}
-.stat-note.cyan{color:var(--accent-cyan);}
+        .glass-panel {
+            background: rgba(10, 17, 40, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-/* CARD 5 — Checklist */
-.checklist{list-style:none;}
-.checklist li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(26,58,92,.4);font-size:.9rem;}
-.checklist li:last-child{border-bottom:none;}
-.check-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.75rem;}
-.check-icon.checked{background:var(--success);color:#0A1929;}
-.check-icon.unchecked{background:transparent;border:2px solid #455A64;}
-.checklist li.done{color:var(--text-secondary);}
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-/* CARD 6 — Agent Contact */
-.agent-card-inner{display:flex;align-items:center;gap:18px;margin-bottom:20px;}
-.agent-avatar{
-  width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent-cyan),#1565C0);
-  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.2rem;color:#fff;flex-shrink:0;
-}
-.agent-info{flex:1;}
-.agent-name{font-weight:700;font-size:1.05rem;}
-.agent-company{color:var(--text-secondary);font-size:.85rem;}
-.agent-contact-line{color:var(--text-secondary);font-size:.82rem;}
-.agent-buttons{display:flex;gap:12px;flex-wrap:wrap;}
-.btn{
-  padding:10px 22px;border-radius:8px;font-weight:600;font-size:.9rem;cursor:pointer;
-  transition:all .2s;border:none;
-}
-.btn-outline{background:transparent;border:2px solid var(--accent-cyan);color:var(--accent-cyan);}
-.btn-outline:hover{background:rgba(0,229,255,.1);}
-.btn-filled{background:var(--accent-cyan);color:#0A1929;}
-.btn-filled:hover{background:#33ECFF;}
+        .text-gradient-brand {
+            background: linear-gradient(135deg, #00F2FE, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
 
-footer{
-  text-align:center;padding:28px 20px;color:var(--text-secondary);font-size:.85rem;
-  border-top:1px solid var(--border);margin-top:20px;
-}
-footer a{color:var(--accent-gold);text-decoration:none;}
-footer a:hover{text-decoration:underline;}
+        .text-gradient-cyan {
+            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
 
-@media(max-width:768px){
-  .property-overview{flex-direction:column;}
-  .property-photo{flex:none;width:100%;min-height:180px;}
-  .timeline{flex-direction:column;gap:0;}
-  .timeline-step{flex-direction:row;text-align:left;gap:14px;padding:0 0 24px;}
-  .timeline-connector{
-    left:17px;top:36px;bottom:-2px;right:auto;width:3px;height:auto;
-  }
-  .stats-grid{grid-template-columns:1fr;}
-}
-@media(max-width:480px){
-  .container{padding:16px 12px 32px;}
-  .card{padding:20px 16px;}
-  header{padding:24px 16px 20px;}
-  header h1{font-size:1.5rem;}
-}
-</style>
+        .btn-gold {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+        .btn-gold:hover::before {
+            left: 100%;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* Timeline connector */
+        .timeline-connector {
+            position: absolute;
+            top: 18px;
+            left: calc(50% + 20px);
+            right: calc(-50% + 20px);
+            height: 3px;
+            z-index: 0;
+        }
+    </style>
 </head>
-<body>
-<header>
-  <div class="brand">HomeEdge</div>
-  <h1>Seller Dashboard</h1>
-  <p class="subtitle">What your sellers see &mdash; a live preview</p>
-</header>
+<body class="font-sans min-h-screen flex flex-col">
 
-<div class="container">
-  <div class="demo-banner">DEMO PREVIEW &mdash; This is what your sellers will see</div>
-
-  <!-- CARD 1: Property Overview -->
-  <div class="card">
-    <div class="property-overview">
-      <div class="property-photo">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M32 8L4 30h8v22h16V38h8v14h16V30h8L32 8z" fill="#B0BEC5" opacity=".5"/>
-          <rect x="26" y="22" width="12" height="10" rx="1" fill="#B0BEC5" opacity=".35"/>
-        </svg>
-      </div>
-      <div class="property-details">
-        <div class="property-address">742 Oakwood Drive</div>
-        <div class="property-city">Springfield, IL 62704</div>
-        <div class="status-badge">Active</div>
-        <div class="list-price">$385,000</div>
-        <div class="property-meta">
-          <span>Listed: March 15, 2026</span>
-          <span>MLS#: IL-284751</span>
+    <!-- Fixed Glass Nav -->
+    <nav class="fixed w-full top-0 z-50 glass-panel border-b border-white/5 py-4">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <a href="/tools/" class="flex items-center gap-3 group" style="text-decoration:none;">
+                <i class="ph ph-arrow-left text-xl text-cyan-glow/70 group-hover:text-cyan-glow transition-colors"></i>
+                <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors hidden sm:inline">All Tools</span>
+            </a>
+            <a href="/" class="flex items-center gap-1" style="text-decoration:none;">
+                <span class="font-serif text-2xl font-bold tracking-wide text-gradient-brand">HomeEdge</span>
+            </a>
+            <a href="#" class="flex items-center gap-2 text-sm text-white/50 hover:text-white/70 transition-colors" style="text-decoration:none;">
+                <i class="ph ph-squares-four text-lg"></i>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
         </div>
-        <div class="property-agent">Agent: Sarah Mitchell, Premier Realty</div>
-      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-8 px-6 text-center overflow-hidden">
+        <div class="orb w-[400px] h-[400px] bg-cyan-glow/5 -top-40 -left-40 absolute"></div>
+        <div class="orb w-[300px] h-[300px] bg-gold-base/5 -top-20 -right-32 absolute"></div>
+
+        <div class="relative z-10 max-w-2xl mx-auto reveal" id="heroReveal">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-navy-700/60 border border-white/10 mb-6">
+                <i class="ph ph-squares-four text-3xl text-cyan-glow"></i>
+            </div>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Seller Dashboard
+            </h1>
+            <p class="text-lg text-white/50 max-w-lg mx-auto">
+                What your sellers see - a live preview of their experience
+            </p>
+        </div>
+    </section>
+
+    <!-- Demo Banner -->
+    <div class="max-w-5xl mx-auto px-6 mb-6">
+        <div class="rounded-xl border border-gold-base/30 bg-gold-base/5 px-5 py-3 text-center text-gold-base text-sm font-semibold tracking-wide">
+            DEMO PREVIEW - This is what your sellers will see
+        </div>
     </div>
-  </div>
 
-  <!-- CARD 2: Sale Progress Timeline -->
-  <div class="card">
-    <div class="card-title">Sale Progress</div>
-    <div class="timeline">
-      <div class="timeline-step">
-        <div class="timeline-circle completed">&#10003;</div>
-        <div class="timeline-label">Listed</div>
-        <div class="timeline-detail">March 15</div>
-        <div class="timeline-connector completed"></div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-circle completed">&#10003;</div>
-        <div class="timeline-label">Marketing Active</div>
-        <div class="timeline-detail">All channels live</div>
-        <div class="timeline-connector current"></div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-circle current">3</div>
-        <div class="timeline-label">Showings</div>
-        <div class="timeline-detail">12 showings so far</div>
-        <div class="timeline-connector upcoming"></div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-circle upcoming">4</div>
-        <div class="timeline-label">Offer Review</div>
-        <div class="timeline-detail">Upcoming</div>
-        <div class="timeline-connector upcoming"></div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-circle upcoming">5</div>
-        <div class="timeline-label">Under Contract</div>
-        <div class="timeline-detail">Upcoming</div>
-      </div>
-    </div>
-  </div>
+    <!-- Main Content -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-6 pb-20">
 
-  <!-- CARD 3: Recent Activity -->
-  <div class="card">
-    <div class="card-title">Recent Activity</div>
-    <ul class="activity-list">
-      <li class="activity-item">
-        <div class="activity-dot cyan"></div>
-        <div class="activity-content">
-          <div class="activity-event">New Showing Scheduled</div>
-          <div class="activity-detail">Mar 30, 2:00 PM &mdash; Buyer's agent: Mike Torres</div>
+        <!-- Card 1: Property Overview -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex-shrink-0 w-full md:w-72 h-56 rounded-xl bg-gradient-to-br from-navy-700 to-navy-800 flex items-center justify-center border border-white/5">
+                    <i class="ph ph-house text-6xl text-white/15"></i>
+                </div>
+                <div class="flex-1 flex flex-col gap-2">
+                    <h2 class="text-2xl font-bold text-white">742 Oakwood Drive</h2>
+                    <p class="text-white/50 text-sm">Springfield, IL 62704</p>
+                    <span class="inline-block w-fit px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-cyan-glow/12 text-cyan-glow border border-cyan-glow/40">Active</span>
+                    <div class="text-3xl font-extrabold text-cyan-glow mt-1">$385,000</div>
+                    <div class="flex gap-4 flex-wrap text-white/40 text-sm mt-1">
+                        <span>Listed: March 15, 2026</span>
+                        <span>MLS#: IL-284751</span>
+                    </div>
+                    <div class="text-white/40 text-sm mt-auto">Agent: Sarah Mitchell, Premier Realty</div>
+                </div>
+            </div>
         </div>
-        <div class="activity-time">2 hours ago</div>
-      </li>
-      <li class="activity-item">
-        <div class="activity-dot gold"></div>
-        <div class="activity-content">
-          <div class="activity-event">Feedback Received</div>
-          <div class="activity-detail">"Loved the kitchen and backyard. Price feels fair." &mdash; Showing on Mar 28</div>
-        </div>
-        <div class="activity-time">Yesterday</div>
-      </li>
-      <li class="activity-item">
-        <div class="activity-dot cyan"></div>
-        <div class="activity-content">
-          <div class="activity-event">Showing Completed</div>
-          <div class="activity-detail">Buyer's agent: Lisa Chen, 2 attendees</div>
-        </div>
-        <div class="activity-time">2 days ago</div>
-      </li>
-      <li class="activity-item">
-        <div class="activity-dot gold"></div>
-        <div class="activity-content">
-          <div class="activity-event">Market Update</div>
-          <div class="activity-detail">2 new comparable listings in your area this week</div>
-        </div>
-        <div class="activity-time">3 days ago</div>
-      </li>
-      <li class="activity-item">
-        <div class="activity-dot green"></div>
-        <div class="activity-content">
-          <div class="activity-event">Price Milestone</div>
-          <div class="activity-detail">Your home has been viewed 847 times online</div>
-        </div>
-        <div class="activity-time">5 days ago</div>
-      </li>
-    </ul>
-  </div>
 
-  <!-- CARD 4: Market Snapshot -->
-  <div class="card">
-    <div class="card-title">Your Market at a Glance</div>
-    <div class="stats-grid">
-      <div class="stat-mini">
-        <div class="stat-label">Avg Price in Area</div>
-        <div class="stat-value">$372,000</div>
-        <div class="stat-note green">&#9650; +3.2% YoY</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-label">Days on Market (Area Avg)</div>
-        <div class="stat-value">26</div>
-        <div class="stat-note green">Yours: 15 &mdash; Faster!</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-label">Active Listings Nearby</div>
-        <div class="stat-value">14</div>
-        <div class="stat-note gold">Low inventory</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-label">Price Per Sq Ft</div>
-        <div class="stat-value">$178</div>
-        <div class="stat-note cyan">Yours: $175 &mdash; Competitive</div>
-      </div>
-    </div>
-  </div>
+        <!-- Card 2: Sale Progress Timeline -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-path text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Sale Progress</h2>
+            </div>
 
-  <!-- CARD 5: Checklist -->
-  <div class="card">
-    <div class="card-title">Your To-Do List</div>
-    <ul class="checklist">
-      <li class="done"><span class="check-icon checked">&#10003;</span>Complete property disclosure forms</li>
-      <li class="done"><span class="check-icon checked">&#10003;</span>Professional photos uploaded</li>
-      <li class="done"><span class="check-icon checked">&#10003;</span>Listing live on MLS</li>
-      <li><span class="check-icon unchecked"></span>Review showing feedback with agent</li>
-      <li><span class="check-icon unchecked"></span>Discuss pricing strategy update</li>
-      <li><span class="check-icon unchecked"></span>Schedule open house (if applicable)</li>
-    </ul>
-  </div>
+            <!-- Desktop Timeline -->
+            <div class="hidden md:flex items-start relative px-4">
+                <!-- Step 1: Listed -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-9 h-9 rounded-full bg-green-500 text-navy-900 flex items-center justify-center text-sm font-bold mb-2">
+                        <i class="ph ph-check text-base"></i>
+                    </div>
+                    <div class="text-xs font-semibold text-white/80">Listed</div>
+                    <div class="text-xs text-white/30 mt-0.5">March 15</div>
+                    <div class="timeline-connector bg-green-500"></div>
+                </div>
+                <!-- Step 2: Marketing Active -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-9 h-9 rounded-full bg-green-500 text-navy-900 flex items-center justify-center text-sm font-bold mb-2">
+                        <i class="ph ph-check text-base"></i>
+                    </div>
+                    <div class="text-xs font-semibold text-white/80">Marketing Active</div>
+                    <div class="text-xs text-white/30 mt-0.5">All channels live</div>
+                    <div class="timeline-connector bg-cyan-glow"></div>
+                </div>
+                <!-- Step 3: Showings (current) -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-9 h-9 rounded-full bg-cyan-glow text-navy-900 flex items-center justify-center text-sm font-bold mb-2 animate-pulse-ring">3</div>
+                    <div class="text-xs font-semibold text-white/80">Showings</div>
+                    <div class="text-xs text-white/30 mt-0.5">12 showings so far</div>
+                    <div class="timeline-connector" style="background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 6px, transparent 6px, transparent 12px);"></div>
+                </div>
+                <!-- Step 4: Offer Review -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-9 h-9 rounded-full border-2 border-white/15 text-white/25 flex items-center justify-center text-sm font-bold mb-2">4</div>
+                    <div class="text-xs font-semibold text-white/40">Offer Review</div>
+                    <div class="text-xs text-white/20 mt-0.5">Upcoming</div>
+                    <div class="timeline-connector" style="background: repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 6px, transparent 6px, transparent 12px);"></div>
+                </div>
+                <!-- Step 5: Under Contract -->
+                <div class="flex-1 flex flex-col items-center text-center relative z-10">
+                    <div class="w-9 h-9 rounded-full border-2 border-white/15 text-white/25 flex items-center justify-center text-sm font-bold mb-2">5</div>
+                    <div class="text-xs font-semibold text-white/40">Under Contract</div>
+                    <div class="text-xs text-white/20 mt-0.5">Upcoming</div>
+                </div>
+            </div>
 
-  <!-- CARD 6: Contact Your Agent -->
-  <div class="card">
-    <div class="card-title">Contact Your Agent</div>
-    <div class="agent-card-inner">
-      <div class="agent-avatar">SM</div>
-      <div class="agent-info">
-        <div class="agent-name">Sarah Mitchell</div>
-        <div class="agent-company">Premier Realty</div>
-        <div class="agent-contact-line">(555) 123-4567 &middot; sarah@premierrealty.com</div>
-      </div>
-    </div>
-    <div class="agent-buttons">
-      <button class="btn btn-outline" onclick="alert('Demo only')">Send Message</button>
-      <button class="btn btn-filled" onclick="alert('Demo only')">Schedule Call</button>
-    </div>
-  </div>
-</div>
+            <!-- Mobile Timeline (vertical) -->
+            <div class="flex md:hidden flex-col gap-0 pl-2">
+                <div class="flex items-start gap-4 pb-6 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-9 h-9 rounded-full bg-green-500 text-navy-900 flex items-center justify-center text-sm font-bold flex-shrink-0"><i class="ph ph-check text-base"></i></div>
+                        <div class="w-0.5 flex-1 bg-green-500 mt-1"></div>
+                    </div>
+                    <div><div class="text-sm font-semibold text-white/80">Listed</div><div class="text-xs text-white/30">March 15</div></div>
+                </div>
+                <div class="flex items-start gap-4 pb-6 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-9 h-9 rounded-full bg-green-500 text-navy-900 flex items-center justify-center text-sm font-bold flex-shrink-0"><i class="ph ph-check text-base"></i></div>
+                        <div class="w-0.5 flex-1 bg-cyan-glow mt-1"></div>
+                    </div>
+                    <div><div class="text-sm font-semibold text-white/80">Marketing Active</div><div class="text-xs text-white/30">All channels live</div></div>
+                </div>
+                <div class="flex items-start gap-4 pb-6 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-9 h-9 rounded-full bg-cyan-glow text-navy-900 flex items-center justify-center text-sm font-bold flex-shrink-0 animate-pulse-ring">3</div>
+                        <div class="w-0.5 flex-1 bg-white/10 mt-1" style="background: repeating-linear-gradient(180deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 6px, transparent 6px, transparent 12px);"></div>
+                    </div>
+                    <div><div class="text-sm font-semibold text-white/80">Showings</div><div class="text-xs text-white/30">12 showings so far</div></div>
+                </div>
+                <div class="flex items-start gap-4 pb-6 relative">
+                    <div class="flex flex-col items-center">
+                        <div class="w-9 h-9 rounded-full border-2 border-white/15 text-white/25 flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
+                        <div class="w-0.5 flex-1 bg-white/5 mt-1"></div>
+                    </div>
+                    <div><div class="text-sm font-semibold text-white/40">Offer Review</div><div class="text-xs text-white/20">Upcoming</div></div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex flex-col items-center">
+                        <div class="w-9 h-9 rounded-full border-2 border-white/15 text-white/25 flex items-center justify-center text-sm font-bold flex-shrink-0">5</div>
+                    </div>
+                    <div><div class="text-sm font-semibold text-white/40">Under Contract</div><div class="text-xs text-white/20">Upcoming</div></div>
+                </div>
+            </div>
+        </div>
 
-<footer>Powered by <a href="https://gethomeedge.com">HomeEdge</a> | <a href="https://gethomeedge.com">gethomeedge.com</a></footer>
+        <!-- Card 3: Recent Activity -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-clock-counter-clockwise text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Recent Activity</h2>
+            </div>
+
+            <div class="flex flex-col divide-y divide-white/5">
+                <div class="flex items-start gap-4 py-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-cyan-glow mt-1.5 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="text-sm font-semibold text-white/90">New Showing Scheduled</div>
+                        <div class="text-xs text-white/40 mt-1">Mar 30, 2:00 PM - Buyer's agent: Mike Torres</div>
+                    </div>
+                    <div class="text-xs text-white/25 whitespace-nowrap">2 hours ago</div>
+                </div>
+                <div class="flex items-start gap-4 py-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-gold-base mt-1.5 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="text-sm font-semibold text-white/90">Feedback Received</div>
+                        <div class="text-xs text-white/40 mt-1">"Loved the kitchen and backyard. Price feels fair." - Showing on Mar 28</div>
+                    </div>
+                    <div class="text-xs text-white/25 whitespace-nowrap">Yesterday</div>
+                </div>
+                <div class="flex items-start gap-4 py-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-cyan-glow mt-1.5 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="text-sm font-semibold text-white/90">Showing Completed</div>
+                        <div class="text-xs text-white/40 mt-1">Buyer's agent: Lisa Chen, 2 attendees</div>
+                    </div>
+                    <div class="text-xs text-white/25 whitespace-nowrap">2 days ago</div>
+                </div>
+                <div class="flex items-start gap-4 py-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-gold-base mt-1.5 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="text-sm font-semibold text-white/90">Market Update</div>
+                        <div class="text-xs text-white/40 mt-1">2 new comparable listings in your area this week</div>
+                    </div>
+                    <div class="text-xs text-white/25 whitespace-nowrap">3 days ago</div>
+                </div>
+                <div class="flex items-start gap-4 py-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-400 mt-1.5 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="text-sm font-semibold text-white/90">Price Milestone</div>
+                        <div class="text-xs text-white/40 mt-1">Your home has been viewed 847 times online</div>
+                    </div>
+                    <div class="text-xs text-white/25 whitespace-nowrap">5 days ago</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Market Snapshot -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-chart-bar text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Your Market at a Glance</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5">
+                    <div class="text-xs text-white/40 mb-2">Avg Price in Area</div>
+                    <div class="text-2xl font-bold text-cyan-glow">$372,000</div>
+                    <div class="text-xs text-green-400 font-semibold mt-1">+3.2% YoY</div>
+                </div>
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5">
+                    <div class="text-xs text-white/40 mb-2">Days on Market (Area Avg)</div>
+                    <div class="text-2xl font-bold text-cyan-glow">26</div>
+                    <div class="text-xs text-green-400 font-semibold mt-1">Yours: 15 - Faster!</div>
+                </div>
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5">
+                    <div class="text-xs text-white/40 mb-2">Active Listings Nearby</div>
+                    <div class="text-2xl font-bold text-cyan-glow">14</div>
+                    <div class="text-xs text-gold-base font-semibold mt-1">Low inventory</div>
+                </div>
+                <div class="rounded-xl bg-navy-900/40 border border-white/5 p-5">
+                    <div class="text-xs text-white/40 mb-2">Price Per Sq Ft</div>
+                    <div class="text-2xl font-bold text-cyan-glow">$178</div>
+                    <div class="text-xs text-cyan-glow font-semibold mt-1">Yours: $175 - Competitive</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: To-Do List -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-cyan-glow/10 flex items-center justify-center">
+                    <i class="ph ph-check-square text-lg text-cyan-glow"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Your To-Do List</h2>
+            </div>
+
+            <div class="flex flex-col divide-y divide-white/5">
+                <div class="flex items-center gap-3 py-3">
+                    <div class="w-6 h-6 rounded-md bg-green-500 flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-check text-xs text-navy-900 font-bold"></i>
+                    </div>
+                    <span class="text-sm text-white/50">Complete property disclosure forms</span>
+                </div>
+                <div class="flex items-center gap-3 py-3">
+                    <div class="w-6 h-6 rounded-md bg-green-500 flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-check text-xs text-navy-900 font-bold"></i>
+                    </div>
+                    <span class="text-sm text-white/50">Professional photos uploaded</span>
+                </div>
+                <div class="flex items-center gap-3 py-3">
+                    <div class="w-6 h-6 rounded-md bg-green-500 flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-check text-xs text-navy-900 font-bold"></i>
+                    </div>
+                    <span class="text-sm text-white/50">Listing live on MLS</span>
+                </div>
+                <div class="flex items-center gap-3 py-3">
+                    <div class="w-6 h-6 rounded-md border-2 border-white/15 flex-shrink-0"></div>
+                    <span class="text-sm text-white/80">Review showing feedback with agent</span>
+                </div>
+                <div class="flex items-center gap-3 py-3">
+                    <div class="w-6 h-6 rounded-md border-2 border-white/15 flex-shrink-0"></div>
+                    <span class="text-sm text-white/80">Discuss pricing strategy update</span>
+                </div>
+                <div class="flex items-center gap-3 py-3">
+                    <div class="w-6 h-6 rounded-md border-2 border-white/15 flex-shrink-0"></div>
+                    <span class="text-sm text-white/80">Schedule open house (if applicable)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: Contact Your Agent -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-lg bg-gold-base/10 flex items-center justify-center">
+                    <i class="ph ph-user-circle text-lg text-gold-base"></i>
+                </div>
+                <h2 class="text-base font-semibold text-white/90 tracking-wide uppercase">Contact Your Agent</h2>
+            </div>
+
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-glow to-cyan-deep flex items-center justify-center text-navy-900 font-bold text-lg flex-shrink-0">SM</div>
+                <div>
+                    <div class="font-bold text-white text-sm">Sarah Mitchell</div>
+                    <div class="text-white/40 text-xs">Premier Realty</div>
+                    <div class="text-white/30 text-xs mt-0.5">(555) 123-4567 / sarah@premierrealty.com</div>
+                </div>
+            </div>
+
+            <div class="flex gap-3 flex-wrap">
+                <button onclick="alert('Demo only')" class="py-2.5 px-5 rounded-xl text-sm font-semibold border border-cyan-glow/30 text-cyan-glow bg-cyan-glow/5 hover:bg-cyan-glow/15 hover:border-cyan-glow/50 transition-all duration-300">
+                    <i class="ph ph-chat-circle text-base mr-1"></i> Send Message
+                </button>
+                <button onclick="alert('Demo only')" class="btn-gold py-2.5 px-5 rounded-xl font-bold text-sm bg-gradient-to-r from-gold-dark via-gold-base to-gold-dark text-navy-900 border border-gold-base/30 hover:shadow-[0_0_30px_rgba(212,175,55,0.25)] transition-all duration-300">
+                    <i class="ph ph-phone text-base mr-1"></i> Schedule Call
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-white/5">
+        <p class="text-white/25 text-sm">
+            Powered by <a href="https://gethomeedge.com" target="_blank" class="text-gold-base hover:text-gold-light transition-colors font-semibold" style="text-decoration:none;">HomeEdge</a>
+        </p>
+    </footer>
+
+    <script>
+    // Scroll reveal observer
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+
 </body>
 </html>
