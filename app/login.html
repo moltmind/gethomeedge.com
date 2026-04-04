@@ -1,81 +1,34 @@
-<!--
-aesthetic_dna: Premium, High-Trust, Cyber-Elegance
-ui_paradigm: Auth gate with centered card
-palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
--->
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark" style="color-scheme: dark;">
 <head>
     <meta charset="UTF-8">
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-X6LMX9VR0Y');
-    </script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In | HomeEdge</title>
     <meta name="description" content="Sign in to your HomeEdge dashboard. Access all your AI-powered real estate tools.">
     <link rel="icon" href="/homeedge-logo.png" type="image/png">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
                     colors: {
-                        navy: {
-                            900: '#040711',
-                            800: '#0A1128',
-                            700: '#141E3E',
-                            600: '#1D2A54',
-                        },
-                        cyan: {
-                            glow: '#00F2FE',
-                            deep: '#4FACFE',
-                        },
-                        gold: {
-                            light: '#F8E9A1',
-                            base: '#D4AF37',
-                            dark: '#A6821A',
-                        }
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'metallic-gold': 'linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C)',
-                        'cyan-glow': 'linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%)',
-                    },
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    }
                 }
             }
         }
     </script>
 
-    <!-- =====================================================
-         CLERK AUTH SCRIPTS (PLACEHOLDER)
-         =====================================================
-         After creating your Clerk application at clerk.com:
-         1. Go to your Clerk Dashboard > API Keys
-         2. Copy your "Publishable Key" (starts with pk_live_ or pk_test_)
-         3. Copy your "Frontend API URL" (looks like: https://your-app-name.clerk.accounts.dev)
-         4. Replace the URLs and key below with your real values
-         ===================================================== -->
+    <!-- Clerk -->
     <script defer crossorigin="anonymous"
       src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
     <script defer crossorigin="anonymous"
@@ -83,276 +36,231 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
       src="https://honest-penguin-6.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
     <style>
-        body {
-            background-color: #040711;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
+        body { background: #040711; color: #fff; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #040711; }
-        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #1D2A54; }
+        ::-webkit-scrollbar-thumb { background: #141E3E; border-radius: 3px; }
 
-        .glass-card {
-            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .text-gradient-brand {
-            background: linear-gradient(135deg, #00F2FE, #D4AF37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Force Clerk dark theme on ALL elements */
-        .cl-rootBox { width: 100% !important; }
-        .cl-card, .cl-signIn-root, .cl-signUp-root {
+        /* ============================================================
+           NUCLEAR CLERK DARK OVERRIDES
+           Target every possible element Clerk renders.
+           ============================================================ */
+        /* Root and card */
+        [data-clerk-component] { color-scheme: dark !important; }
+        .cl-rootBox { width: 100% !important; max-width: 100% !important; }
+        .cl-card, .cl-signIn-root, .cl-signUp-root, .cl-component {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
+            margin: 0 !important;
         }
+        .cl-main { padding: 0 !important; }
+
+        /* Hide Clerk's own header (we have ours) */
         .cl-headerTitle, .cl-headerSubtitle { display: none !important; }
 
-        /* All text white */
-        .cl-formFieldLabel, .cl-formFieldLabel__identifier,
-        .cl-formFieldLabel__password, .cl-formFieldLabel__emailAddress,
-        .cl-formFieldLabel__firstName, .cl-formFieldLabel__lastName,
-        .cl-internal-1dae4xp, .cl-internal-b9v6p6,
-        [class*="cl-formField"] label,
-        [class*="cl-"] p, [class*="cl-"] span, [class*="cl-"] div {
+        /* WILDCARD: force all text inside Clerk to be light */
+        [data-clerk-component] *:not(button):not([class*="Primary"]):not([class*="social"]) {
             color: #e2e8f0 !important;
         }
 
-        /* Inputs dark with white text */
-        .cl-formFieldInput, input[class*="cl-"],
-        .cl-formFieldInput__identifier, .cl-formFieldInput__password,
-        .cl-formFieldInput__emailAddress, .cl-otpCodeFieldInput {
-            background: #141E3E !important;
-            border-color: rgba(255,255,255,0.1) !important;
-            color: #ffffff !important;
-        }
-        .cl-formFieldInput:focus, input[class*="cl-"]:focus {
-            border-color: #00F2FE !important;
-            box-shadow: 0 0 0 2px rgba(0,242,254,0.15) !important;
-        }
+        /* Labels */
+        .cl-formFieldLabel,
+        .cl-formFieldLabel * { color: #cbd5e1 !important; font-weight: 500 !important; }
 
-        /* Primary button gold */
-        .cl-formButtonPrimary, button[class*="cl-formButtonPrimary"] {
+        /* Inputs */
+        .cl-formFieldInput,
+        .cl-formFieldInput *,
+        .cl-otpCodeFieldInput,
+        [data-clerk-component] input {
+            background: #0A1128 !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            color: #ffffff !important;
+            border-radius: 10px !important;
+        }
+        [data-clerk-component] input:focus {
+            border-color: #00F2FE !important;
+            box-shadow: 0 0 0 3px rgba(0,242,254,0.12) !important;
+            outline: none !important;
+        }
+        [data-clerk-component] input::placeholder { color: #64748b !important; }
+
+        /* Primary button */
+        .cl-formButtonPrimary,
+        [data-clerk-component] button[data-localization-key*="continue"],
+        [data-clerk-component] button[data-localization-key*="signIn"] {
             background: linear-gradient(135deg, #D4AF37, #F8E9A1) !important;
             color: #040711 !important;
             font-weight: 700 !important;
             border: none !important;
+            border-radius: 10px !important;
+            letter-spacing: 0.01em !important;
         }
 
-        /* Social/OAuth buttons */
-        .cl-socialButtonsBlockButton, .cl-socialButtonsIconButton,
-        button[class*="cl-socialButtons"] {
-            background: #141E3E !important;
-            border: 1px solid rgba(255,255,255,0.1) !important;
-            color: #ffffff !important;
+        /* Social / OAuth buttons */
+        .cl-socialButtonsBlockButton,
+        .cl-socialButtonsIconButton,
+        [data-clerk-component] button[class*="socialButton"] {
+            background: #0A1128 !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
+            border-radius: 10px !important;
         }
+        .cl-socialButtonsBlockButton *,
         .cl-socialButtonsBlockButtonText { color: #ffffff !important; }
 
-        /* Divider */
-        .cl-dividerLine { background: rgba(255,255,255,0.1) !important; }
-        .cl-dividerText { color: #64748b !important; }
+        /* Dividers */
+        .cl-dividerLine { background: rgba(255,255,255,0.08) !important; }
+        .cl-dividerText { color: #475569 !important; }
 
         /* Links */
-        .cl-footerActionLink, a[class*="cl-footerAction"],
+        .cl-footerActionLink,
         .cl-formResendCodeLink { color: #00F2FE !important; }
 
-        /* Footer / powered by */
-        .cl-footer, .cl-footerAction { color: #64748b !important; }
-        .cl-internal-b9v6p6 { color: #475569 !important; }
+        /* Footer (powered by Clerk etc) */
+        .cl-footer { color: #334155 !important; }
+        .cl-footer * { color: #334155 !important; }
 
-        /* Error text */
-        .cl-formFieldErrorText { color: #f87171 !important; }
+        /* Identity preview (shows email with edit button) */
+        .cl-identityPreview * { color: #e2e8f0 !important; }
+        .cl-identityPreviewEditButton * { color: #00F2FE !important; }
 
-        /* Remove extra spacing */
-        .cl-main { padding: 0 !important; }
-        .cl-form { gap: 0.75rem !important; }
+        /* Password show/hide button */
+        .cl-formFieldInputShowPasswordButton * { color: #64748b !important; }
 
-        /* Ambient glow behind the card */
-        .ambient-glow {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
-            pointer-events: none;
-        }
+        /* Errors */
+        .cl-formFieldErrorText, .cl-formFieldErrorText * { color: #f87171 !important; }
+        .cl-formFieldWarningText, .cl-formFieldWarningText * { color: #fbbf24 !important; }
+        .cl-alert, .cl-alert * { color: #f87171 !important; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
+        /* Remove extra vertical space */
+        .cl-form { gap: 12px !important; }
+        .cl-formField { margin-bottom: 0 !important; }
+
+        /* Ambient */
+        .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
     </style>
 </head>
 <body class="font-sans min-h-screen flex flex-col items-center justify-center relative px-4">
 
-    <!-- Ambient background glows -->
-    <div class="ambient-glow bg-cyan-glow top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2" style="position:fixed;"></div>
-    <div class="ambient-glow bg-gold-base top-3/4 right-1/4 translate-x-1/2 translate-y-1/2" style="position:fixed;opacity:0.08;"></div>
+    <div class="orb w-[500px] h-[500px] bg-cyan-glow/10 -top-20 -left-20"></div>
+    <div class="orb w-[400px] h-[400px] bg-gold-base/5 bottom-0 right-0"></div>
 
-    <!-- Subtle grid overlay -->
-    <div class="fixed inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 60px 60px;"></div>
-
-    <!-- Main card -->
-    <div class="relative z-10 w-full max-w-md animate-float" style="animation-duration: 8s;">
-        <div class="glass-card rounded-2xl p-8 sm:p-10">
+    <!-- Login Card -->
+    <div class="relative z-10 w-full max-w-sm">
+        <div class="bg-navy-800/60 backdrop-blur-xl border border-white/[0.06] rounded-2xl p-8">
 
             <!-- Logo -->
-            <div class="text-center mb-8">
-                <a href="https://gethomeedge.com" class="inline-block group">
-                    <h1 class="font-serif text-3xl sm:text-4xl font-bold text-gradient-brand tracking-tight">
-                        HomeEdge
-                    </h1>
-                    <div class="h-0.5 w-0 group-hover:w-full bg-cyan-glow mx-auto transition-all duration-500 mt-1 rounded-full"></div>
+            <div class="text-center mb-6">
+                <a href="/" class="inline-block">
+                    <span class="font-serif text-3xl font-bold bg-gradient-to-r from-cyan-glow to-gold-base bg-clip-text text-transparent">HomeEdge</span>
                 </a>
             </div>
 
-            <!-- Welcome heading -->
+            <!-- Heading -->
             <div class="text-center mb-6">
-                <h2 class="text-xl sm:text-2xl font-semibold text-white mb-2">Welcome Back</h2>
-                <p class="text-sm text-gray-400">Sign in to access your AI-powered seller tools</p>
+                <h2 class="text-lg font-semibold text-white">Sign in to your dashboard</h2>
             </div>
 
-            <!-- Clerk sign-in component mounts here -->
+            <!-- Clerk mounts here -->
             <div id="clerk-sign-in"></div>
 
-            <!-- Demo mode fallback (shown when Clerk hasn't loaded) -->
-            <div id="demo-fallback" class="space-y-4">
-                <div class="bg-navy-700/50 border border-cyan-glow/20 rounded-xl p-4 text-center">
-                    <i class="ph ph-info text-cyan-glow text-xl mb-2"></i>
-                    <p class="text-sm text-gray-300">Authentication is being configured. Check back shortly.</p>
-                    <a href="/app/dashboard.html?demo=true"
-                       class="inline-block mt-3 px-5 py-2.5 rounded-lg bg-gradient-to-r from-cyan-deep to-cyan-glow text-navy-900 font-semibold text-sm hover:shadow-lg hover:shadow-cyan-glow/20 transition-all duration-300">
-                        Preview Dashboard (Demo)
-                    </a>
+            <!-- Fallback while Clerk loads -->
+            <div id="loading-state" class="py-8 text-center">
+                <div class="flex justify-center gap-1.5 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-cyan-glow/60 animate-bounce" style="animation-delay:0s"></div>
+                    <div class="w-2 h-2 rounded-full bg-cyan-glow/60 animate-bounce" style="animation-delay:0.15s"></div>
+                    <div class="w-2 h-2 rounded-full bg-cyan-glow/60 animate-bounce" style="animation-delay:0.3s"></div>
                 </div>
+                <p class="text-xs text-gray-500">Loading sign-in...</p>
             </div>
-
-            <!-- Divider -->
-            <div class="flex items-center gap-3 my-6">
-                <div class="flex-1 h-px bg-white/10"></div>
-                <span class="text-xs text-gray-500 uppercase tracking-wider">or</span>
-                <div class="flex-1 h-px bg-white/10"></div>
-            </div>
-
-            <!-- Sign up link -->
-            <p class="text-center text-sm text-gray-400">
-                Don't have an account?
-                <a href="/app/signup.html" class="text-cyan-glow hover:text-white font-medium transition-colors duration-200">
-                    Sign Up
-                </a>
-            </p>
         </div>
+
+        <!-- Back link -->
+        <a href="/" class="flex items-center justify-center gap-2 mt-5 text-sm text-gray-500 hover:text-cyan-glow transition-colors">
+            <i class="ph ph-arrow-left"></i> Back to gethomeedge.com
+        </a>
     </div>
 
-    <!-- Back to home -->
-    <a href="https://gethomeedge.com"
-       class="relative z-10 mt-6 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-cyan-glow transition-colors duration-200 group">
-        <i class="ph ph-arrow-left text-lg group-hover:-translate-x-1 transition-transform duration-200"></i>
-        Back to gethomeedge.com
-    </a>
-
-    <!-- Footer -->
-    <footer class="relative z-10 mt-auto pt-12 pb-6 text-center">
-        <p class="text-xs text-gray-600">&copy; 2026 HomeEdge. Powered by HomeEdge.</p>
+    <footer class="relative z-10 mt-auto pt-8 pb-4">
+        <p class="text-[11px] text-gray-700">&copy; 2026 HomeEdge</p>
     </footer>
 
     <script>
-        // Wait for Clerk to load, then handle auth
-        let clerkTimeout;
-
-        function initClerkAuth() {
+    window.addEventListener('load', function() {
+        function tryInit() {
             if (typeof Clerk === 'undefined') return false;
-
             try {
                 Clerk.load({
-                    ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined
+                    ui: window.__internal_ClerkUICtor ? { ClerkUI: window.__internal_ClerkUICtor } : undefined,
+                    appearance: {
+                        variables: {
+                            colorBackground: '#0A1128',
+                            colorText: '#e2e8f0',
+                            colorTextSecondary: '#94A3B8',
+                            colorInputBackground: '#0A1128',
+                            colorInputText: '#ffffff',
+                            colorPrimary: '#D4AF37',
+                            colorTextOnPrimaryBackground: '#040711',
+                            colorDanger: '#f87171',
+                            borderRadius: '10px',
+                            fontFamily: 'Inter, sans-serif',
+                        }
+                    }
                 }).then(function() {
-                    // Hide demo fallback
-                    document.getElementById('demo-fallback').style.display = 'none';
+                    document.getElementById('loading-state').style.display = 'none';
 
-                    // If already signed in, redirect to dashboard
                     if (Clerk.user) {
                         window.location.href = '/app/dashboard.html';
                         return;
                     }
 
-                    // Mount sign-in component
                     Clerk.mountSignIn(document.getElementById('clerk-sign-in'), {
                         appearance: {
-                            baseTheme: undefined,
                             variables: {
-                                colorBackground: '#0A1128',
-                                colorText: '#FFFFFF',
+                                colorBackground: 'transparent',
+                                colorText: '#e2e8f0',
                                 colorTextSecondary: '#94A3B8',
-                                colorInputBackground: '#141E3E',
-                                colorInputText: '#FFFFFF',
-                                colorPrimary: '#00F2FE',
+                                colorInputBackground: '#0A1128',
+                                colorInputText: '#ffffff',
+                                colorPrimary: '#D4AF37',
                                 colorTextOnPrimaryBackground: '#040711',
-                                borderRadius: '0.75rem',
+                                borderRadius: '10px',
                                 fontFamily: 'Inter, sans-serif',
                             },
                             elements: {
                                 rootBox: 'w-full',
-                                card: 'bg-transparent shadow-none border-none !text-white',
-                                headerTitle: '!text-white',
-                                headerSubtitle: '!text-slate-400',
+                                card: '!bg-transparent !shadow-none !border-none !p-0',
+                                headerTitle: 'hidden',
+                                headerSubtitle: 'hidden',
+                                socialButtonsBlockButton: '!bg-[#0A1128] !border-white/[0.12] !rounded-[10px]',
+                                socialButtonsBlockButtonText: '!text-white',
+                                dividerLine: '!bg-white/[0.08]',
+                                dividerText: '!text-slate-600',
                                 formFieldLabel: '!text-slate-300',
-                                formFieldInput: '!bg-[#141E3E] !border-white/10 !text-white placeholder:!text-slate-500',
-                                formButtonPrimary: '!bg-gradient-to-r !from-[#D4AF37] !to-[#F8E9A1] !text-[#040711] font-bold hover:!shadow-lg',
-                                formFieldInputShowPasswordButton: '!text-slate-400',
+                                formFieldInput: '!bg-[#0A1128] !border-white/[0.12] !text-white !rounded-[10px]',
+                                formButtonPrimary: '!bg-gradient-to-r !from-[#D4AF37] !to-[#F8E9A1] !text-[#040711] !font-bold !rounded-[10px] !border-none',
+                                footerAction: '!text-slate-500',
+                                footerActionLink: '!text-cyan-400',
                                 identityPreviewText: '!text-white',
                                 identityPreviewEditButton: '!text-cyan-400',
-                                socialButtonsBlockButton: '!bg-[#141E3E] !border-white/10 !text-white hover:!bg-[#1D2A54]',
-                                socialButtonsBlockButtonText: '!text-white',
-                                dividerLine: '!bg-white/10',
-                                dividerText: '!text-slate-500',
-                                footerAction: 'hidden',
-                                formResendCodeLink: '!text-cyan-400',
-                                otpCodeFieldInput: '!bg-[#141E3E] !border-white/10 !text-white',
-                                alertText: '!text-white',
-                                formFieldWarningText: '!text-amber-400',
+                                formFieldInputShowPasswordButton: '!text-slate-500',
+                                otpCodeFieldInput: '!bg-[#0A1128] !border-white/[0.12] !text-white',
                                 formFieldErrorText: '!text-red-400',
+                                alertText: '!text-red-400',
                             }
                         }
                     });
-                }).catch(function(err) {
-                    console.warn('Clerk load error:', err);
-                });
-
+                }).catch(function(e) { console.warn('Clerk:', e); });
                 return true;
-            } catch(e) {
-                return false;
-            }
+            } catch(e) { return false; }
         }
 
-        // Try to init Clerk on load
-        window.addEventListener('load', function() {
-            if (!initClerkAuth()) {
-                // Clerk script hasn't loaded (placeholder URLs), show demo fallback
-                document.getElementById('demo-fallback').style.display = 'block';
-            }
-
-            // Also try after a delay in case scripts are slow
-            clerkTimeout = setTimeout(function() {
-                initClerkAuth();
-            }, 3000);
-        });
+        if (!tryInit()) {
+            setTimeout(tryInit, 2000);
+            setTimeout(tryInit, 5000);
+        }
+    });
     </script>
 </body>
 </html>
