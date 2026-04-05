@@ -322,7 +322,7 @@
             const brokerage = document.getElementById("brokerage").value.trim();
             const res = await fetch(WORKER_URL, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + (await Clerk.session?.getToken() || "") },
                 body: JSON.stringify({
                     messages: [{ role: "user", content: buildPrompt() }],
                     toolType: "listingDescription",

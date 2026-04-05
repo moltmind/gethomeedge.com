@@ -29,6 +29,19 @@
     <!-- Clerk Auth -->
     <script defer crossorigin="anonymous" src="https://clerk.gethomeedge.com/npm/@clerk/ui@1/dist/ui.browser.js"></script>
     <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsuZ2V0aG9tZWVkZ2UuY29tJA" src="https://clerk.gethomeedge.com/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
+    <script>
+      window.addEventListener('load', function() {
+        var maxRetries = 10, attempt = 0;
+        function checkAuth() {
+          if (typeof Clerk !== 'undefined' && Clerk.loaded) {
+            if (!Clerk.user) window.location.href = '/app/login.html';
+          } else if (++attempt < maxRetries) {
+            setTimeout(checkAuth, 500);
+          }
+        }
+        setTimeout(checkAuth, 1000);
+      });
+    </script>
 
     <!-- Tailwind Config -->
     <script>

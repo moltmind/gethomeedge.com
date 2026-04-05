@@ -71,6 +71,10 @@ Seller Lead CRM, Open House QR, Listing Portfolio, Pre-List Checklist
 
 ## CURRENT STATUS (April 2026)
 - Revenue: $0. Product is built. Website is live. Tools work. Gap is distribution.
+- Revenue path is complete end to end as of April 5 2026. Visitor clicks
+  pricing CTA, Stripe checkout, payment, welcome page, webhook fires
+  (Resend email + GHL contact + Clerk account), Cole builds platform.
+- Next blocker: Resend custom domain setup (emails still from sandbox).
 - Jim Geracie (Cole's cousin): Milwaukee RE agent, Elite tier, first real user,
   branded to "The Jim Geracie Team." Testimonial on homepage.
 - First lead: Lauren Toman from FB group post.
@@ -127,6 +131,40 @@ Personalized Demo, Stat/Hook Clip
 - When generating social media content, NEVER mention AI or HomeEdge.
 - Started at high-ticket pricing ($997-$2,997). Zero sales. Pivoted to
   $49/mo. Low friction is the strategy. Don't go back to high-ticket.
+- Annual tier detection was broken (getTierFromAmount used simple
+  thresholds instead of exact-match, so $468 annual Starter got tagged
+  as elite). Fixed April 5 2026.
+- founders.html had stale $997-$2,997 pricing with dead Stripe links.
+  Now redirects to /#pricing. Fixed April 5 2026.
+- Stripe Payment Links need "After Payment" redirect URLs set via API
+  (PostPaymentLinksPaymentLink). All 6 now redirect to welcome.html
+  with ?tier= param. CLI restricted key lacks write permission, use
+  the Stripe MCP server (stripe_api_execute) instead.
+- Resend email domain is still sandbox (onboarding@resend.dev). Needs
+  custom domain setup or onboarding emails go to spam. NOT YET FIXED.
+- /app/welcome.html is the post-payment landing page. Accepts ?tier=
+  param (starter, pro, elite) to show tier-specific plan and features.
+- SECURITY (April 5 2026 audit, all fixed):
+  - /tool endpoint MUST require Clerk JWT auth. Without it, anyone with
+    curl can burn through Anthropic API credits. Fixed: auth required,
+    tier read server-side from Clerk metadata.
+  - /gift endpoint tier MUST be hardcoded server-side to "demo". Never
+    trust tier from the request body. Passing tier:"elite" = Infinity
+    rate limit = unlimited free API calls.
+  - Chat endpoint session limit must be server-side (IP-based via KV),
+    not client-side sessionCount (trivially spoofable).
+  - JWT fallback in getClerkUserId was decoding tokens without signature
+    verification. Removed. If Clerk verify fails, deny the request.
+  - /subscribe and /sms-optin need IP-based rate limiting or attackers
+    can spam Resend emails and pollute GHL CRM.
+  - All tool HTML pages must send Authorization: Bearer header with
+    Clerk session token when calling /tool.
+  - worker.js must NOT be tracked in git (use git rm --cached). Secrets
+    are in env vars but the file should not be in version control.
+  - CORS allowlist: production only (no localhost). Dev uses wrangler dev.
+  - Security headers (HSTS, X-Frame-Options, nosniff, Referrer-Policy)
+    are set in corsHeaders() on all worker responses.
+  - Never add new worker endpoints without auth or rate limiting.
 
 ## WHEN YOU HIT A WALL
 1. Search the codebase first (grep, find).

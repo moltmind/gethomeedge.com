@@ -209,7 +209,7 @@
         const brokerage = document.getElementById('brokerage').value.trim();
 
         try {
-            const response = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], toolType: 'followup', context: { agentName: agentName || undefined, company: brokerage || undefined } }) });
+            const response = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await Clerk.session?.getToken() || '') }, body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], toolType: 'followup', context: { agentName: agentName || undefined, company: brokerage || undefined } }) });
             if (!response.ok) throw new Error(`Server returned ${response.status}`);
             const data = await response.json();
             let text = '';
@@ -234,7 +234,7 @@
         const agentName = document.getElementById('agentName').value.trim();
         const brokerage = document.getElementById('brokerage').value.trim();
         try {
-            const response = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], toolType: 'followup', context: { agentName: agentName || undefined, company: brokerage || undefined } }) });
+            const response = await fetch('https://homeedge-chat.moltmind.workers.dev/tool', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await Clerk.session?.getToken() || '') }, body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], toolType: 'followup', context: { agentName: agentName || undefined, company: brokerage || undefined } }) });
             if (!response.ok) throw new Error(`Server returned ${response.status}`);
             const data = await response.json();
             let text = ''; if (typeof data === 'string') text = data; else if (data.reply) text = data.reply; else if (data.response) text = data.response; else if (data.content) text = typeof data.content === 'string' ? data.content : (data.content[0]?.text || JSON.stringify(data.content)); else if (data.choices?.[0]?.message?.content) text = data.choices[0].message.content; else if (data.result) text = data.result; else text = JSON.stringify(data);
