@@ -104,9 +104,8 @@
         }
 
         /* ── Glow behind shimmer text ── */
-        .text-glow {
-            text-shadow: 0 0 40px rgba(0,242,254,.3), 0 0 80px rgba(0,242,254,.1);
-            -webkit-text-fill-color: initial;
+        .text-shimmer-wrap {
+            filter: drop-shadow(0 0 30px rgba(0,242,254,.25)) drop-shadow(0 0 60px rgba(0,242,254,.08));
         }
 
         .text-gradient-cyan {
@@ -305,7 +304,7 @@
         <header class="w-full py-5 px-6">
             <div class="max-w-5xl mx-auto flex items-center justify-between">
                 <a href="https://gethomeedge.com" class="flex items-center gap-2.5">
-                    <img src="/homeedge-logo.png" alt="HomeEdge" class="h-7 w-7">
+                    <img src="/homeedge-logo.png" alt="HomeEdge" class="h-7 w-7 hidden sm:block">
                     <span class="text-lg font-bold text-gradient-cyan tracking-tight">HomeEdge</span>
                 </a>
                 <span class="text-xs text-gray-500 hidden sm:block tracking-wider uppercase">28 AI Tools for Listing Agents</span>
@@ -327,7 +326,7 @@
                             </div>
                             <h1 class="text-3xl md:text-[2.75rem] lg:text-5xl font-extrabold leading-[1.1] mb-5 tracking-tight">
                                 Write Your Next Listing Description in
-                                <span class="text-shimmer relative">12 Seconds<span class="text-glow absolute inset-0 pointer-events-none text-shimmer" aria-hidden="true">12 Seconds</span></span>
+                                <span class="text-shimmer-wrap"><span class="text-shimmer">12 Seconds</span></span>
                             </h1>
                             <p class="text-base md:text-lg text-gray-400 leading-relaxed max-w-lg">
                                 28 AI tools built specifically for listing agents. Try the most popular one free. No credit card. No catch.
