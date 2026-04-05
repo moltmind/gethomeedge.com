@@ -1,14 +1,289 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomeEdge Pricing</title>
-    <meta http-equiv="refresh" content="0;url=https://gethomeedge.com/#pricing">
-    <link rel="canonical" href="https://gethomeedge.com/#pricing">
-    <script>window.location.replace('https://gethomeedge.com/#pricing');</script>
+    <title>HomeEdge Founders Pricing | 28 AI Tools for Listing Agents</title>
+    <meta name="description" content="Lock in $39/month forever. 28 AI tools built for real estate listing agents. No setup fees. No contracts. Cancel anytime.">
+    <meta property="og:title" content="HomeEdge Founders Pricing | 28 AI Tools for Listing Agents">
+    <meta property="og:description" content="First 50 agents lock in $39/month forever. 28 AI tools, all branded to you.">
+    <meta property="og:image" content="https://gethomeedge.com/homeedge-logo.png">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            900: '#040711',
+                            800: '#0A1128',
+                            700: '#141E3E',
+                            600: '#1D2A54',
+                        },
+                        cyan: {
+                            glow: '#00F2FE',
+                            deep: '#4FACFE',
+                        },
+                        gold: {
+                            light: '#F8E9A1',
+                            base: '#D4AF37',
+                            dark: '#A6821A',
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #040711;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .btn-gold {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+        .btn-gold:hover::before {
+            left: 100%;
+        }
+
+        .tool-row {
+            transition: all 0.3s ease;
+        }
+        .tool-row:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+            transform: translateX(4px);
+        }
+    </style>
 </head>
-<body>
-    <p>Redirecting to <a href="https://gethomeedge.com/#pricing">HomeEdge pricing</a>...</p>
+<body class="font-sans antialiased min-h-screen">
+
+    <!-- Header -->
+    <header class="w-full py-6 px-6">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <a href="https://gethomeedge.com" class="flex items-center gap-3">
+                <img src="/homeedge-logo.png" alt="HomeEdge" class="h-8 w-8">
+                <span class="text-xl font-bold text-gradient-cyan">HomeEdge</span>
+            </a>
+            <a href="https://gethomeedge.com/#pricing"
+                class="btn-gold px-6 py-2.5 rounded-lg bg-gold-base text-navy-900 font-semibold text-sm hover:bg-gold-light transition-colors">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6">
+
+        <!-- Hero -->
+        <section class="py-12 md:py-20 text-center">
+            <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mb-5">
+                Everything You Get With <span class="text-gradient-cyan">HomeEdge</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+                28 AI tools, all branded to you, all designed to help you win more listings and close faster.
+            </p>
+        </section>
+
+        <!-- The Stack -->
+        <section class="pb-16">
+            <div class="space-y-3 max-w-3xl mx-auto">
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">01</span>
+                        <span class="font-semibold">AI Listing Description Generator</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Saves 2+ hours per listing</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">02</span>
+                        <span class="font-semibold">AI CMA Analysis Tool</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Instant market comparisons</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">03</span>
+                        <span class="font-semibold">Net Proceeds Calculator</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Professional client presentations</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">04</span>
+                        <span class="font-semibold">Social Media Post Generator</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Consistent online presence</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">05</span>
+                        <span class="font-semibold">Property Tour Script Writer</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Confident showings every time</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">06</span>
+                        <span class="font-semibold">Seller Objection Handler</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Close more listings</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">07</span>
+                        <span class="font-semibold">Client Email Drafter</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Professional communications in seconds</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">08</span>
+                        <span class="font-semibold">Open House Materials Generator</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Ready-to-use event materials</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">09</span>
+                        <span class="font-semibold">Neighborhood Description Writer</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Showcase the community</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">10</span>
+                        <span class="font-semibold">Price Reduction Announcement Drafter</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Handle tough conversations</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">11</span>
+                        <span class="font-semibold">Buyer Follow-Up Email Generator</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Stay top of mind</span>
+                </div>
+
+                <div class="tool-row glass-card rounded-xl px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-cyan-glow text-lg">12</span>
+                        <span class="font-semibold">Listing Presentation Builder</span>
+                    </div>
+                    <span class="text-sm text-gray-400 hidden sm:block">Win more appointments</span>
+                </div>
+
+                <!-- +16 more -->
+                <div class="glass-card rounded-xl px-6 py-5 text-center border border-dashed border-navy-600">
+                    <span class="text-gray-400">And <span class="text-cyan-glow font-bold">16 more tools</span> included in every plan</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Comparison -->
+        <section class="pb-16">
+            <h2 class="text-2xl md:text-4xl font-bold text-center mb-10">
+                How HomeEdge <span class="text-gradient-cyan">Compares</span>
+            </h2>
+
+            <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-gray-400 text-sm mb-2">Ylopo</div>
+                    <div class="text-2xl font-bold text-white">$795<span class="text-sm font-normal text-gray-500">/mo</span></div>
+                    <div class="text-xs text-red-400 mt-1">+ $1,000 setup fee</div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-gray-400 text-sm mb-2">kvCORE</div>
+                    <div class="text-2xl font-bold text-white">$300<span class="text-sm font-normal text-gray-500">/mo</span></div>
+                    <div class="text-xs text-gray-500 mt-1">&nbsp;</div>
+                </div>
+                <div class="glass-card rounded-xl p-6 text-center">
+                    <div class="text-gray-400 text-sm mb-2">BoomTown</div>
+                    <div class="text-2xl font-bold text-white">$750<span class="text-sm font-normal text-gray-500">/mo</span></div>
+                    <div class="text-xs text-gray-500 mt-1">&nbsp;</div>
+                </div>
+                <div class="rounded-xl p-6 text-center border-2 border-gold-base" style="background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, rgba(10, 17, 40, 0.4) 100%);">
+                    <div class="text-gold-base text-sm font-semibold mb-2">HomeEdge</div>
+                    <div class="text-2xl font-bold text-gold-base">$49<span class="text-sm font-normal text-gold-dark">/mo</span></div>
+                    <div class="text-xs text-gold-light mt-1">$39/mo founders pricing</div>
+                </div>
+            </div>
+
+            <p class="text-center text-sm text-gray-500 mt-6">No setup fees. No contracts. Cancel anytime.</p>
+        </section>
+
+        <!-- Founders Callout -->
+        <section class="pb-20">
+            <div class="max-w-2xl mx-auto text-center glass-card rounded-2xl p-10 border border-gold-base/30">
+                <div class="text-gold-base text-sm font-semibold uppercase tracking-wider mb-4">Founders Pricing</div>
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                    First 50 agents lock in <span class="text-gold-base">$39/month</span> forever.
+                </h2>
+                <p class="text-gray-400 mb-8">
+                    This price disappears when spots fill up.
+                </p>
+                <a href="https://gethomeedge.com/#pricing"
+                    class="btn-gold inline-block px-10 py-4 rounded-lg bg-gold-base text-navy-900 font-bold text-lg hover:bg-gold-light transition-colors">
+                    Claim Your Spot
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-sm text-gray-600 border-t border-navy-800">
+        &copy; 2026 HomeEdge. All rights reserved.
+    </footer>
 </body>
 </html>

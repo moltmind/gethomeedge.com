@@ -86,6 +86,24 @@ Seller Lead CRM, Open House QR, Listing Portfolio, Pre-List Checklist
 - TikTok, Reddit, YouTube NOT set up yet.
 - Existing demo videos on homepage: CMA, dashboard, net proceeds, mobile.
   Made with Playwright + ElevenLabs + ffmpeg. Being replaced by Remotion pipeline.
+- Lead magnet funnel live (April 5 2026): free-listing-generator.html captures
+  email via /lead-magnet, then offers one free AI listing description via /lead-tool.
+  Welcome email sent via Resend, contact created in GHL with lead-magnet tag.
+  Lead magnet email sequence: 5 emails over 10 days (only email 1 automated,
+  rest to be added via GHL workflow or Resend drip).
+
+## LEAD MAGNET FUNNEL
+- free-listing-generator.html: public funnel page, no Clerk auth, no nav.
+  Facebook ad traffic lands here. Captures email, reveals free listing tool.
+- /lead-magnet POST: public lead capture endpoint. Rate limited 3/hr/IP.
+  Stores lead:{email} in KV, sends Resend welcome email, creates GHL contact.
+- /lead-tool POST: public one-time listing generator for leads. Requires prior
+  email capture (checks lead:{email} in KV). One generation per email ever
+  (tracks lead-used:{email} in KV). Calls Claude API (Haiku) for MLS-ready
+  listing description. Separate from /tool auth flow.
+- founders.html: rebuilt from redirect into full page with "The Stack" tool
+  list, pricing comparison (vs Ylopo, kvCORE, BoomTown), and founders callout.
+  Links to /#pricing for checkout.
 
 ## CONTENT RULES (non-negotiable)
 1. NEVER use em dashes in any content. Use commas, periods, or rewrite.
