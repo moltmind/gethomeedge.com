@@ -302,7 +302,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
             </div>
 
             <!-- Chatbot Embed -->
-            <div class="glass-card rounded-2xl p-5">
+            <div id="chatbot-embed" class="glass-card rounded-2xl p-5">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-9 h-9 rounded-lg bg-navy-700 flex items-center justify-center">
                         <i class="ph ph-robot text-cyan-glow text-lg"></i>
@@ -404,6 +404,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         { id: 'listing-portfolio', icon: 'ph-images', name: 'Portfolio', cat: 'dashboards', desc: 'Beautiful portfolio pages showcasing your active listings' },
         { id: 'open-house-qr', icon: 'ph-qr-code', name: 'Open House QR', cat: 'dashboards', desc: 'Digital sign-in sheets with instant lead capture' },
         { id: 'pre-list-checklist', icon: 'ph-check-square', name: 'Pre-List Checklist', cat: 'dashboards', desc: 'Guided checklists that prep sellers before you arrive' },
+        { id: 'chatbot', icon: 'ph-robot', name: 'AI Chatbot', cat: 'dashboards', desc: 'Your 24/7 AI assistant that answers seller questions on your website' },
     ];
 
     const DEFAULT_FAVS = ['cma-generator', 'listing-description', 'net-proceeds-calculator', 'social-media-generator', 'lead-crm', 'seller-dashboard'];
@@ -459,7 +460,12 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
             var isLocked = _unlockedTools.indexOf(tool.id) === -1;
             var isFav = favorites.indexOf(tool.id) !== -1;
             var a = document.createElement('a');
-            a.href = isLocked ? '#' : '/tools/' + tool.id + '.html';
+            if (tool.id === 'chatbot') {
+                a.href = '#chatbot-embed';
+                a.onclick = function(e) { e.preventDefault(); document.getElementById('chatbot-embed').scrollIntoView({behavior:'smooth'}); };
+            } else {
+                a.href = isLocked ? '#' : '/tools/' + tool.id + '.html';
+            }
             if (isLocked) a.onclick = function(e) { e.preventDefault(); showUpgradeHint(); };
             a.className = 'sb-nav-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-xs transition-colors group ' +
                 (isLocked ? 'text-gray-600 cursor-not-allowed' : 'text-gray-300 hover:text-white hover:bg-white/5');
