@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6LMX9VR0Y"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X6LMX9VR0Y');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to HomeEdge</title>
+    <meta name="description" content="Your HomeEdge platform is being built. Welcome aboard.">
+    <link rel="icon" href="/homeedge-logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: {
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #040711; }
+
+        @keyframes checkmark-draw {
+            0% { stroke-dashoffset: 48; }
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes circle-draw {
+            0% { stroke-dashoffset: 166; }
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fade-up {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .check-circle { animation: scale-in 0.5s ease-out forwards; }
+        .check-circle circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            animation: circle-draw 0.8s ease-out 0.3s forwards;
+        }
+        .check-circle polyline {
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: checkmark-draw 0.4s ease-out 0.9s forwards;
+        }
+
+        .fade-up { opacity: 0; animation: fade-up 0.6s ease-out forwards; }
+        .fade-up-1 { animation-delay: 0.6s; }
+        .fade-up-2 { animation-delay: 0.9s; }
+        .fade-up-3 { animation-delay: 1.2s; }
+        .fade-up-4 { animation-delay: 1.5s; }
+        .fade-up-5 { animation-delay: 1.8s; }
+
+        .gold-shimmer {
+            background: linear-gradient(90deg, #D4AF37 0%, #F8E9A1 40%, #D4AF37 60%, #F8E9A1 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20,30,62,0.6), rgba(10,17,40,0.4));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .step-line {
+            width: 2px;
+            background: linear-gradient(180deg, #00F2FE, rgba(0,242,254,0.1));
+        }
+    </style>
+</head>
+<body class="font-sans text-white min-h-screen flex flex-col">
+
+    <!-- Ambient glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyan-glow/5 rounded-full blur-[160px]"></div>
+        <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gold-base/5 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="relative z-10 border-b border-white/5 bg-navy-900/80 backdrop-blur-xl">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="font-serif text-2xl font-bold bg-gradient-to-r from-cyan-glow to-gold-base bg-clip-text text-transparent" style="text-decoration:none;">HomeEdge</a>
+            <a href="/app/login.html" class="text-sm text-slate-400 hover:text-white transition-colors" style="text-decoration:none;">
+                <i class="ph ph-sign-in mr-1"></i> Sign In
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-1 flex items-center justify-center px-6 py-12">
+        <div class="max-w-2xl w-full text-center">
+
+            <!-- Animated checkmark -->
+            <div class="flex justify-center mb-8">
+                <svg class="check-circle" width="80" height="80" viewBox="0 0 56 56" fill="none">
+                    <circle cx="28" cy="28" r="26" stroke="#00F2FE" stroke-width="2" fill="none" />
+                    <polyline points="17 28 24 35 39 20" stroke="#00F2FE" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="font-serif text-4xl sm:text-5xl font-bold mb-4 fade-up fade-up-1">
+                You're in.
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-400 mb-10 fade-up fade-up-2">
+                Your <span class="gold-shimmer font-semibold" id="tier-name">HomeEdge</span> platform is being built right now.
+            </p>
+
+            <!-- What's included card -->
+            <div class="glass-card rounded-2xl p-6 sm:p-8 mb-8 text-left fade-up fade-up-3">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-gold-base/10 flex items-center justify-center">
+                        <i class="ph-fill ph-crown text-gold-base text-xl" id="tier-icon"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-white" id="plan-label">Your Plan</h2>
+                        <p class="text-xs text-slate-500" id="plan-price"></p>
+                    </div>
+                </div>
+
+                <ul class="space-y-3 mb-6" id="features-list">
+                    <li class="flex items-start gap-3 text-sm text-slate-300">
+                        <i class="ph-bold ph-check text-cyan-glow mt-0.5 flex-shrink-0"></i>
+                        <span>Full AI-powered seller platform, branded to you</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-slate-300">
+                        <i class="ph-bold ph-check text-cyan-glow mt-0.5 flex-shrink-0"></i>
+                        <span>Your logo, your colors, your domain</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-slate-300">
+                        <i class="ph-bold ph-check text-cyan-glow mt-0.5 flex-shrink-0"></i>
+                        <span>30-day money-back guarantee</span>
+                    </li>
+                </ul>
+
+                <div class="border-t border-white/5 pt-5">
+                    <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                        <i class="ph ph-path text-cyan-glow"></i> What happens next
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-8 h-8 rounded-full bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-cyan-glow text-xs font-bold">1</span>
+                                </div>
+                                <div class="step-line flex-1 mt-2"></div>
+                            </div>
+                            <div class="pb-4">
+                                <p class="text-sm font-medium text-white">Check your email</p>
+                                <p class="text-xs text-slate-500">A welcome email from Cole is on its way with your intake form (logo, colors, headshot).</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-8 h-8 rounded-full bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-cyan-glow text-xs font-bold">2</span>
+                                </div>
+                                <div class="step-line flex-1 mt-2"></div>
+                            </div>
+                            <div class="pb-4">
+                                <p class="text-sm font-medium text-white">Your platform goes live</p>
+                                <p class="text-xs text-slate-500">Within 48 hours, your fully branded HomeEdge platform will be ready to use.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-8 h-8 rounded-full bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-cyan-glow text-xs font-bold">3</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-white">Quick walkthrough call</p>
+                                <p class="text-xs text-slate-500">A 15-minute call so you know every feature inside and out.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="fade-up fade-up-4 space-y-4">
+                <a href="/app/login.html" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm bg-gradient-to-r from-gold-dark via-gold-base to-gold-light text-navy-900 shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all" style="text-decoration:none;">
+                    Go to Dashboard <i class="ph ph-arrow-right"></i>
+                </a>
+                <p class="text-xs text-slate-600">
+                    You'll receive login credentials via email. If your account is ready, you can sign in now.
+                </p>
+            </div>
+
+            <!-- Trust bar -->
+            <div class="fade-up fade-up-5 mt-10 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600">
+                <span class="flex items-center gap-1.5"><i class="ph-fill ph-shield-check text-green-500"></i> 256-bit SSL</span>
+                <span class="flex items-center gap-1.5"><i class="ph-fill ph-lock text-green-500"></i> Secure Payment via Stripe</span>
+                <span class="flex items-center gap-1.5"><i class="ph-fill ph-arrow-counter-clockwise text-green-500"></i> 30-Day Money Back</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-white/5 py-6 text-center">
+        <p class="text-xs text-slate-600">Questions? Reply to your welcome email or reach out at <a href="mailto:cole@gethomeedge.com" class="text-cyan-glow hover:text-white transition-colors" style="text-decoration:none;">cole@gethomeedge.com</a></p>
+    </footer>
+
+    <script>
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+        var tier = (params.get('tier') || '').toLowerCase();
+
+        var tiers = {
+            starter: {
+                name: 'Starter',
+                price: '$49/mo',
+                icon: 'ph-fill ph-rocket-launch',
+                features: [
+                    '10 AI-powered tools for listing agents',
+                    'AI Chatbot that answers seller questions 24/7',
+                    'Branded with your logo and colors',
+                    'Seller-facing calculators',
+                    'Email support',
+                    '30-day money-back guarantee'
+                ]
+            },
+            pro: {
+                name: 'Pro',
+                price: '$97/mo',
+                icon: 'ph-fill ph-crown',
+                features: [
+                    'All 28 AI tools unlocked',
+                    'AI Chatbot + Seller Dashboard',
+                    'Lead CRM to track every prospect',
+                    'All 7 seller calculators',
+                    'Priority same-day support',
+                    '30-day money-back guarantee'
+                ]
+            },
+            elite: {
+                name: 'Elite',
+                price: '$197/mo',
+                icon: 'ph-fill ph-diamond',
+                features: [
+                    'Everything in Pro, plus:',
+                    'White Glove platform setup',
+                    'Dedicated Account Manager',
+                    'Monthly strategy calls',
+                    'Custom integrations',
+                    'Priority phone support'
+                ]
+            }
+        };
+
+        var data = tiers[tier];
+        if (data) {
+            document.getElementById('tier-name').textContent = data.name;
+            document.getElementById('plan-label').textContent = data.name + ' Plan';
+            document.getElementById('plan-price').textContent = data.price;
+            document.getElementById('tier-icon').className = data.icon + ' text-gold-base text-xl';
+
+            var list = document.getElementById('features-list');
+            list.innerHTML = '';
+            data.features.forEach(function(f) {
+                var li = document.createElement('li');
+                li.className = 'flex items-start gap-3 text-sm text-slate-300';
+                li.innerHTML = '<i class="ph-bold ph-check text-cyan-glow mt-0.5 flex-shrink-0"></i><span>' + f + '</span>';
+                list.appendChild(li);
+            });
+        }
+    })();
+    </script>
+</body>
+</html>

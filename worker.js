@@ -207,10 +207,19 @@ const ONBOARDING_EMAIL = {
 };
 
 // --- TIER DETECTION FROM AMOUNT ---
-// New pricing: Starter $49/$468, Pro $97/$948, Elite $197/$1908
+// Monthly: Starter $49 (4900), Pro $97 (9700), Elite $197 (19700)
+// Annual: Starter $468 (46800), Pro $948 (94800), Elite $1908 (190800)
 function getTierFromAmount(amountCents) {
-  if (amountCents >= 19700) return "elite";
-  if (amountCents >= 9700) return "pro";
+  const amt = Number(amountCents) || 0;
+  // Elite: $197/mo (19700) or $1908/yr (190800)
+  if (amt === 19700 || amt === 190800) return "elite";
+  // Pro: $97/mo (9700) or $948/yr (94800)
+  if (amt === 9700 || amt === 94800) return "pro";
+  // Starter: $49/mo (4900) or $468/yr (46800)
+  if (amt === 4900 || amt === 46800) return "starter";
+  // Fallback: match by range for any custom/promo prices
+  if (amt >= 100000) return "elite";
+  if (amt >= 50000) return "pro";
   return "starter";
 }
 
