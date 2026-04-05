@@ -288,6 +288,22 @@
             border-color: rgba(255, 255, 255, 0.15);
         }
     </style>
+    <!-- Clerk Auth Gate -->
+    <script defer crossorigin="anonymous" src="https://clerk.gethomeedge.com/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+      data-clerk-publishable-key="pk_live_Y2xlcmsuZ2V0aG9tZWVkZ2UuY29tJA"></script>
+    <script>
+      window.addEventListener('load', function() {
+        var maxRetries = 10, attempt = 0;
+        function checkAuth() {
+          if (typeof Clerk !== 'undefined' && Clerk.loaded) {
+            if (!Clerk.user) window.location.href = '/app/login.html';
+          } else if (++attempt < maxRetries) {
+            setTimeout(checkAuth, 500);
+          }
+        }
+        setTimeout(checkAuth, 1000);
+      });
+    </script>
 </head>
 <body class="font-sans min-h-screen flex flex-col">
 

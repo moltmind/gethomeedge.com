@@ -79,6 +79,22 @@
         .room-checkbox:checked { background: #00F2FE; border-color: #00F2FE; }
         .room-checkbox:checked::after { content: '\2713'; display: flex; align-items: center; justify-content: center; color: #040711; font-weight: bold; font-size: 13px; }
     </style>
+    <!-- Clerk Auth Gate -->
+    <script defer crossorigin="anonymous" src="https://clerk.gethomeedge.com/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+      data-clerk-publishable-key="pk_live_Y2xlcmsuZ2V0aG9tZWVkZ2UuY29tJA"></script>
+    <script>
+      window.addEventListener('load', function() {
+        var maxRetries = 10, attempt = 0;
+        function checkAuth() {
+          if (typeof Clerk !== 'undefined' && Clerk.loaded) {
+            if (!Clerk.user) window.location.href = '/app/login.html';
+          } else if (++attempt < maxRetries) {
+            setTimeout(checkAuth, 500);
+          }
+        }
+        setTimeout(checkAuth, 1000);
+      });
+    </script>
 </head>
 <body class="font-sans min-h-screen flex flex-col">
 
