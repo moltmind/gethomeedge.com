@@ -3,11 +3,22 @@
  * Cloudflare Worker with Cron Trigger for automated welcome emails
  */
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+const ALLOWED_ORIGINS = [
+  "https://gethomeedge.com",
+  "https://www.gethomeedge.com",
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+];
+
+function corsHeaders(request) {
+  const origin = request?.headers?.get("Origin") || "";
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+}
 
 // --- GHL INTEGRATION ---
 const GHL_BASE = "https://services.leadconnectorhq.com";
@@ -80,35 +91,35 @@ Your job: Help real estate agents understand how HomeEdge solves their real prob
 
 ABOUT HOMEEDGE:
 - White-labeled AI seller platform, 100% branded to the agent (their logo, domain, colors)
-- 28 AI-powered tools live now: 14 AI generators (CMA reports, listing descriptions, social media, market snapshots, pricing strategy, seller updates, objection handling, video scripts, and more), 7 smart calculators (net proceeds, fix vs. sell, commission value, staging ROI, and more), seller dashboard, lead CRM, performance analytics, open house QR system, listing portfolio, and a 24/7 AI chatbot
+- 27 AI-powered tools live now: 14 AI generators (CMA reports, listing descriptions, social media, market snapshots, pricing strategy, seller updates, objection handling, video scripts, and more), 7 smart calculators (net proceeds, fix vs. sell, commission value, staging ROI, and more), seller dashboard, lead CRM, performance analytics, open house QR system, listing portfolio, and a 24/7 AI chatbot
 - The full seller journey covered: prospecting, listing presentation, pricing, marketing, client communication, analytics, and retention
 - Deployed in 48 hours. No tech skills needed. We handle everything.
-- Pricing: Starter $1,497 setup + $297/mo | Professional $2,997 setup + $497/mo | Elite $4,997 setup + $797/mo
-- Brokerage deals for 10+ agent teams (custom pricing $60-80/agent/mo)
-- First client: Jim Geracie saw the demo and tried to hire the creator on the spot. Generated $12K+ month one.
+- Pricing: Starter $49/mo | Pro $97/mo | Elite $197/mo. Annual plans save 20%.
+- 30-day money-back guarantee on all plans.
+- Brokerage deals for 10+ agent teams (email cole@gethomeedge.com).
 
 AGENT PROBLEMS YOU SOLVE:
-- Can't differentiate from the 5 agents interviewing for the same listing -- HomeEdge gives them a 28-tool AI platform no other agent has
+- Can't differentiate from the 5 agents interviewing for the same listing -- HomeEdge gives them a 27-tool AI platform no other agent has
 - Post-NAR settlement pressure to justify commissions -- the platform visually proves their value with calculators, dashboards, and AI tools
 - Sellers go cold between appointments -- 24/7 AI chatbot + automated seller updates keep them engaged
 - No time to write listing descriptions, social posts, CMAs, or emails -- AI generates it all in seconds
 - Losing deals to Zillow/Opendoor/cash buyers -- net proceeds calculator and commission value calculator show sellers they net MORE with an agent
 - No system to track leads -- built-in CRM and performance dashboard keep everything organized
-- Generic websites that look like every other agent -- HomeEdge is fully custom-branded with 28 tools
+- Generic websites that look like every other agent -- HomeEdge is fully custom-branded with 27 tools
 
 CONVERSATION STYLE:
 - Warm, confident, direct -- like a knowledgeable friend who happens to know everything about real estate tech
 - Ask qualifying questions early: "How many listings are you closing a year?" or "What's your biggest challenge getting seller appointments?"
 - Always move toward a next step. Never let a conversation end without a CTA.
-- If they're hesitating on price, use the ROI: "One extra listing a year is $12K. The Professional plan is $8,961 annually. You only need ONE deal to more than pay for the entire year."
-- If they're ready: direct them to https://buy.stripe.com/6oU6oA2iie4EbmicLZ7N607 (Professional) or https://buy.stripe.com/3cIaEQ2ii9Oo4XU4ft7N606 (Starter)
-- If they ask something you genuinely don't know: "Let me connect you with Cole directly -- email gethomeedge@gmail.com and he'll get back to you within the hour."
+- If they're hesitating on price, use the ROI: "One extra listing a year is $12K. The Pro plan is $1,164 annually. That's less than 10% of one commission check."
+- If they're ready: direct them to gethomeedge.com and tell them to scroll to pricing and click Get Started. Plans start at $49/mo.
+- If they ask something you genuinely don't know: "Let me connect you with Cole directly -- email cole@gethomeedge.com and he'll get back to you within the hour."
 - Never be pushy. Be helpful. Close confidently.
 
 LIMITS: You have a 12-message limit per session. Around message 10-11, naturally start steering toward "let's get on a quick call or get you started today."`;
 
 const LIMIT_REPLY =
-  "I'd love to keep chatting -- let's get you on a quick call with Cole instead. Book a time at gethomeedge@gmail.com or hit the Get Started button above.";
+  "I'd love to keep chatting -- let's get you on a quick call with Cole instead. Book a time at cole@gethomeedge.com or hit the Get Started button above.";
 
 // --- RATE LIMITING ---
 const TIER_LIMITS = {
@@ -196,13 +207,67 @@ const ONBOARDING_EMAIL = {
 };
 
 // --- TIER DETECTION FROM AMOUNT ---
+// New pricing: Starter $49/$468, Pro $97/$948, Elite $197/$1908
 function getTierFromAmount(amountCents) {
-  if (amountCents >= 499700) return "Elite";
-  if (amountCents >= 299700) return "Professional";
-  if (amountCents >= 199700) return "Founder Professional";
-  if (amountCents >= 149700) return "Starter";
-  if (amountCents >= 99700) return "Founder Starter";
-  return "Starter";
+  if (amountCents >= 19700) return "elite";
+  if (amountCents >= 9700) return "pro";
+  return "starter";
+}
+
+// --- CLERK USER PROVISIONING ---
+async function ensureClerkUser(env, email, name, tier, stripeCustomerId) {
+  const CLERK_API = "https://api.clerk.com/v1";
+  const headers = {
+    Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
+    "Content-Type": "application/json",
+  };
+
+  const metadata = {
+    subscription_tier: tier,
+    stripe_customer_id: stripeCustomerId || "",
+    activated_at: new Date().toISOString(),
+  };
+
+  // Check if user already exists in Clerk
+  const searchRes = await fetch(
+    `${CLERK_API}/users?email_address=${encodeURIComponent(email)}&limit=1`,
+    { headers }
+  );
+  const users = await searchRes.json();
+
+  if (Array.isArray(users) && users.length > 0) {
+    // Update existing user's tier
+    const userId = users[0].id;
+    await fetch(`${CLERK_API}/users/${userId}`, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ public_metadata: metadata }),
+    });
+    console.log(`Clerk: Updated ${email} to ${tier} tier (user ${userId})`);
+    return userId;
+  }
+
+  // Create new user -- they'll set their password on first sign-in
+  const nameParts = (name || "").split(" ");
+  const createRes = await fetch(`${CLERK_API}/users`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      email_address: [email],
+      first_name: nameParts[0] || "",
+      last_name: nameParts.slice(1).join(" ") || "",
+      public_metadata: metadata,
+    }),
+  });
+  const newUser = await createRes.json();
+
+  if (newUser.id) {
+    console.log(`Clerk: Created ${email} as ${tier} tier (user ${newUser.id})`);
+    return newUser.id;
+  }
+
+  console.log(`Clerk: Failed to create user for ${email}`, JSON.stringify(newUser));
+  return null;
 }
 
 // --- EMAIL DRIP ---
@@ -218,20 +283,215 @@ export default {
   },
 
   async fetch(request, env, ctx) {
+    const CORS_HEADERS = corsHeaders(request);
+
     // Handle CORS preflight
     if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: CORS_HEADERS });
+      return new Response(null, { status: 204, headers: {
+        ...CORS_HEADERS,
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      }});
     }
 
-    // Only allow POST
+    const url = new URL(request.url);
+
+    // --- AUTHENTICATED API ENDPOINTS (GET/POST/PUT/DELETE via Clerk JWT) ---
+
+    // Helper: verify Clerk session token from Authorization header
+    async function getClerkUserId(request, env) {
+      const auth = request.headers.get("Authorization") || "";
+      const token = auth.replace("Bearer ", "");
+      if (!token) return null;
+      try {
+        const res = await fetch("https://api.clerk.com/v1/clients/verify", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token }),
+        });
+        if (!res.ok) {
+          // Fallback: decode JWT payload to get sub (userId)
+          const parts = token.split(".");
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+            return payload.sub || null;
+          }
+          return null;
+        }
+        const data = await res.json();
+        return data.sub || data.user_id || null;
+      } catch {
+        // Fallback: decode JWT payload
+        try {
+          const parts = token.split(".");
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+            return payload.sub || null;
+          }
+        } catch {}
+        return null;
+      }
+    }
+
+    // --- BRANDING ENDPOINT ---
+    if (url.pathname === "/branding") {
+      const userId = await getClerkUserId(request, env);
+      if (!userId) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      if (request.method === "GET") {
+        const data = await env.RATE_LIMITS.get(`branding:${userId}`);
+        return new Response(data || JSON.stringify({}), {
+          status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      if (request.method === "POST" || request.method === "PUT") {
+        const body = await request.json();
+        const branding = {
+          businessName: (body.businessName || "").slice(0, 200),
+          logoUrl: (body.logoUrl || "").slice(0, 500),
+          primaryColor: (body.primaryColor || "#00F2FE").slice(0, 20),
+          accentColor: (body.accentColor || "#D4AF37").slice(0, 20),
+          phone: (body.phone || "").slice(0, 20),
+          website: (body.website || "").slice(0, 200),
+          updatedAt: new Date().toISOString(),
+        };
+        await env.RATE_LIMITS.put(`branding:${userId}`, JSON.stringify(branding), { expirationTtl: 86400 * 365 });
+
+        // Also update Clerk publicMetadata with branding
+        try {
+          await fetch(`https://api.clerk.com/v1/users/${userId}`, {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              public_metadata: {
+                brand_name: branding.businessName,
+                brand_logo: branding.logoUrl,
+                brand_color: branding.primaryColor,
+              },
+            }),
+          });
+        } catch (err) {
+          console.log("Clerk metadata update error:", err.message);
+        }
+
+        return new Response(JSON.stringify({ success: true, branding }), {
+          status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+      });
+    }
+
+    // --- LEADS ENDPOINT ---
+    if (url.pathname === "/leads" || url.pathname.startsWith("/leads/")) {
+      const userId = await getClerkUserId(request, env);
+      if (!userId) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      const leadsKey = `leads:${userId}`;
+
+      if (request.method === "GET") {
+        const data = await env.RATE_LIMITS.get(leadsKey);
+        return new Response(data || JSON.stringify([]), {
+          status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      if (request.method === "POST") {
+        const body = await request.json();
+        const existing = JSON.parse(await env.RATE_LIMITS.get(leadsKey) || "[]");
+
+        if (body.action === "add") {
+          const lead = {
+            id: `lead_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            name: (body.name || "").slice(0, 200),
+            email: (body.email || "").slice(0, 200),
+            phone: (body.phone || "").slice(0, 20),
+            address: (body.address || "").slice(0, 300),
+            status: body.status || "new",
+            source: (body.source || "").slice(0, 100),
+            notes: (body.notes || "").slice(0, 1000),
+            createdAt: new Date().toISOString(),
+          };
+          existing.push(lead);
+          await env.RATE_LIMITS.put(leadsKey, JSON.stringify(existing), { expirationTtl: 86400 * 365 });
+          return new Response(JSON.stringify({ success: true, lead }), {
+            status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          });
+        }
+
+        if (body.action === "update" && body.id) {
+          const idx = existing.findIndex(l => l.id === body.id);
+          if (idx === -1) {
+            return new Response(JSON.stringify({ error: "Lead not found" }), {
+              status: 404, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+            });
+          }
+          Object.assign(existing[idx], {
+            name: body.name !== undefined ? (body.name || "").slice(0, 200) : existing[idx].name,
+            email: body.email !== undefined ? (body.email || "").slice(0, 200) : existing[idx].email,
+            phone: body.phone !== undefined ? (body.phone || "").slice(0, 20) : existing[idx].phone,
+            address: body.address !== undefined ? (body.address || "").slice(0, 300) : existing[idx].address,
+            status: body.status || existing[idx].status,
+            source: body.source !== undefined ? (body.source || "").slice(0, 100) : existing[idx].source,
+            notes: body.notes !== undefined ? (body.notes || "").slice(0, 1000) : existing[idx].notes,
+            updatedAt: new Date().toISOString(),
+          });
+          await env.RATE_LIMITS.put(leadsKey, JSON.stringify(existing), { expirationTtl: 86400 * 365 });
+          return new Response(JSON.stringify({ success: true, lead: existing[idx] }), {
+            status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          });
+        }
+
+        if (body.action === "delete" && body.id) {
+          const filtered = existing.filter(l => l.id !== body.id);
+          await env.RATE_LIMITS.put(leadsKey, JSON.stringify(filtered), { expirationTtl: 86400 * 365 });
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          });
+        }
+
+        if (body.action === "bulk") {
+          // Full replace (for migration from localStorage)
+          const leads = Array.isArray(body.leads) ? body.leads.slice(0, 500) : [];
+          await env.RATE_LIMITS.put(leadsKey, JSON.stringify(leads), { expirationTtl: 86400 * 365 });
+          return new Response(JSON.stringify({ success: true, count: leads.length }), {
+            status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(JSON.stringify({ error: "Invalid action" }), {
+          status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
+
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+      });
+    }
+
+    // Only allow POST for remaining endpoints
     if (request.method !== "POST") {
       return new Response(JSON.stringify({ error: "Method not allowed" }), {
         status: 405,
         headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
       });
     }
-
-    const url = new URL(request.url);
 
     // --- TELEGRAM BOT WEBHOOK ---
     if (url.pathname === "/telegram") {
@@ -854,6 +1114,23 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
             })()
           );
 
+          // Create or update Clerk user with subscription tier
+          ctx.waitUntil(
+            (async () => {
+              try {
+                const clerkUserId = await ensureClerkUser(
+                  env, email, name, tier,
+                  session.customer || ""
+                );
+                if (clerkUserId) {
+                  console.log(`Clerk user provisioned: ${clerkUserId} (${tier})`);
+                }
+              } catch (err) {
+                console.log("Clerk provisioning error:", err.message);
+              }
+            })()
+          );
+
           console.log(`New ${tier} client: ${email} ($${(amount / 100).toFixed(2)})`);
         }
       }
@@ -910,15 +1187,29 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
 
     // --- NOTIFY ENDPOINT (backup lead capture - logs to KV) ---
     if (url.pathname === "/notify") {
+      // Basic abuse protection: check origin
+      const notifyOrigin = request.headers.get("Origin") || "";
+      if (!ALLOWED_ORIGINS.includes(notifyOrigin)) {
+        return new Response(JSON.stringify({ error: "Forbidden" }), {
+          status: 403, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
       let notifyBody;
       try { notifyBody = await request.json(); } catch {
         return new Response(JSON.stringify({ error: "Invalid JSON" }), {
           status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
         });
       }
+      // Limit payload size to prevent KV abuse
+      const notifyStr = JSON.stringify(notifyBody);
+      if (notifyStr.length > 5000) {
+        return new Response(JSON.stringify({ error: "Payload too large" }), {
+          status: 413, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        });
+      }
       // Store lead in KV as backup so no lead is ever lost
       const key = `lead_${Date.now()}`;
-      await env.RATE_LIMITS.put(key, JSON.stringify(notifyBody), { expirationTtl: 86400 * 30 });
+      await env.RATE_LIMITS.put(key, notifyStr, { expirationTtl: 86400 * 30 });
       return new Response(JSON.stringify({ stored: true, key }), {
         status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
       });
@@ -935,12 +1226,18 @@ ${ctx.agentName ? "Agent: " + ctx.agentName : ""}`
       }
 
       const { email, name, phone, company, city } = subBody;
-      if (!email) {
-        return new Response(JSON.stringify({ error: "Email required" }), {
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return new Response(JSON.stringify({ error: "Valid email required" }), {
           status: 400,
           headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
         });
       }
+      // Sanitize inputs: trim and limit length to prevent abuse
+      const clean = (s, max = 200) => (s || "").toString().trim().slice(0, max);
+      const safeName = clean(name);
+      const safePhone = clean(phone, 20);
+      const safeCompany = clean(company);
+      const safeCity = clean(city, 100);
 
       // Store lead in KV as permanent record
       const leadKey = `lead_${Date.now()}_${email.replace(/[^a-z0-9]/gi, '')}`;
