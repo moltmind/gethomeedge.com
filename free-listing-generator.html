@@ -12,38 +12,20 @@
     <meta property="og:url" content="https://gethomeedge.com/free-listing-generator.html">
     <link rel="icon" href="/homeedge-logo.png" type="image/png">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        navy: {
-                            900: '#040711',
-                            800: '#0A1128',
-                            700: '#141E3E',
-                            600: '#1D2A54',
-                        },
-                        cyan: {
-                            glow: '#00F2FE',
-                            deep: '#4FACFE',
-                        },
-                        gold: {
-                            light: '#F8E9A1',
-                            base: '#D4AF37',
-                            dark: '#A6821A',
-                        }
+                        navy: { 900: '#040711', 800: '#0A1128', 700: '#141E3E', 600: '#1D2A54' },
+                        cyan: { glow: '#00F2FE', deep: '#4FACFE' },
+                        gold: { light: '#F8E9A1', base: '#D4AF37', dark: '#A6821A' }
                     },
                 }
             }
@@ -51,268 +33,652 @@
     </script>
 
     <style>
-        body {
-            background-color: #040711;
-            color: #ffffff;
-            overflow-x: hidden;
+        *, *::before, *::after { box-sizing: border-box; }
+        body { background: #040711; color: #fff; overflow-x: hidden; }
+
+        /* ── Animated gradient hero background ── */
+        .hero-bg {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,242,254,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 50%, rgba(212,175,55,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 70% 50% at 20% 80%, rgba(0,242,254,0.05) 0%, transparent 50%);
+        }
+        .hero-bg::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(0,242,254,0.08) 0%, transparent 70%);
+            animation: heroShift 12s ease-in-out infinite alternate;
+        }
+        @keyframes heroShift {
+            0%   { transform: translate(0, 0) scale(1); opacity: .7; }
+            50%  { transform: translate(30px, 20px) scale(1.05); opacity: 1; }
+            100% { transform: translate(-20px, -10px) scale(.97); opacity: .8; }
         }
 
-        .glass-card {
-            background: linear-gradient(180deg, rgba(20, 30, 62, 0.6) 0%, rgba(10, 17, 40, 0.4) 100%);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        /* ── Noise overlay for texture ── */
+        .noise {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 256px;
         }
 
-        .text-gradient-cyan {
-            background: linear-gradient(90deg, #4FACFE 0%, #00F2FE 100%);
+        /* ── Floating particles (CSS-only) ── */
+        .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .particle {
+            position: absolute; border-radius: 50%; opacity: 0;
+            animation: particleDrift linear infinite;
+        }
+        @keyframes particleDrift {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ── Floating geometric shapes ── */
+        .geo-shape {
+            position: absolute; pointer-events: none; opacity: .06;
+            animation: geoFloat 20s ease-in-out infinite;
+        }
+        @keyframes geoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33%  { transform: translateY(-30px) rotate(120deg); }
+            66%  { transform: translateY(15px) rotate(240deg); }
+        }
+
+        /* ── Shimmer text for "12 Seconds" ── */
+        .text-shimmer {
+            background: linear-gradient(
+                90deg,
+                #4FACFE 0%, #00F2FE 25%, #ffffff 50%, #00F2FE 75%, #4FACFE 100%
+            );
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            0%   { background-position: 200% center; }
+            100% { background-position: -200% center; }
         }
 
-        .btn-gold {
+        /* ── Glow behind shimmer text ── */
+        .text-glow {
+            text-shadow: 0 0 40px rgba(0,242,254,.3), 0 0 80px rgba(0,242,254,.1);
+            -webkit-text-fill-color: initial;
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(90deg, #4FACFE, #00F2FE);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Glass card with animated border ── */
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20,30,62,0.5) 0%, rgba(10,17,40,0.35) 100%);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .glass-glow {
             position: relative;
-            z-index: 1;
-            overflow: hidden;
         }
-        .btn-gold::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-            z-index: -1;
+        .glass-glow::before {
+            content: ''; position: absolute; inset: -1px; border-radius: inherit; z-index: -1;
+            background: conic-gradient(from 0deg, transparent, rgba(0,242,254,.2), transparent, rgba(212,175,55,.15), transparent);
+            animation: borderRotate 8s linear infinite;
         }
-        .btn-gold:hover::before {
-            left: 100%;
-        }
-
-        .output-text {
-            white-space: pre-wrap;
-            line-height: 1.7;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-
-        @keyframes spin {
+        @keyframes borderRotate {
             to { transform: rotate(360deg); }
         }
-        .spinner {
-            animation: spin 1s linear infinite;
+        /* Clip the rotating conic to just the border */
+        .glass-glow::after {
+            content: ''; position: absolute; inset: 0; border-radius: inherit;
+            background: linear-gradient(180deg, rgba(20,30,62,0.5), rgba(10,17,40,0.35));
+            z-index: -1;
+        }
+
+        /* ── CTA button pulse + shine ── */
+        .btn-cta {
+            position: relative; z-index: 1; overflow: hidden;
+            background: linear-gradient(135deg, #D4AF37 0%, #F8E9A1 50%, #D4AF37 100%);
+            background-size: 200% auto;
+            box-shadow: 0 0 20px rgba(212,175,55,0.3), 0 0 60px rgba(212,175,55,0.1);
+            animation: btnPulse 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+        .btn-cta:hover {
+            box-shadow: 0 0 30px rgba(212,175,55,0.5), 0 0 80px rgba(212,175,55,0.2);
+            background-position: right center;
+            transform: translateY(-1px);
+        }
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(212,175,55,0.3), 0 0 60px rgba(212,175,55,0.1); }
+            50%      { box-shadow: 0 0 30px rgba(212,175,55,0.45), 0 0 80px rgba(212,175,55,0.15); }
+        }
+        .btn-cta::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: none; z-index: -1;
+            animation: btnShine 4s ease-in-out infinite;
+        }
+        @keyframes btnShine {
+            0%, 70%, 100% { left: -100%; }
+            85%  { left: 150%; }
+        }
+
+        /* ── Input styling ── */
+        .input-field {
+            background: rgba(10,17,40,0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: rgba(0,242,254,0.5);
+            box-shadow: 0 0 0 3px rgba(0,242,254,0.08), 0 0 20px rgba(0,242,254,0.05);
+            outline: none;
+        }
+
+        /* ── Dashboard mockup ── */
+        .mockup-frame {
+            background: linear-gradient(180deg, rgba(20,30,62,0.4), rgba(4,7,17,0.8));
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 40px rgba(0,242,254,0.03);
+        }
+        .mockup-toolbar {
+            background: rgba(10,17,40,0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .mockup-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* ── Quote card with gradient border ── */
+        .quote-card {
+            position: relative;
+            background: linear-gradient(180deg, rgba(20,30,62,0.5), rgba(10,17,40,0.3));
+            backdrop-filter: blur(20px);
+        }
+        .quote-card::before {
+            content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+            background: linear-gradient(135deg, rgba(0,242,254,0.25), transparent 40%, transparent 60%, rgba(212,175,55,0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+        }
+
+        /* ── Video player ── */
+        .video-player {
+            position: relative;
+            background: linear-gradient(135deg, #0A1128, #141E3E);
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .video-player .play-ring {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: rgba(212,175,55,0.15);
+            border: 2px solid rgba(212,175,55,0.6);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .video-player:hover .play-ring {
+            background: rgba(212,175,55,0.25);
+            border-color: #D4AF37;
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(212,175,55,0.3);
+        }
+        .video-progress {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+            background: rgba(255,255,255,0.1);
+        }
+        .video-progress-fill {
+            height: 100%; width: 35%; border-radius: 2px;
+            background: linear-gradient(90deg, #00F2FE, #D4AF37);
+        }
+
+        /* ── Stats counter ── */
+        .stat-card {
+            background: linear-gradient(180deg, rgba(20,30,62,0.4), rgba(10,17,40,0.3));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+        }
+        .stat-card:hover {
+            border-color: rgba(0,242,254,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,242,254,0.06);
+        }
+
+        /* ── Utility animations ── */
+        .output-text { white-space: pre-wrap; line-height: 1.7; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { animation: spin 1s linear infinite; }
+
+        /* ── Section reveal on scroll ── */
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .reveal.visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* ── Grid lines (subtle) ── */
+        .grid-lines {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, black 20%, transparent 70%);
         }
     </style>
 </head>
 <body class="font-sans antialiased min-h-screen">
 
-    <!-- Header (logo only) -->
-    <header class="w-full py-6 px-6">
-        <div class="max-w-4xl mx-auto">
-            <a href="https://gethomeedge.com" class="flex items-center gap-3">
-                <img src="/homeedge-logo.png" alt="HomeEdge" class="h-8 w-8">
-                <span class="text-xl font-bold text-gradient-cyan">HomeEdge</span>
-            </a>
-        </div>
-    </header>
+    <!-- Background layers -->
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
 
-    <!-- Hero / Email Capture -->
-    <main class="max-w-4xl mx-auto px-6">
+    <!-- Particles -->
+    <div class="particles" aria-hidden="true" id="particles"></div>
 
-        <!-- Email Capture Section -->
-        <section id="capture-section" class="py-12 md:py-20">
-            <div class="text-center max-w-2xl mx-auto mb-10">
-                <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mb-5">
-                    Write Your Next Listing Description in <span class="text-gradient-cyan">12 Seconds</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
-                    28 AI tools built specifically for listing agents. Try the most popular one free. No credit card. No catch.
-                </p>
+    <!-- Floating geometric shapes -->
+    <div class="geo-shape" aria-hidden="true" style="top:15%;left:8%;width:60px;height:60px;border:1px solid rgba(0,242,254,0.15);border-radius:12px;animation-delay:0s;animation-duration:18s;"></div>
+    <div class="geo-shape" aria-hidden="true" style="top:65%;right:6%;width:40px;height:40px;border:1px solid rgba(212,175,55,0.12);border-radius:50%;animation-delay:-6s;animation-duration:22s;"></div>
+    <div class="geo-shape" aria-hidden="true" style="top:40%;left:85%;width:80px;height:80px;border:1px solid rgba(0,242,254,0.08);animation-delay:-10s;animation-duration:25s;transform:rotate(45deg);"></div>
+    <div class="geo-shape" aria-hidden="true" style="top:80%;left:15%;width:50px;height:50px;border:1px solid rgba(212,175,55,0.08);border-radius:8px;animation-delay:-4s;animation-duration:20s;"></div>
+
+    <!-- Content -->
+    <div class="relative z-10">
+
+        <!-- Header -->
+        <header class="w-full py-5 px-6">
+            <div class="max-w-5xl mx-auto flex items-center justify-between">
+                <a href="https://gethomeedge.com" class="flex items-center gap-2.5">
+                    <img src="/homeedge-logo.png" alt="HomeEdge" class="h-7 w-7">
+                    <span class="text-lg font-bold text-gradient-cyan tracking-tight">HomeEdge</span>
+                </a>
+                <span class="text-xs text-gray-500 hidden sm:block tracking-wider uppercase">28 AI Tools for Listing Agents</span>
             </div>
+        </header>
 
-            <div class="glass-card rounded-2xl p-8 md:p-10 max-w-lg mx-auto">
-                <form id="capture-form" class="space-y-5">
+        <main class="max-w-5xl mx-auto px-6">
+
+            <!-- ════════ CAPTURE SECTION ════════ -->
+            <section id="capture-section" class="py-10 md:py-20">
+                <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+                    <!-- Left: Copy + Form -->
                     <div>
-                        <label for="lead-name" class="block text-sm font-medium text-gray-300 mb-2">First Name</label>
-                        <input type="text" id="lead-name" name="name" required placeholder="Your first name"
-                            class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
-                    </div>
-                    <div>
-                        <label for="lead-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                        <input type="email" id="lead-email" name="email" required placeholder="you@email.com"
-                            class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
-                    </div>
-                    <button type="submit" id="capture-btn"
-                        class="btn-gold w-full py-4 rounded-lg bg-gold-base text-navy-900 font-bold text-lg hover:bg-gold-light transition-colors">
-                        Get My Free Listing Description
-                    </button>
-                    <p class="text-center text-sm text-gray-500">Join 50+ agents already using HomeEdge</p>
-                </form>
-                <div id="capture-error" class="hidden mt-4 text-red-400 text-sm text-center"></div>
-            </div>
-        </section>
+                        <div class="mb-8 md:mb-10">
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-glow/5 border border-cyan-glow/15 text-cyan-glow text-xs font-medium mb-6 tracking-wide">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-glow animate-pulse"></span>
+                                FREE TOOL
+                            </div>
+                            <h1 class="text-3xl md:text-[2.75rem] lg:text-5xl font-extrabold leading-[1.1] mb-5 tracking-tight">
+                                Write Your Next Listing Description in
+                                <span class="text-shimmer relative">12 Seconds<span class="text-glow absolute inset-0 pointer-events-none text-shimmer" aria-hidden="true">12 Seconds</span></span>
+                            </h1>
+                            <p class="text-base md:text-lg text-gray-400 leading-relaxed max-w-lg">
+                                28 AI tools built specifically for listing agents. Try the most popular one free. No credit card. No catch.
+                            </p>
+                        </div>
 
-        <!-- Tool Section (hidden until form submit) -->
-        <section id="tool-section" class="hidden pb-16">
-            <div class="text-center mb-10 fade-in">
-                <h2 class="text-2xl md:text-4xl font-bold mb-3">Try It <span class="text-gradient-cyan">Right Now</span></h2>
-                <p class="text-gray-400">Enter your property details and watch the magic happen.</p>
-            </div>
-
-            <div class="glass-card rounded-2xl p-8 md:p-10 max-w-2xl mx-auto fade-in">
-                <form id="tool-form" class="space-y-5">
-                    <div>
-                        <label for="prop-address" class="block text-sm font-medium text-gray-300 mb-2">Property Address</label>
-                        <input type="text" id="prop-address" required placeholder="123 Main St, Milwaukee, WI 53202"
-                            class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
+                        <!-- Form Card -->
+                        <div class="glass-card glass-glow rounded-2xl p-7 md:p-8 max-w-md">
+                            <form id="capture-form" class="space-y-4">
+                                <div>
+                                    <label for="lead-name" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">First Name</label>
+                                    <input type="text" id="lead-name" name="name" required placeholder="Your first name"
+                                        class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm">
+                                </div>
+                                <div>
+                                    <label for="lead-email" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Email Address</label>
+                                    <input type="email" id="lead-email" name="email" required placeholder="you@email.com"
+                                        class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm">
+                                </div>
+                                <button type="submit" id="capture-btn"
+                                    class="btn-cta w-full py-3.5 rounded-xl text-navy-900 font-bold text-base tracking-tight">
+                                    Get My Free Listing Description
+                                </button>
+                                <p class="text-center text-xs text-gray-600">Join 50+ agents already using HomeEdge</p>
+                            </form>
+                            <div id="capture-error" class="hidden mt-3 text-red-400 text-sm text-center"></div>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Right: Dashboard Mockup -->
+                    <div class="hidden lg:block">
+                        <div class="mockup-frame rounded-xl overflow-hidden shadow-2xl">
+                            <!-- Browser toolbar -->
+                            <div class="mockup-toolbar px-4 py-2.5 flex items-center gap-2">
+                                <div class="mockup-dot bg-red-500/70"></div>
+                                <div class="mockup-dot bg-yellow-500/70"></div>
+                                <div class="mockup-dot bg-green-500/70"></div>
+                                <div class="flex-1 mx-3">
+                                    <div class="bg-navy-800/60 rounded-md px-3 py-1 text-[10px] text-gray-500 text-center truncate">gethomeedge.com/app/tools/listing-description</div>
+                                </div>
+                            </div>
+                            <!-- Dashboard content -->
+                            <div class="p-5 space-y-4" style="background:linear-gradient(180deg,#0A1128,#040711);">
+                                <!-- Top bar -->
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded bg-cyan-glow/20"></div>
+                                        <span class="text-xs font-semibold text-gray-300">Listing Description Generator</span>
+                                    </div>
+                                    <div class="flex gap-1.5">
+                                        <div class="px-2 py-0.5 rounded text-[9px] bg-cyan-glow/10 text-cyan-glow">AI Powered</div>
+                                        <div class="px-2 py-0.5 rounded text-[9px] bg-gold-base/10 text-gold-base">Pro</div>
+                                    </div>
+                                </div>
+                                <!-- Fake form -->
+                                <div class="space-y-2.5">
+                                    <div class="rounded-lg bg-navy-800/40 border border-white/5 px-3 py-2">
+                                        <span class="text-[10px] text-gray-500">Property Address</span>
+                                        <div class="text-xs text-gray-300 mt-0.5">742 Evergreen Terrace, Milwaukee, WI</div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div class="rounded-lg bg-navy-800/40 border border-white/5 px-3 py-2">
+                                            <span class="text-[10px] text-gray-500">Beds</span>
+                                            <div class="text-xs text-gray-300 mt-0.5">4</div>
+                                        </div>
+                                        <div class="rounded-lg bg-navy-800/40 border border-white/5 px-3 py-2">
+                                            <span class="text-[10px] text-gray-500">Baths</span>
+                                            <div class="text-xs text-gray-300 mt-0.5">2.5</div>
+                                        </div>
+                                        <div class="rounded-lg bg-navy-800/40 border border-white/5 px-3 py-2">
+                                            <span class="text-[10px] text-gray-500">Sq Ft</span>
+                                            <div class="text-xs text-gray-300 mt-0.5">2,400</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fake output -->
+                                <div class="rounded-lg border border-cyan-glow/15 bg-cyan-glow/[0.03] p-3">
+                                    <div class="flex items-center gap-1.5 mb-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-cyan-glow"></div>
+                                        <span class="text-[10px] font-medium text-cyan-glow">Generated in 11.3s</span>
+                                    </div>
+                                    <div class="space-y-1.5 text-[10px] text-gray-400 leading-relaxed">
+                                        <p>Welcome to this stunning four-bedroom Colonial nestled in one of Milwaukee's most sought-after neighborhoods...</p>
+                                        <p>The gourmet kitchen features granite countertops, stainless steel appliances, and a spacious center island...</p>
+                                        <div class="text-gray-600">...</div>
+                                    </div>
+                                </div>
+                                <!-- Bottom buttons -->
+                                <div class="flex gap-2">
+                                    <div class="flex-1 py-1.5 rounded-lg bg-cyan-glow/10 text-center text-[10px] text-cyan-glow font-medium">Copy to Clipboard</div>
+                                    <div class="flex-1 py-1.5 rounded-lg bg-gold-base/10 text-center text-[10px] text-gold-base font-medium">Regenerate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════ TOOL SECTION (hidden until form submit) ════════ -->
+            <section id="tool-section" class="hidden pb-16">
+                <div class="text-center mb-10 fade-in">
+                    <h2 class="text-2xl md:text-4xl font-bold mb-3 tracking-tight">Try It <span class="text-gradient-cyan">Right Now</span></h2>
+                    <p class="text-gray-500 text-sm">Enter your property details and watch the magic happen.</p>
+                </div>
+
+                <div class="glass-card glass-glow rounded-2xl p-7 md:p-10 max-w-2xl mx-auto fade-in">
+                    <form id="tool-form" class="space-y-5">
                         <div>
-                            <label for="prop-beds" class="block text-sm font-medium text-gray-300 mb-2">Bedrooms</label>
-                            <input type="number" id="prop-beds" required min="0" max="20" placeholder="3"
-                                class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
+                            <label for="prop-address" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Property Address</label>
+                            <input type="text" id="prop-address" required placeholder="123 Main St, Milwaukee, WI 53202"
+                                class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm">
                         </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <label for="prop-beds" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Bedrooms</label>
+                                <input type="number" id="prop-beds" required min="0" max="20" placeholder="3"
+                                    class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm">
+                            </div>
+                            <div>
+                                <label for="prop-baths" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Bathrooms</label>
+                                <input type="number" id="prop-baths" required min="0" max="20" step="0.5" placeholder="2"
+                                    class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm">
+                            </div>
+                            <div class="col-span-2 md:col-span-1">
+                                <label for="prop-sqft" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Square Feet</label>
+                                <input type="number" id="prop-sqft" required min="100" max="100000" placeholder="1,850"
+                                    class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm">
+                            </div>
+                        </div>
+
                         <div>
-                            <label for="prop-baths" class="block text-sm font-medium text-gray-300 mb-2">Bathrooms</label>
-                            <input type="number" id="prop-baths" required min="0" max="20" step="0.5" placeholder="2"
-                                class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
+                            <label for="prop-type" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Property Type</label>
+                            <select id="prop-type" required
+                                class="input-field w-full px-4 py-3 rounded-xl text-white text-sm appearance-none" style="background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 20 20%22 fill=%22%236b7280%22><path fill-rule=%22evenodd%22 d=%22M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z%22 clip-rule=%22evenodd%22/></svg>');background-position:right 12px center;background-repeat:no-repeat;background-size:16px;">
+                                <option value="">Select type...</option>
+                                <option value="Single Family">Single Family</option>
+                                <option value="Condo/Townhome">Condo/Townhome</option>
+                                <option value="Multi-Family">Multi-Family</option>
+                                <option value="Luxury">Luxury</option>
+                            </select>
                         </div>
-                        <div class="col-span-2 md:col-span-1">
-                            <label for="prop-sqft" class="block text-sm font-medium text-gray-300 mb-2">Square Feet</label>
-                            <input type="number" id="prop-sqft" required min="100" max="100000" placeholder="1,850"
-                                class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
+
+                        <div>
+                            <label for="prop-features" class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Key Features</label>
+                            <textarea id="prop-features" rows="3" placeholder="Updated kitchen, hardwood floors, large backyard..."
+                                class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 text-sm resize-none"></textarea>
                         </div>
-                    </div>
 
-                    <div>
-                        <label for="prop-type" class="block text-sm font-medium text-gray-300 mb-2">Property Type</label>
-                        <select id="prop-type" required
-                            class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition">
-                            <option value="">Select type...</option>
-                            <option value="Single Family">Single Family</option>
-                            <option value="Condo/Townhome">Condo/Townhome</option>
-                            <option value="Multi-Family">Multi-Family</option>
-                            <option value="Luxury">Luxury</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="prop-features" class="block text-sm font-medium text-gray-300 mb-2">Key Features</label>
-                        <textarea id="prop-features" rows="3" placeholder="Updated kitchen, hardwood floors, large backyard..."
-                            class="w-full px-4 py-3 rounded-lg bg-navy-800 border border-navy-600 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-glow focus:ring-1 focus:ring-cyan-glow transition resize-none"></textarea>
-                    </div>
-
-                    <button type="submit" id="tool-btn"
-                        class="btn-gold w-full py-4 rounded-lg bg-gold-base text-navy-900 font-bold text-lg hover:bg-gold-light transition-colors flex items-center justify-center gap-2">
-                        <span id="tool-btn-text">Generate Listing Description</span>
-                        <svg id="tool-spinner" class="hidden spinner h-5 w-5" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="31.4 31.4" />
-                        </svg>
-                    </button>
-                </form>
-                <div id="tool-error" class="hidden mt-4 text-red-400 text-sm text-center"></div>
-            </div>
-
-            <!-- Output Area -->
-            <div id="output-section" class="hidden max-w-2xl mx-auto mt-10 fade-in">
-                <div class="glass-card rounded-2xl p-8 md:p-10">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-cyan-glow">Your Listing Description</h3>
-                        <button id="copy-btn" onclick="copyOutput()"
-                            class="px-4 py-2 rounded-lg bg-navy-700 border border-navy-600 text-sm text-gray-300 hover:text-white hover:border-cyan-glow transition flex items-center gap-2">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                            <span id="copy-text">Copy to Clipboard</span>
-                        </button>
-                    </div>
-                    <div id="output-text" class="output-text text-gray-200 text-base leading-relaxed"></div>
-                </div>
-
-                <!-- CTA Below Output -->
-                <div class="text-center mt-10 fade-in">
-                    <p class="text-xl md:text-2xl font-semibold text-gray-200 mb-2">
-                        That took 12 seconds.
-                    </p>
-                    <p class="text-lg text-gray-400 mb-8">
-                        Imagine what <span class="text-cyan-glow font-bold">28 tools</span> can do for your business.
-                    </p>
-                    <a href="/founders.html"
-                        class="btn-gold inline-block px-8 py-4 rounded-lg bg-gold-base text-navy-900 font-bold text-lg hover:bg-gold-light transition-colors">
-                        See All 28 Tools
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Social Proof Section (always visible) -->
-        <section class="py-16 border-t border-navy-700">
-            <!-- Quote -->
-            <div class="max-w-2xl mx-auto mb-16">
-                <div class="glass-card rounded-2xl p-8 md:p-10 relative">
-                    <svg class="absolute top-6 left-6 h-8 w-8 text-cyan-glow opacity-30" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z"/>
-                    </svg>
-                    <blockquote class="text-gray-300 text-lg leading-relaxed pl-4 md:pl-6">
-                        "I showed this to my cousin, a top-producing agent in Milwaukee. His first words were 'I just wanna hire you now.' I built HomeEdge so you do not have to hire me. You get all 28 tools for less than a single lunch with a client."
-                    </blockquote>
-                    <p class="mt-6 text-sm text-gray-500 pl-4 md:pl-6">Cole Cummings, Founder</p>
-                </div>
-            </div>
-
-            <!-- Stats Row -->
-            <div class="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto text-center mb-16">
-                <div class="glass-card rounded-xl p-5 md:p-6">
-                    <div class="text-2xl md:text-3xl font-bold text-cyan-glow mb-1">28</div>
-                    <div class="text-xs md:text-sm text-gray-400">AI Tools</div>
-                </div>
-                <div class="glass-card rounded-xl p-5 md:p-6">
-                    <div class="text-2xl md:text-3xl font-bold text-cyan-glow mb-1">100%</div>
-                    <div class="text-xs md:text-sm text-gray-400">Built for Listing Agents</div>
-                </div>
-                <div class="glass-card rounded-xl p-5 md:p-6">
-                    <div class="text-2xl md:text-3xl font-bold text-gold-base mb-1">$49</div>
-                    <div class="text-xs md:text-sm text-gray-400">Starting Price/mo</div>
-                </div>
-            </div>
-
-            <!-- Video Section -->
-            <div class="max-w-2xl mx-auto">
-                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">See HomeEdge <span class="text-gradient-cyan">In Action</span></h2>
-                <div class="glass-card rounded-2xl overflow-hidden aspect-video flex items-center justify-center cursor-pointer group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-900"></div>
-                    <div class="relative z-10 flex flex-col items-center gap-4">
-                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gold-base/20 border-2 border-gold-base flex items-center justify-center group-hover:bg-gold-base/30 transition">
-                            <svg class="h-8 w-8 md:h-10 md:w-10 text-gold-base ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
+                        <button type="submit" id="tool-btn"
+                            class="btn-cta w-full py-3.5 rounded-xl text-navy-900 font-bold text-base flex items-center justify-center gap-2">
+                            <span id="tool-btn-text">Generate Listing Description</span>
+                            <svg id="tool-spinner" class="hidden spinner h-5 w-5" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="31.4 31.4" />
                             </svg>
+                        </button>
+                    </form>
+                    <div id="tool-error" class="hidden mt-4 text-red-400 text-sm text-center"></div>
+                </div>
+
+                <!-- Output Area -->
+                <div id="output-section" class="hidden max-w-2xl mx-auto mt-10 fade-in">
+                    <div class="glass-card rounded-2xl p-7 md:p-10 border border-cyan-glow/10">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-cyan-glow animate-pulse"></div>
+                                <h3 class="text-sm font-semibold text-cyan-glow uppercase tracking-wider">Your Listing Description</h3>
+                            </div>
+                            <button id="copy-btn" onclick="copyOutput()"
+                                class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-gray-400 hover:text-white hover:border-cyan-glow/30 transition flex items-center gap-1.5">
+                                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span id="copy-text">Copy</span>
+                            </button>
                         </div>
-                        <span class="text-sm text-gray-400 group-hover:text-gray-300 transition">Watch the full demo</span>
+                        <div id="output-text" class="output-text text-gray-300 text-sm leading-relaxed"></div>
+                    </div>
+
+                    <div class="text-center mt-12 fade-in">
+                        <p class="text-xl md:text-2xl font-semibold text-gray-200 mb-2 tracking-tight">
+                            That took 12 seconds.
+                        </p>
+                        <p class="text-base text-gray-500 mb-8">
+                            Imagine what <span class="text-cyan-glow font-semibold">28 tools</span> can do for your business.
+                        </p>
+                        <a href="/founders.html"
+                            class="btn-cta inline-block px-10 py-4 rounded-xl text-navy-900 font-bold text-base">
+                            See All 28 Tools
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Minimal Footer -->
-        <footer class="py-8 text-center text-sm text-gray-600 border-t border-navy-800">
-            &copy; 2026 HomeEdge. All rights reserved.
-        </footer>
-    </main>
+            <!-- ════════ SOCIAL PROOF ════════ -->
+            <section class="py-20 reveal">
+
+                <!-- Quote -->
+                <div class="max-w-2xl mx-auto mb-16">
+                    <div class="quote-card rounded-2xl p-8 md:p-10">
+                        <!-- Accent light -->
+                        <div class="absolute -top-px left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-cyan-glow/40 to-transparent"></div>
+                        <svg class="h-7 w-7 text-cyan-glow/20 mb-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z"/>
+                        </svg>
+                        <blockquote class="text-gray-300 text-base md:text-lg leading-relaxed mb-6">
+                            "I showed this to my cousin, a top-producing agent in Milwaukee. His first words were 'I just wanna hire you now.' I built HomeEdge so you do not have to hire me. You get all 28 tools for less than a single lunch with a client."
+                        </blockquote>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-glow/20 to-gold-base/20 flex items-center justify-center text-xs font-bold text-gray-400">CC</div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-300">Cole Cummings</div>
+                                <div class="text-xs text-gray-600">Founder, HomeEdge</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Row with animated counters -->
+                <div class="grid grid-cols-3 gap-3 md:gap-6 max-w-2xl mx-auto text-center mb-16" id="stats-row">
+                    <div class="stat-card rounded-xl p-5 md:p-7">
+                        <div class="text-3xl md:text-4xl font-extrabold text-cyan-glow mb-1 tabular-nums" data-count="28" data-suffix="">0</div>
+                        <div class="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider">AI Tools</div>
+                    </div>
+                    <div class="stat-card rounded-xl p-5 md:p-7">
+                        <div class="text-3xl md:text-4xl font-extrabold text-cyan-glow mb-1 tabular-nums" data-count="100" data-suffix="%">0%</div>
+                        <div class="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider">Built for Listing Agents</div>
+                    </div>
+                    <div class="stat-card rounded-xl p-5 md:p-7">
+                        <div class="text-3xl md:text-4xl font-extrabold text-gold-base mb-1 tabular-nums" data-count="49" data-prefix="$" data-suffix="">$0</div>
+                        <div class="text-[10px] md:text-xs text-gray-500 uppercase tracking-wider">Starting Price/mo</div>
+                    </div>
+                </div>
+
+                <!-- Video Player -->
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 tracking-tight">See HomeEdge <span class="text-gradient-cyan">In Action</span></h2>
+                    <div class="video-player rounded-2xl overflow-hidden aspect-video flex items-center justify-center cursor-pointer group">
+                        <!-- Thumbnail overlay -->
+                        <div class="absolute inset-0">
+                            <!-- Simulated dashboard screenshot as thumbnail -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-navy-700 via-navy-800 to-navy-900">
+                                <!-- Fake UI elements for thumbnail -->
+                                <div class="absolute top-4 left-4 right-4 flex items-center gap-2 opacity-30">
+                                    <div class="w-5 h-5 rounded bg-cyan-glow/30"></div>
+                                    <div class="h-2 w-24 rounded bg-white/20"></div>
+                                    <div class="ml-auto flex gap-1">
+                                        <div class="h-2 w-10 rounded bg-white/10"></div>
+                                        <div class="h-2 w-10 rounded bg-white/10"></div>
+                                    </div>
+                                </div>
+                                <div class="absolute top-14 left-4 right-4 bottom-12 grid grid-cols-3 gap-2 opacity-20">
+                                    <div class="col-span-2 rounded-lg bg-white/5 border border-white/5"></div>
+                                    <div class="space-y-2">
+                                        <div class="rounded-lg bg-white/5 border border-white/5 h-1/3"></div>
+                                        <div class="rounded-lg bg-white/5 border border-white/5 h-1/3"></div>
+                                        <div class="rounded-lg bg-white/5 border border-white/5 h-1/3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Gradient overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy-900/80 via-navy-900/30 to-transparent"></div>
+                        </div>
+
+                        <!-- Play button -->
+                        <div class="relative z-10 flex flex-col items-center gap-3">
+                            <div class="play-ring flex items-center justify-center">
+                                <svg class="h-7 w-7 text-gold-base ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                            <span class="text-xs text-gray-400 group-hover:text-gray-300 transition font-medium">Watch the full platform demo</span>
+                        </div>
+
+                        <!-- Bottom bar -->
+                        <div class="absolute bottom-0 left-0 right-0 px-4 py-2.5 flex items-center gap-3 bg-black/30 backdrop-blur-sm">
+                            <svg class="h-3.5 w-3.5 text-gray-500" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <div class="flex-1 h-1 rounded-full bg-white/10">
+                                <div class="h-full w-0 rounded-full bg-gradient-to-r from-cyan-glow to-gold-base"></div>
+                            </div>
+                            <span class="text-[10px] text-gray-500 tabular-nums">2:47</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="py-8 text-center text-xs text-gray-700 border-t border-white/5">
+                &copy; 2026 HomeEdge. All rights reserved.
+            </footer>
+        </main>
+    </div>
 
     <script>
         const API_BASE = "https://homeedge-chat.moltmind.workers.dev";
         let capturedEmail = "";
         let capturedName = "";
 
-        // Email Capture Form
+        // ── Particle generator ──
+        (function initParticles() {
+            const container = document.getElementById("particles");
+            const colors = ["rgba(0,242,254,0.3)", "rgba(212,175,55,0.2)", "rgba(79,172,254,0.2)"];
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement("div");
+                p.className = "particle";
+                const size = Math.random() * 3 + 1;
+                p.style.cssText = `
+                    width:${size}px;height:${size}px;
+                    left:${Math.random()*100}%;
+                    background:${colors[i % colors.length]};
+                    animation-duration:${Math.random()*15+15}s;
+                    animation-delay:${Math.random()*15}s;
+                `;
+                container.appendChild(p);
+            }
+        })();
+
+        // ── Scroll reveal ──
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+        // ── Animated stat counters ──
+        let statsCounted = false;
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting && !statsCounted) {
+                    statsCounted = true;
+                    document.querySelectorAll("[data-count]").forEach(el => {
+                        const target = parseInt(el.dataset.count);
+                        const prefix = el.dataset.prefix || "";
+                        const suffix = el.dataset.suffix || "";
+                        const duration = 1500;
+                        const start = performance.now();
+                        function tick(now) {
+                            const progress = Math.min((now - start) / duration, 1);
+                            const eased = 1 - Math.pow(1 - progress, 3);
+                            const current = Math.round(eased * target);
+                            el.textContent = prefix + current + suffix;
+                            if (progress < 1) requestAnimationFrame(tick);
+                        }
+                        requestAnimationFrame(tick);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        const statsRow = document.getElementById("stats-row");
+        if (statsRow) statsObserver.observe(statsRow);
+
+        // ── Email Capture Form ──
         document.getElementById("capture-form").addEventListener("submit", async (e) => {
             e.preventDefault();
-
             const name = document.getElementById("lead-name").value.trim();
             const email = document.getElementById("lead-email").value.trim();
             const errorEl = document.getElementById("capture-error");
@@ -328,21 +694,14 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ name, email }),
                 });
-
                 const data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data.error || "Something went wrong. Please try again.");
-                }
+                if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
 
                 capturedEmail = email;
                 capturedName = name;
-
-                // Hide capture, show tool
                 document.getElementById("capture-section").style.display = "none";
                 document.getElementById("tool-section").classList.remove("hidden");
                 window.scrollTo({ top: 0, behavior: "smooth" });
-
             } catch (err) {
                 errorEl.textContent = err.message;
                 errorEl.classList.remove("hidden");
@@ -351,10 +710,9 @@
             }
         });
 
-        // Tool Form
+        // ── Tool Form ──
         document.getElementById("tool-form").addEventListener("submit", async (e) => {
             e.preventDefault();
-
             const btn = document.getElementById("tool-btn");
             const btnText = document.getElementById("tool-btn-text");
             const spinner = document.getElementById("tool-spinner");
@@ -380,21 +738,13 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: capturedEmail, propertyDetails }),
                 });
-
                 const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
 
-                if (!res.ok) {
-                    throw new Error(data.error || "Something went wrong. Please try again.");
-                }
-
-                // Show output
                 document.getElementById("output-text").textContent = data.description;
                 document.getElementById("output-section").classList.remove("hidden");
                 document.getElementById("tool-form").closest(".glass-card").style.display = "none";
-
-                // Scroll to output
                 document.getElementById("output-section").scrollIntoView({ behavior: "smooth", block: "start" });
-
             } catch (err) {
                 errorEl.textContent = err.message;
                 errorEl.classList.remove("hidden");
@@ -404,24 +754,22 @@
             }
         });
 
-        // Copy to Clipboard
+        // ── Copy to Clipboard ──
         function copyOutput() {
             const text = document.getElementById("output-text").textContent;
             const copyText = document.getElementById("copy-text");
-
             navigator.clipboard.writeText(text).then(() => {
                 copyText.textContent = "Copied!";
-                setTimeout(() => { copyText.textContent = "Copy to Clipboard"; }, 2000);
+                setTimeout(() => { copyText.textContent = "Copy"; }, 2000);
             }).catch(() => {
-                // Fallback
-                const textarea = document.createElement("textarea");
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
                 document.execCommand("copy");
-                document.body.removeChild(textarea);
+                document.body.removeChild(ta);
                 copyText.textContent = "Copied!";
-                setTimeout(() => { copyText.textContent = "Copy to Clipboard"; }, 2000);
+                setTimeout(() => { copyText.textContent = "Copy"; }, 2000);
             });
         }
     </script>
