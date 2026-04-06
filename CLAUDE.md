@@ -55,7 +55,7 @@ Seller Lead CRM, Open House QR, Listing Portfolio, Pre-List Checklist
 - CRM/Drip: GoHighLevel (nurture sequences, SMS follow-up, pipeline)
 - AI: Claude API (Anthropic)
 - Voiceover: ElevenLabs "Brittney" voice (ID: kPzsL2i3teMYv0FxEYQ6)
-- Video Production: Remotion (programmatic video, test project at ~/remotion-test)
+- Video Production: Remotion (programmatic video, project at listing-demo-video/)
 - Final Video Editing: CapCut Pro (desktop app)
 - Deploy: GitHub Actions auto-deploy
 - Domain: gethomeedge.com
@@ -89,14 +89,20 @@ Seller Lead CRM, Open House QR, Listing Portfolio, Pre-List Checklist
 - Lead magnet funnel live (April 5 2026): free-listing-generator.html captures
   email via /lead-magnet, then offers one free AI listing description via /lead-tool.
   Welcome email sent via Resend, contact created in GHL with lead-magnet tag.
-  Lead magnet email sequence: 5 emails over 10 days (only email 1 automated,
-  rest to be added via GHL workflow or Resend drip).
+  Lead magnet email sequence: all 5 emails automated via Resend + cron trigger.
+  Email 1: instant. Email 2: day 2. Email 3: day 4. Email 4: day 7. Email 5: day 10.
+  Drip tracking stored in KV as drip:{email} (array of sent email numbers).
+  Cron runs daily at 2pm UTC (wrangler.toml [triggers] crons).
+  getDripEmail() function in worker.js holds all email HTML content.
+  Email subjects: "Four minutes", "The epiphany...", "The thing nobody expects",
+  "This closes soon (not joking)". Final email has gold CTA button to /founders.
 
 ## LEAD MAGNET FUNNEL
 - free-listing-generator.html: public funnel page, no Clerk auth, no nav.
   Facebook ad traffic lands here. Captures email, reveals free listing tool.
 - /lead-magnet POST: public lead capture endpoint. Rate limited 3/hr/IP.
   Stores lead:{email} in KV, sends Resend welcome email, creates GHL contact.
+  Also initializes drip:{email} = [1] in KV for drip tracking.
 - /lead-tool POST: public one-time listing generator for leads. Requires prior
   email capture (checks lead:{email} in KV). One generation per email ever
   (tracks lead-used:{email} in KV). Calls Claude API (Haiku) for MLS-ready
@@ -104,6 +110,17 @@ Seller Lead CRM, Open House QR, Listing Portfolio, Pre-List Checklist
 - founders.html: rebuilt from redirect into full page with "The Stack" tool
   list, pricing comparison (vs Ylopo, kvCORE, BoomTown), and founders callout.
   Links to /#pricing for checkout.
+- links.html: link-in-bio page for TikTok and Instagram bio links. Dark,
+  mobile-first, glassmorphism card with buttons to free listing generator,
+  all 28 tools, founders pricing, and social links (TikTok, X).
+- /compare/ylopo.html: SEO comparison page, HomeEdge vs Ylopo ($795/mo).
+  Targets agents searching for Ylopo alternatives.
+- /compare/kvcore.html: SEO comparison page, HomeEdge vs kvCORE ($300+/mo).
+  Targets agents searching for kvCORE alternatives.
+- /compare/boomtown.html: SEO comparison page, HomeEdge vs BoomTown ($750+/mo).
+  Targets agents searching for BoomTown alternatives.
+  All three comparison pages are honest, fair, include meta tags for SEO/social,
+  and end with the free listing generator CTA.
 
 ## CONTENT RULES (non-negotiable)
 1. NEVER use em dashes in any content. Use commas, periods, or rewrite.
@@ -120,6 +137,25 @@ Seller Lead CRM, Open House QR, Listing Portfolio, Pre-List Checklist
 2. ElevenLabs "Brittney" generates voiceover
 3. CapCut Pro desktop handles final editing (captions, music, transitions, export)
 4. Export at highest quality available (up to 4K)
+
+### Remotion Compositions (listing-demo-video/src/)
+All compositions are 45 seconds at 30fps (1350 frames), renderable in both
+1080x1080 (square) and 1080x1920 (vertical) formats.
+- ListingGeneratorDemo: original demo, listing description tool walkthrough
+- CMADemo: CMA analysis tool demo (address input, market data output)
+- NetProceedsDemo: net proceeds calculator (line-by-line breakdown, gold total)
+- SocialPostDemo: social post generator (Instagram output + quick FB/LinkedIn cuts)
+- ClientEmailDemo: client email drafter (seller update email with showing feedback)
+
+Shared components: BrowserChrome, FormField, GoldButton, GlowBackground
+Shared animations: useFadeIn, useShimmerStyle, useTypingAnimation, useCountUp
+Shared scenes: HookScene (configurable text), Scene5ToolCount, Scene6CTA
+Render scripts: npm run render:square, render:vertical, render:all
+Still frames: npx remotion still src/index.ts [CompId] out/frame.jpeg --frame=N
+
+### In Progress (not code-dependent)
+- Voice clone via ElevenLabs for Cole's voice
+- Kling face model for AI spokesperson videos
 
 Video strategy:
 - TikTok (9:16, 15-30s): Daily tool showcase clips, hook stats, pain points
