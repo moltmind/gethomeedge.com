@@ -355,7 +355,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
           "name": "How much does HomeEdge cost?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "HomeEdge offers three plans: Starter at $49/month, Pro at $97/month, and Elite at $197/month. Annual plans save 20%. All plans include white-label branding and deployment within 48 hours."
+            "text": "Pricing is currently on a custom basis while the subscription offer is being reworked. Email cole@gethomeedge.com with your market and needs for an honest quote."
           }
         },
         {
@@ -404,7 +404,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                     Sign In
                 </a>
                 <a href="#pricing" class="hidden sm:block btn-gold bg-metallic-gold text-navy-900 px-6 py-2.5 rounded-sm font-semibold text-sm tracking-wide shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_25px_rgba(212,175,55,0.5)] transition-all" style="text-decoration:none;">
-                    Get Started
+                    Talk to Cole
                 </a>
                 <button class="md:hidden text-white text-2xl" onclick="toggleMobileNav()" aria-label="Menu">
                     <i class="ph-bold ph-list"></i>
@@ -422,7 +422,7 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         <a href="#pricing" onclick="toggleMobileNav()" class="text-2xl font-serif text-white hover:text-cyan-glow transition-colors" style="text-decoration:none;">Pricing</a>
         <a href="#faq" onclick="toggleMobileNav()" class="text-2xl font-serif text-white hover:text-cyan-glow transition-colors" style="text-decoration:none;">FAQ</a>
         <a href="/app/login.html" onclick="toggleMobileNav()" class="text-2xl font-serif text-cyan-glow hover:text-white transition-colors" style="text-decoration:none;">Sign In</a>
-        <a href="#pricing" onclick="toggleMobileNav()" class="btn-gold bg-metallic-gold text-navy-900 px-8 py-3 rounded-sm font-bold text-base mt-4" style="text-decoration:none;">Get Started</a>
+        <a href="#pricing" onclick="toggleMobileNav()" class="btn-gold bg-metallic-gold text-navy-900 px-8 py-3 rounded-sm font-bold text-base mt-4" style="text-decoration:none;">Talk to Cole</a>
     </div>
 
 
@@ -451,15 +451,15 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                         <i class="ph-bold ph-arrow-right"></i>
                     </button>
                     <a href="#pricing" class="px-8 py-4 rounded-sm font-medium text-base text-white border border-white/20 hover:border-white/50 hover:bg-white/5 flex items-center justify-center gap-2 transition-all duration-300" style="text-decoration:none;">
-                        View Pricing
+                        Talk to Cole
                     </a>
                 </div>
 
                 <!-- Proof Stats -->
                 <div class="mt-12 flex items-center gap-8 md:gap-12 animate-reveal-up delay-300 border-t border-white/10 pt-6 w-full flex-wrap">
                     <div class="text-center">
-                        <div class="text-2xl font-serif font-bold text-gold-base">$49</div>
-                        <div class="text-xs text-slate-400 mt-1">Starting Price/mo</div>
+                        <div class="text-2xl font-serif font-bold text-gold-base">Custom</div>
+                        <div class="text-xs text-slate-400 mt-1">Built for your business</div>
                     </div>
                     <div class="text-center">
                         <div class="text-2xl font-serif font-bold text-white">28</div>
@@ -833,113 +833,20 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
     </section>
 
 
-    <!-- ========== PRICING SECTION ========== -->
+    <!-- ========== PRICING SECTION (offer under rebuild) ========== -->
     <section id="pricing" class="py-10 md:py-28 bg-[#020409] relative">
-        <div class="max-w-7xl mx-auto px-6 md:px-12">
-
-            <div class="text-center mb-12 reveal">
-                <h2 class="text-3xl md:text-5xl font-serif font-semibold mb-4">Simple, Transparent Pricing</h2>
-                <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-8">One listing pays for a full year. Choose the plan that fits your business.</p>
-
-                <!-- Pricing Toggle -->
-                <div class="flex items-center justify-center gap-4">
-                    <span class="text-sm font-medium" id="label-monthly">Monthly</span>
-                    <div class="toggle-switch" id="pricing-toggle" onclick="togglePricing()">
-                        <div class="toggle-knob"></div>
-                    </div>
-                    <span class="text-sm font-medium text-slate-400" id="label-annual">Annual</span>
-                    <span class="text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-full hidden" id="save-badge">Save 20%</span>
-                </div>
-            </div>
-
-            <div class="flex flex-col lg:flex-row justify-center items-center lg:items-stretch gap-8 reveal">
-
-                <!-- Starter -->
-                <div class="w-full lg:w-1/3 glass-card rounded-2xl p-8 border hover:border-white/20 border-white/5 flex flex-col max-w-md">
-                    <div class="mb-8">
-                        <h3 class="text-xl text-slate-300 font-medium mb-2">Starter</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-serif font-bold text-white" id="price-starter">$49</span>
-                            <span class="text-slate-500 text-sm">/mo</span>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-1 h-5" id="price-starter-note"></p>
-                        <p class="text-sm text-slate-400 mt-3">Everything a solo agent needs to win more listings with AI.</p>
-                    </div>
-
-                    <ul class="space-y-4 flex-1 mb-8">
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> 10 AI Tools (CMA, Net Proceeds, Social Media + more)</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Your logo and colors on every page</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> AI Chatbot that answers seller questions 24/7</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Seller-facing calculators</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Email support</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Live in 48 hours</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/7sY5kwbSSf8IfCy5jx7N60f" id="link-starter" class="w-full block text-center py-3.5 rounded font-semibold text-sm border border-white/10 hover:bg-white/5 hover:border-white/30 transition-all" style="text-decoration:none;color:white;">Get Started</a>
-                </div>
-
-                <!-- Pro (Featured) -->
-                <div class="w-full lg:w-1/3 p-8 rounded-2xl bg-gradient-to-b from-navy-800 to-navy-900 border-2 border-gold-base/50 relative transform lg:-translate-y-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col max-w-md z-10">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-metallic-gold text-navy-900 text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-[0_0_10px_rgba(212,175,55,0.4)]">
-                        Most Popular
-                    </div>
-                    <div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-gold-base to-transparent"></div>
-
-                    <div class="mb-8 mt-2">
-                        <h3 class="text-xl text-gold-base font-medium mb-2">Pro</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-5xl font-serif font-bold text-white" id="price-pro">$97</span>
-                            <span class="text-slate-500 text-sm">/mo</span>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-1 h-5" id="price-pro-note"></p>
-                        <p class="text-sm text-slate-400 mt-3">The complete seller platform for agents who want every advantage.</p>
-                    </div>
-
-                    <ul class="space-y-4 flex-1 mb-8">
-                        <li class="flex items-start gap-3 text-sm text-white font-medium"><i class="ph-bold ph-check text-gold-base mt-0.5"></i> All 28 AI tools unlocked</li>
-                        <li class="flex items-start gap-3 text-sm text-white font-medium"><i class="ph-bold ph-check text-gold-base mt-0.5"></i> AI Chatbot + Seller Dashboard</li>
-                        <li class="flex items-start gap-3 text-sm text-white font-medium"><i class="ph-bold ph-check text-gold-base mt-0.5"></i> Lead CRM to track every prospect</li>
-                        <li class="flex items-start gap-3 text-sm text-white font-medium"><i class="ph-bold ph-check text-gold-base mt-0.5"></i> All 7 seller calculators</li>
-                        <li class="flex items-start gap-3 text-sm text-white font-medium"><i class="ph-bold ph-check text-gold-base mt-0.5"></i> Priority support (same-day response)</li>
-                        <li class="flex items-start gap-3 text-sm text-white font-medium"><i class="ph-bold ph-check text-gold-base mt-0.5"></i> Live in 48 hours</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/14A9AM2ii8KkduqaDR7N60h" id="link-pro" class="w-full block text-center py-4 rounded font-bold text-sm bg-metallic-gold text-navy-900 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] transition-all" style="text-decoration:none;">Get Pro Access</a>
-                </div>
-
-                <!-- Elite -->
-                <div class="w-full lg:w-1/3 glass-card rounded-2xl p-8 border hover:border-white/20 border-white/5 flex flex-col max-w-md">
-                    <div class="mb-8">
-                        <h3 class="text-xl text-slate-300 font-medium mb-2">Elite</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-serif font-bold text-white" id="price-elite">$197</span>
-                            <span class="text-slate-500 text-sm">/mo</span>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-1 h-5" id="price-elite-note"></p>
-                        <p class="text-sm text-slate-400 mt-3">White glove service for agents who want a dedicated partner.</p>
-                    </div>
-
-                    <ul class="space-y-4 flex-1 mb-8">
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Everything in Pro</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> White Glove Setup</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Dedicated Account Manager</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Monthly Strategy Calls</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Custom Integrations</li>
-                        <li class="flex items-start gap-3 text-sm text-slate-300"><i class="ph-bold ph-check text-cyan-glow mt-0.5"></i> Priority Phone Support</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/4gMdR2e105y8gGC5jx7N60j" id="link-elite" class="w-full block text-center py-3.5 rounded font-semibold text-sm border border-white/10 hover:bg-white/5 hover:border-white/30 transition-all" style="text-decoration:none;color:white;">Get Elite Access</a>
-                </div>
-
-            </div>
-
-            <!-- Money-Back Guarantee -->
-            <div class="flex justify-center mt-10">
-                <div class="inline-flex items-center gap-3 px-6 py-4 rounded-xl border border-green-400/30 bg-green-400/5">
-                    <i class="ph-fill ph-shield-check text-green-400 text-2xl"></i>
-                    <span class="text-sm font-medium text-slate-300">30-Day Money-Back Guarantee. Try it risk-free. If it's not for you, get a full refund.</span>
-                </div>
-            </div>
-
-            <!-- Brokerage note -->
-            <p class="text-center text-sm text-slate-500 mt-6">Brokerage pricing available for teams of 10+ agents. <a href="mailto:cole@gethomeedge.com" class="text-cyan-glow hover:text-white transition-colors underline">Contact us</a></p>
+        <div class="max-w-3xl mx-auto px-6 md:px-12 text-center reveal">
+            <span class="text-xs font-medium tracking-widest text-cyan-glow uppercase">Custom work</span>
+            <h2 class="text-3xl md:text-5xl font-serif font-semibold mb-6 mt-4">I'm rebuilding the offer.</h2>
+            <p class="text-lg text-slate-400 leading-relaxed mb-6">
+                I took the subscription offer down while I rework what this is and what it's worth. If you're a real estate agent who wants custom AI lead magnet tools branded to your business, a custom chatbot trained on your market, or a site rebuild, I'm taking work on a custom basis right now.
+            </p>
+            <p class="text-lg text-slate-400 leading-relaxed mb-8">
+                Email me at <a href="mailto:cole@gethomeedge.com" class="text-cyan-glow hover:text-white transition-colors font-semibold" style="text-decoration:none;">cole@gethomeedge.com</a>. Tell me your market, your website, and what's breaking. I'll tell you honestly whether I can help and what it would cost.
+            </p>
+            <a href="mailto:cole@gethomeedge.com" class="inline-block btn-gold bg-metallic-gold text-navy-900 px-8 py-4 rounded-sm font-semibold text-base tracking-wide shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_35px_rgba(212,175,55,0.6)] transition-all duration-300" style="text-decoration:none;">
+                Email Cole
+            </a>
         </div>
     </section>
 
@@ -949,14 +856,11 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
         <div class="max-w-7xl mx-auto px-6 md:px-12 reveal">
             <div class="text-center mb-8 md:mb-16">
                 <h2 class="text-sm font-bold tracking-widest text-gold-base uppercase mb-4">Return on Investment</h2>
-                <h3 class="text-3xl md:text-5xl font-serif font-semibold mb-4">One Listing Pays for a Full Year</h3>
+                <h3 class="text-3xl md:text-5xl font-serif font-semibold mb-4">One listing covers the build.</h3>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto mt-6">Average residential commission is around $12,000. Custom AI seller tools cost a fraction of that. Email Cole to scope your build and get an honest quote.</p>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div class="glass-card rounded-2xl p-6 text-center">
-                    <div class="text-sm text-slate-400 mb-2">Pro Annual Cost</div>
-                    <div class="text-3xl font-serif font-bold text-white">$948<span class="text-base text-slate-500">/yr</span></div>
-                </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12" style="display:none;">
                 <div class="glass-card rounded-2xl p-6 text-center">
                     <div class="text-sm text-slate-400 mb-2">Avg Commission</div>
                     <div class="text-3xl font-serif font-bold text-white">$12,000</div>
@@ -1066,14 +970,14 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
                 Ready to Own Your <span class="text-gradient-cyan italic">Market</span>?
             </h2>
             <p class="text-xl text-slate-300 font-light mb-10 max-w-2xl">
-                28 AI tools. Your brand. Your sellers. Starting at $49/mo with a 30-day money-back guarantee.
+                28 AI tools already built. Custom work on a case-by-case basis while I rework the subscription offer.
             </p>
-            <a href="#pricing" class="btn-gold bg-metallic-gold text-navy-900 px-10 py-5 rounded-sm font-bold text-lg tracking-wide flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-105 transition-all duration-300" style="text-decoration:none;">
-                Get Started Today
+            <a href="mailto:cole@gethomeedge.com" class="btn-gold bg-metallic-gold text-navy-900 px-10 py-5 rounded-sm font-bold text-lg tracking-wide flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-105 transition-all duration-300" style="text-decoration:none;">
+                Talk to Cole
                 <i class="ph-bold ph-arrow-right"></i>
             </a>
             <p class="mt-6 text-xs text-slate-500 uppercase tracking-widest font-semibold flex items-center gap-2">
-                <i class="ph-fill ph-shield-check text-green-400"></i> 30-Day Money-Back Guarantee. Cancel anytime.
+                <i class="ph-fill ph-envelope text-cyan-glow"></i> cole@gethomeedge.com
             </p>
         </div>
     </section>
@@ -1229,53 +1133,8 @@ palette: Deep Navy (#040711), Cyan Energy (#00F2FE), Wealth Gold (#D4AF37)
             }, 2500);
         });
 
-        // Pricing toggle
-        let isAnnual = false;
-        const pricing = {
-            starter: {
-                monthly: { price: '$49', note: '', link: 'https://buy.stripe.com/7sY5kwbSSf8IfCy5jx7N60f' },
-                annual: { price: '$39', note: '$468 billed annually', link: 'https://buy.stripe.com/fZubIU0aa2lW4XUbHV7N60g' }
-            },
-            pro: {
-                monthly: { price: '$97', note: '', link: 'https://buy.stripe.com/14A9AM2ii8KkduqaDR7N60h' },
-                annual: { price: '$79', note: '$948 billed annually', link: 'https://buy.stripe.com/eVq00caOO7Gg61Y27l7N60i' }
-            },
-            elite: {
-                monthly: { price: '$197', note: '', link: 'https://buy.stripe.com/4gMdR2e105y8gGC5jx7N60j' },
-                annual: { price: '$159', note: '$1,908 billed annually', link: 'https://buy.stripe.com/14A5kwf542lW8a67rF7N60k' }
-            }
-        };
-
-        function togglePricing() {
-            isAnnual = !isAnnual;
-            const toggle = document.getElementById('pricing-toggle');
-            const saveBadge = document.getElementById('save-badge');
-            const labelMonthly = document.getElementById('label-monthly');
-            const labelAnnual = document.getElementById('label-annual');
-
-            if (isAnnual) {
-                toggle.classList.add('active');
-                saveBadge.classList.remove('hidden');
-                labelMonthly.classList.add('text-slate-400');
-                labelMonthly.classList.remove('text-white');
-                labelAnnual.classList.remove('text-slate-400');
-                labelAnnual.classList.add('text-white');
-            } else {
-                toggle.classList.remove('active');
-                saveBadge.classList.add('hidden');
-                labelMonthly.classList.remove('text-slate-400');
-                labelMonthly.classList.add('text-white');
-                labelAnnual.classList.add('text-slate-400');
-                labelAnnual.classList.remove('text-white');
-            }
-
-            const period = isAnnual ? 'annual' : 'monthly';
-            ['starter', 'pro', 'elite'].forEach(function(tier) {
-                document.getElementById('price-' + tier).textContent = pricing[tier][period].price;
-                document.getElementById('price-' + tier + '-note').textContent = pricing[tier][period].note;
-                document.getElementById('link-' + tier).href = pricing[tier][period].link;
-            });
-        }
+        // Pricing toggle and config removed during offer rebuild (2026-04-21).
+        // Contact cole@gethomeedge.com for custom work quotes.
 
         // Scroll reveal
         function revealOnScroll() {
